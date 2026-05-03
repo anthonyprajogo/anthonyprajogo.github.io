@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Considered — Anthony Prajogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Variables ─────────────────────────────────────────── */
+    :root {
+      --page-bg:     #ffffff;
+      --panel-bg:    #F4F1EA;
+      --surface:     #FAFCF8;
+      --ink:         #1E1C14;
+      --ink-mid:     #6E6A58;
+      --ink-light:   #A09A88;
+      --rule:        #DDD9D0;
+      --green:       #5C9E48;
+      --green-pale:  #EBF5E6;
+      --green-mid:   rgba(92,158,72,0.10);
+      --radius-sm:   6px;
+      --radius-md:   10px;
+      --radius-lg:   14px;
+    }
+
+    /*
+      ── TAG REFERENCE ────────────────────────────────────────
+      Data attribute: data-tags="tag-systems,tag-strategy" (comma-separated, no spaces)
+      Display class on .article-tag span: tag-systems etc.
+
+      tag-systems      → Systems & Structure
+      tag-strategy     → Strategy & Navigation
+      tag-ideas        → Ideas & Concepts
+      tag-world        → The World Right Now
+      tag-philosophy   → Personal Philosophy
+      tag-favourites   → My Favourites
+
+      Rules:
+      - data-tags on .article-card: all applicable tags (used for filtering)
+      - .article-tag spans in HTML: max 2 visible per card (choose the most representative)
+    */
+
+    /* ── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--page-bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 16px 0;
+    }
+
+    /* ── Panel ─────────────────────────────────────────────── */
+    .panel {
+      background: var(--panel-bg);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 1400px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+      box-shadow: 0 2px 24px rgba(30,28,20,0.06);
+      margin-bottom: 16px;
+    }
+
+    /* ── Nav ───────────────────────────────────────────────── */
+    nav {
+      background: var(--panel-bg);
+      padding: 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      margin-top: 20px;
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-logo:hover { color: var(--green); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--ink-mid);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--ink); background: var(--green-mid); }
+
+    .nav-links a.active {
+      color: var(--ink);
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: var(--ink-light);
+    }
+
+    .nav-links a.nav-cta {
+      background: var(--ink);
+      color: var(--panel-bg);
+      padding: 7px 18px;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      margin-left: 8px;
+      transition: background 0.15s;
+    }
+    .nav-links a.nav-cta:hover { background: var(--green); }
+
+    /* ── Page header ───────────────────────────────────────── */
+    .page-header {
+      padding: 56px 52px 40px;
+      position: relative;
+    }
+
+    .page-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 52px;
+      right: 52px;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .page-header h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .page-header h1 em {
+      font-style: italic;
+      color: var(--green);
+    }
+
+    .page-header p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--ink-mid);
+      line-height: 1.75;
+      max-width: 580px;
+    }
+
+    /* ── Controls bar (filter + sort) ─────────────────────── */
+    .controls {
+      padding: 28px 52px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      background: rgba(160,154,136,0.12);
+      border: 1px solid transparent;
+      border-radius: 3px;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .filter-btn:hover {
+      color: var(--ink-mid);
+      background: rgba(160,154,136,0.2);
+    }
+
+    .filter-btn.active {
+      color: var(--ink);
+      background: rgba(92,158,72,0.12);
+      border-color: rgba(92,158,72,0.3);
+    }
+
+    .sort-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .sort-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    .sort-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      background: rgba(160,154,136,0.12);
+      border: 1px solid transparent;
+      border-radius: 3px;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sort-btn:hover { color: var(--ink-mid); background: rgba(160,154,136,0.2); }
+
+    .sort-btn.active {
+      color: var(--ink);
+      background: rgba(92,158,72,0.12);
+      border-color: rgba(92,158,72,0.3);
+    }
+
+    .sort-arrow { font-size: 0.7rem; }
+
+    /* ── Article grid ──────────────────────────────────────── */
+    .articles-section {
+      padding: 24px 52px 64px;
+    }
+
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    /* ── Article card ──────────────────────────────────────── */
+    .article-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      background: var(--panel-bg);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .article-card:hover {
+      box-shadow: 0 4px 20px rgba(30,28,20,0.09);
+      transform: translateY(-2px);
+    }
+
+    .article-card.hidden { display: none; }
+
+    /* Thumbnail */
+    .article-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #5C9E48 0%, #3a7a2e 100%);
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .article-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(255,255,255,0.04) 20px,
+        rgba(255,255,255,0.04) 21px
+      );
+      pointer-events: none;
+    }
+
+    .article-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Card body */
+    .article-body {
+      padding: 1.1rem 1.3rem 0;
+      flex: 1;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      flex-wrap: nowrap;
+      overflow: hidden;
+    }
+
+    .article-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-light);
+      white-space: nowrap;
+    }
+
+    .article-meta-sep {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--rule);
+      flex-shrink: 0;
+    }
+
+    .article-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      background: rgba(160,154,136,0.14);
+      padding: 2px 7px;
+      border-radius: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .article-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .article-blurb {
+      font-size: 0.83rem;
+      font-weight: 300;
+      color: var(--ink-mid);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Continue reading CTA */
+    .article-cta {
+      padding: 0.8rem 1.3rem 1.1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--ink-light);
+      transition: color 0.15s;
+    }
+
+    .article-card:hover .article-cta {
+      color: var(--green);
+    }
+
+    /* ── Empty state ───────────────────────────────────────── */
+    .empty-state {
+      display: none;
+      padding: 48px 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    /* ── Footer ────────────────────────────────────────────── */
+    footer {
+      background: var(--panel-bg);
+      padding: 18px 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-top: auto;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 52px;
+      right: 52px;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-decoration: none;
+    }
+
+    .footer-divider {
+      color: var(--rule);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+    }
+
+    .footer-link { transition: color 0.15s; }
+    .footer-link:hover { color: var(--ink-mid); }
+
+    .footer-totop {
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .footer-totop:hover { color: var(--ink-mid); border-color: var(--ink-mid); }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width: 1000px) {
+      .articles-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 860px) {
+      body { padding: 10px 10px 0; }
+      nav { padding: 0 24px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .page-header { padding: 40px 24px 32px; }
+      .page-header::after { left: 24px; right: 24px; }
+      .controls { padding: 24px 24px 0; }
+      .articles-section { padding: 20px 24px 48px; }
+      footer { padding: 18px 24px; }
+      footer::before { left: 24px; right: 24px; }
+    }
+
+    @media (max-width: 540px) {
+      .articles-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="panel">
+
+    <!-- ── Nav ── -->
+    <nav>
+      <a href="index.html" class="nav-logo">Anthony Prajogo</a>
+      <ul class="nav-links">
+        <li><a href="considered.html" class="active">Considered</a></li>
+        <li><a href="macro.html">Macro</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="nav-cta">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- ── Page header ── -->
+    <header class="page-header">
+      <h1><em>Considered</em></h1>
+      <p>Essays on the complex systems and institutions that shape our world — how they work, how they sometimes don't, and what they mean for the decisions we make.</p>
+    </header>
+
+    <!-- ── Controls ── -->
+    <div class="controls">
+      <div class="filter-group">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="tag-systems">Systems &amp; Structure</button>
+        <button class="filter-btn" data-filter="tag-strategy">Strategy &amp; Navigation</button>
+        <button class="filter-btn" data-filter="tag-ideas">Ideas &amp; Concepts</button>
+        <button class="filter-btn" data-filter="tag-world">The World Right Now</button>
+        <button class="filter-btn" data-filter="tag-philosophy">Personal Philosophy</button>
+        <button class="filter-btn" data-filter="tag-favourites">Anthony's Picks</button>
+      </div>
+      <div class="sort-group">
+        <span class="sort-label">Sort:</span>
+        <button class="sort-btn active" data-sort="date" data-dir="desc">
+          Date <span class="sort-arrow">↓</span>
+        </button>
+        <button class="sort-btn" data-sort="name" data-dir="asc">
+          Name <span class="sort-arrow">↕</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Articles ── -->
+    <!--
+      HOW TO ADD A NEW ARTICLE:
+      1. Copy an .article-card block
+      2. Set data-tags="tag-x,tag-y" with ALL applicable tags (used for filtering)
+      3. Set data-date="YYYY-MM-DD" (used for date sort)
+      4. Set data-name="Article Title" (used for name sort)
+      5. Show max 2 .article-tag spans in the HTML (choose most representative)
+      6. Update href, date display, title, blurb
+    -->
+    <main class="articles-section">
+      <div class="articles-grid" id="grid">
+
+        <a href="#"
+           class="article-card"
+           data-tags="tag-world,tag-systems"
+           data-date="2026-04-01"
+           data-name="Your Most Recent Article Title">
+          <div class="article-thumb">
+            <!-- <img src="image.jpg" alt="Article title" /> -->
+          </div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-date">Apr 2026</span>
+              <span class="article-meta-sep">|</span>
+              <span class="article-tag tag-world">The World Right Now</span>
+              <span class="article-tag tag-systems">Systems &amp; Structure</span>
+            </div>
+            <h2 class="article-title">Your most recent article title goes here</h2>
+            <p class="article-blurb">A one-liner that captures the central argument or observation of the piece.</p>
+          </div>
+          <p class="article-cta">Continue reading →</p>
+        </a>
+
+        <a href="#"
+           class="article-card"
+           data-tags="tag-strategy,tag-ideas"
+           data-date="2026-03-01"
+           data-name="Your Second Article Title">
+          <div class="article-thumb">
+            <!-- <img src="image.jpg" alt="Article title" /> -->
+          </div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-date">Mar 2026</span>
+              <span class="article-meta-sep">|</span>
+              <span class="article-tag tag-strategy">Strategy &amp; Navigation</span>
+            </div>
+            <h2 class="article-title">Your second article title goes here</h2>
+            <p class="article-blurb">A one-liner that captures the central argument or observation of the piece.</p>
+          </div>
+          <p class="article-cta">Continue reading →</p>
+        </a>
+
+        <a href="#"
+           class="article-card"
+           data-tags="tag-ideas,tag-philosophy"
+           data-date="2026-02-01"
+           data-name="Your First Article Title">
+          <div class="article-thumb">
+            <!-- <img src="image.jpg" alt="Article title" /> -->
+          </div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-date">Feb 2026</span>
+              <span class="article-meta-sep">|</span>
+              <span class="article-tag tag-ideas">Ideas &amp; Concepts</span>
+              <span class="article-tag tag-philosophy">Personal Philosophy</span>
+            </div>
+            <h2 class="article-title">Your first article title goes here</h2>
+            <p class="article-blurb">A one-liner that captures the central argument or observation of the piece.</p>
+          </div>
+          <p class="article-cta">Continue reading →</p>
+        </a>
+
+      </div>
+      <p class="empty-state" id="emptyState">No articles in this category yet.</p>
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer>
+      <div class="footer-left">
+        <span class="footer-text">Anthony Prajogo</span>
+        <span class="footer-divider">|</span>
+        <a href="https://www.linkedin.com/in/anthony-prajogo/" class="footer-text footer-link" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+      <button class="footer-totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+    </footer>
+
+  </div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    const emptyState = document.getElementById('emptyState');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const sortBtns = document.querySelectorAll('.sort-btn');
+    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+
+    let activeFilters = new Set(); // empty = show all
+    let activeSort = 'date';
+    let activeDir = 'desc';
+
+    function getCards() {
+      return Array.from(grid.querySelectorAll('.article-card'));
+    }
+
+    function applyFilter() {
+      const cards = getCards();
+      let visible = 0;
+      cards.forEach(card => {
+        const tags = card.dataset.tags ? card.dataset.tags.split(',') : [];
+        const show = activeFilters.size === 0 || [...activeFilters].some(f => tags.includes(f));
+        card.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+      emptyState.style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    function syncAllBtn() {
+      allBtn.classList.toggle('active', activeFilters.size === 0);
+    }
+
+    function applySort() {
+      const cards = getCards();
+      cards.sort((a, b) => {
+        let valA, valB;
+        if (activeSort === 'date') {
+          valA = a.dataset.date || '';
+          valB = b.dataset.date || '';
+        } else {
+          valA = (a.dataset.name || '').toLowerCase();
+          valB = (b.dataset.name || '').toLowerCase();
+        }
+        if (valA < valB) return activeDir === 'asc' ? -1 : 1;
+        if (valA > valB) return activeDir === 'asc' ? 1 : -1;
+        return 0;
+      });
+      cards.forEach(card => grid.appendChild(card));
+    }
+
+    function update() {
+      applySort();
+      applyFilter();
+    }
+
+    // "All" clears all active filters
+    allBtn.addEventListener('click', () => {
+      activeFilters.clear();
+      filterBtns.forEach(b => b.classList.remove('active'));
+      syncAllBtn();
+      update();
+    });
+
+    // Tag filters toggle independently; selecting any deactivates "All"
+    filterBtns.forEach(btn => {
+      if (btn.dataset.filter === 'all') return;
+      btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+        if (activeFilters.has(f)) {
+          activeFilters.delete(f);
+          btn.classList.remove('active');
+        } else {
+          activeFilters.add(f);
+          btn.classList.add('active');
+        }
+        syncAllBtn();
+        update();
+      });
+    });
+
+    sortBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sort = btn.dataset.sort;
+        if (activeSort === sort) {
+          activeDir = activeDir === 'asc' ? 'desc' : 'asc';
+          btn.dataset.dir = activeDir;
+          btn.querySelector('.sort-arrow').textContent = activeDir === 'asc' ? '↑' : '↓';
+        } else {
+          sortBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeSort = sort;
+          activeDir = sort === 'date' ? 'desc' : 'asc';
+          btn.dataset.dir = activeDir;
+          btn.querySelector('.sort-arrow').textContent = activeDir === 'asc' ? '↑' : '↓';
+          sortBtns.forEach(b => {
+            if (b !== btn) b.querySelector('.sort-arrow').textContent = '↕';
+          });
+        }
+        update();
+      });
+    });
+
+    update();
+  </script>
+
+</body>
+</html>
