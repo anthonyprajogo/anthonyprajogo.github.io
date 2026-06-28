@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Roles By Industry — Anthony Prajogo</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F4F1EA; --surface: #FAF8F2; --ink: #1E1C14;
+    --ink-mid: #6E6A58; --ink-light: #A09A88; --rule: #DDD8CC;
+    --green: #5C9E48; --green-pale: #EBF5E6;
+    --startup:   #3D8A52;
+    --corporate: #3A5C6A;
+    --public:    #907830;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; min-height: 100vh; }
+
+  /* ── STANDARD HEADER ── */
+  header { padding: 40px 48px 32px; border-bottom: 2px solid var(--ink); }
+  h1 { font-family: 'Libre Baskerville', serif; font-size: 2.6rem; font-weight: 400; line-height: 1.1; max-width: 720px; margin-bottom: 10px; }
+  h1 em { font-style: italic; color: var(--startup); }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 300; color: var(--ink-mid); line-height: 1.65; max-width: 560px; margin-bottom: 20px; }
+  .author-block { display: flex; align-items: center; gap: 12px; }
+  .author-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.68rem; color: white; flex-shrink: 0; }
+  .author-info { display: flex; flex-direction: column; gap: 1px; }
+  .author-name { font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
+  .author-date { font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 300; color: var(--ink-mid); line-height: 1.3; }
+
+  /* ── INDUSTRY LIST ── */
+  .content { padding: 0 48px 5rem; }
+  .industry-list { display: flex; flex-direction: column; gap: 1.5px; background: var(--rule); border: 1px solid var(--rule); margin-top: 2rem; }
+
+  /* Row */
+  .industry-block {
+    background: var(--surface);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s ease;
+  }
+  /* Left green bar */
+  .industry-block::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--green);
+    transform: scaleY(0);
+    transition: transform 0.22s ease;
+    transform-origin: bottom;
+    z-index: 1;
+  }
+  .industry-block:hover::before,
+  .industry-block.open::before { transform: scaleY(1); }
+  .industry-block:hover,
+  .industry-block.open { background: white; }
+
+  /* Collapsed header: [index] [name + chips] [toggle] */
+  .industry-header {
+    display: grid;
+    grid-template-columns: 40px 1fr 48px;
+    align-items: center;
+    padding: 1.4rem 1.8rem;
+    gap: 1rem;
+  }
+
+  .industry-index {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--green);
+    letter-spacing: 0.1em;
+    padding-top: 2px;
+    align-self: flex-start;
+    margin-top: 3px;
+  }
+
+  .industry-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .industry-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .industry-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .industry-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border: 1px solid var(--rule);
+    color: var(--ink-light);
+    background: var(--bg);
+  }
+
+  /* + / × toggle */
+  .industry-toggle {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.2rem;
+    color: var(--ink-light);
+    transition: transform 0.22s ease, color 0.15s;
+    user-select: none;
+    text-align: center;
+    justify-self: center;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+  .industry-block.open .industry-toggle { transform: rotate(45deg); color: var(--green); }
+
+  /* ── EXPANDED BODY ── */
+  .industry-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .industry-block.open .industry-body { max-height: 1200px; }
+
+  /* Summary — visible only when open, indented to align with title */
+  .industry-summary-wrap {
+    padding: 0 1.8rem 1.2rem calc(40px + 1rem + 1.8rem);
+  }
+  .industry-summary {
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* Rule separating summary from role cards */
+  .industry-divider {
+    height: 1px;
+    background: var(--rule);
+    margin: 0 1.8rem;
+  }
+
+  /* ── ROLE CARDS ── */
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--rule);
+    margin: 1.2rem 1.8rem 1.5rem;
+  }
+
+  .role-card {
+    padding: 1.3rem 1.4rem;
+    background: var(--surface);
+    /* No coloured top strip */
+  }
+
+  /* Coloured bubble + label */
+  .role-type-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+  }
+
+  .role-bubble {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem;
+    color: white;
+    flex-shrink: 0;
+    letter-spacing: 0;
+  }
+  .role-bubble.startup   { background: var(--startup); }
+  .role-bubble.corporate { background: var(--corporate); }
+  .role-bubble.public    { background: var(--public); }
+
+  .role-type-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .role-type-label.startup   { color: var(--startup); }
+  .role-type-label.corporate { color: var(--corporate); }
+  .role-type-label.public    { color: var(--public); }
+
+  .role-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  .role-desc {
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    margin-bottom: 14px;
+    font-weight: 300;
+  }
+
+  .role-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    padding: 2px 7px;
+    background: var(--bg);
+    color: var(--ink-light);
+    border: 1px solid var(--rule);
+  }
+
+  /* ── FOOTER ── */
+  footer { background: var(--ink); padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-text { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,248,242,0.3); }
+
+  @media (max-width: 900px) {
+    header, .content, footer { padding-left: 24px; padding-right: 24px; }
+    .roles-grid { grid-template-columns: 1fr; margin-left: 1rem; margin-right: 1rem; }
+    .industry-summary-wrap { padding-left: 1rem; }
+    .industry-divider { margin-left: 1rem; margin-right: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Tech Roles <em>By Industry</em></h1>
+  <p class="subtitle">Click any industry to expand role details across startup, corporate, and public sector contexts.</p>
+  <div class="author-block">
+    <div class="author-avatar">AP</div>
+    <div class="author-info">
+      <span class="author-name">Anthony Prajogo</span>
+      <span class="author-date">April 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="content">
+<div class="industry-list">
+
+  <!-- 01 HEALTH -->
+  <div class="industry-block" onclick="toggle(this)">
+    <div class="industry-header">
+      <div class="industry-index">01</div>
+      <div class="industry-title-block">
+        <div class="industry-name">Health</div>
+        <div class="industry-chips"><span class="industry-chip">High impact</span><span class="industry-chip">Long cycles</span><span class="industry-chip">Regulated</span></div>
+      </div>
+      <div class="industry-toggle">+</div>
+    </div>
+    <div class="industry-body">
+      <div class="industry-summary-wrap"><p class="industry-summary">High barriers to entry but enormous impact potential. Regulatory complexity creates moats for those who understand the system. Strong NZ-to-Australia pipeline.</p></div>
+      <div class="industry-divider"></div>
+      <div class="roles-grid">
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble startup">S</div><span class="role-type-label startup">Startup</span></div><div class="role-title">Product / Clinical Tech Lead</div><div class="role-desc">Building diagnostic tools, patient platforms, or workflow software. Requires navigating FDA/TGA/Medsafe approval alongside product development. High autonomy, long sales cycles into hospitals.</div><div class="role-tags"><span class="tag">Regulatory</span><span class="tag">Clinical UX</span><span class="tag">HL7/FHIR</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble corporate">C</div><span class="role-type-label corporate">Corporate</span></div><div class="role-title">Health IT Consultant / EHR Specialist</div><div class="role-desc">Implementing or customising enterprise systems (Epic, Oracle Health). Deep integration work between legacy infrastructure and modern platforms. Stable but complex stakeholder environments.</div><div class="role-tags"><span class="tag">EHR Systems</span><span class="tag">Integration</span><span class="tag">Change Mgmt</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble public">P</div><span class="role-type-label public">Public Sector</span></div><div class="role-title">Digital Health Programme Manager</div><div class="role-desc">Driving national health digitisation (e.g. Te Whatu Ora in NZ). Procurement-heavy, politically navigated. Slower but genuinely systemic — decisions affect entire populations.</div><div class="role-tags"><span class="tag">Te Whatu Ora</span><span class="tag">Procurement</span><span class="tag">Policy</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 FINANCE -->
+  <div class="industry-block" onclick="toggle(this)">
+    <div class="industry-header">
+      <div class="industry-index">02</div>
+      <div class="industry-title-block">
+        <div class="industry-name">Finance</div>
+        <div class="industry-chips"><span class="industry-chip">High velocity</span><span class="industry-chip">Well compensated</span><span class="industry-chip">Mature</span></div>
+      </div>
+      <div class="industry-toggle">+</div>
+    </div>
+    <div class="industry-body">
+      <div class="industry-summary-wrap"><p class="industry-summary">One of the most developed tech verticals globally. NZ is small but connected to AU. Strong graduate pipeline. Risk and compliance fluency opens serious doors.</p></div>
+      <div class="industry-divider"></div>
+      <div class="roles-grid">
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble startup">S</div><span class="role-type-label startup">Startup</span></div><div class="role-title">Fintech Product Engineer / Growth Lead</div><div class="role-desc">Payments, lending, crypto infrastructure, or wealth platforms. Fast iteration, strong equity upside. NZ examples: Sharesies, Pushpay. Often competing directly with banks on UX.</div><div class="role-tags"><span class="tag">Payments</span><span class="tag">Open Banking</span><span class="tag">Growth</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble corporate">C</div><span class="role-type-label corporate">Corporate</span></div><div class="role-title">Technology Risk / Digital Transformation</div><div class="role-desc">Running core banking modernisation, cloud migration, or AI/ML risk models inside major banks. ANZ, Westpac, BNZ all active in this space. Heavily governed but well-resourced.</div><div class="role-tags"><span class="tag">Core Banking</span><span class="tag">AI Risk</span><span class="tag">Cloud Infra</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble public">P</div><span class="role-type-label public">Public Sector</span></div><div class="role-title">RBNZ / FMA Technology Adviser</div><div class="role-desc">Regtech and supervisory technology — helping regulators understand and assess digital financial systems. Niche but influential. Less common entry point but strong for policy-tech intersection.</div><div class="role-tags"><span class="tag">RegTech</span><span class="tag">Supervisory</span><span class="tag">Policy</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 AGRITECH -->
+  <div class="industry-block" onclick="toggle(this)">
+    <div class="industry-header">
+      <div class="industry-index">03</div>
+      <div class="industry-title-block">
+        <div class="industry-name">AgriTech</div>
+        <div class="industry-chips"><span class="industry-chip">NZ-relevant</span><span class="industry-chip">Under-digitised</span><span class="industry-chip">Global export</span></div>
+      </div>
+      <div class="industry-toggle">+</div>
+    </div>
+    <div class="industry-body">
+      <div class="industry-summary-wrap"><p class="industry-summary">Punches above its weight in NZ given primary sector significance. Under-digitised relative to potential — genuine greenfield opportunity. Fonterra, LIC, and a growing startup layer.</p></div>
+      <div class="industry-divider"></div>
+      <div class="roles-grid">
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble startup">S</div><span class="role-type-label startup">Startup</span></div><div class="role-title">AgriTech Product / Data Lead</div><div class="role-desc">Precision agriculture, supply chain traceability, environmental monitoring. NZ examples include Nui Markets. Hardware-software integration common. Strong export potential given NZ ag credibility.</div><div class="role-tags"><span class="tag">IoT</span><span class="tag">Traceability</span><span class="tag">Data Platforms</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble corporate">C</div><span class="role-type-label corporate">Corporate</span></div><div class="role-title">Digital Strategy / Data Analytics</div><div class="role-desc">Inside Fonterra, Zespri, or LIC — driving analytics capability, supply chain optimisation, or farmer-facing digital tools. Meaningful scale, slower culture. Underrated for IS graduates.</div><div class="role-tags"><span class="tag">Supply Chain</span><span class="tag">Analytics</span><span class="tag">Farmer UX</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble public">P</div><span class="role-type-label public">Public Sector</span></div><div class="role-title">MPI Digital / Biosecurity Systems</div><div class="role-desc">Ministry for Primary Industries runs significant data and traceability infrastructure. Biosecurity and environmental compliance tech is a genuine focus. Cross-government data sharing work underway.</div><div class="role-tags"><span class="tag">MPI</span><span class="tag">Biosecurity</span><span class="tag">Traceability</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 GOV & CIVIC -->
+  <div class="industry-block" onclick="toggle(this)">
+    <div class="industry-header">
+      <div class="industry-index">04</div>
+      <div class="industry-title-block">
+        <div class="industry-name">Gov &amp; Civic</div>
+        <div class="industry-chips"><span class="industry-chip">Mission-driven</span><span class="industry-chip">Slow-moving</span><span class="industry-chip">High leverage</span></div>
+      </div>
+      <div class="industry-toggle">+</div>
+    </div>
+    <div class="industry-body">
+      <div class="industry-summary-wrap"><p class="industry-summary">Often underrated by ambitious graduates. Decisions here affect entire populations. Interesting tension between mission alignment and bureaucratic friction. DIA and Stats NZ are genuinely active.</p></div>
+      <div class="industry-divider"></div>
+      <div class="roles-grid">
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble startup">S</div><span class="role-type-label startup">Startup</span></div><div class="role-title">GovTech / Civic Tech Founder</div><div class="role-desc">Building tools that interface with or improve government services — permitting, benefits access, public data APIs. Often mission-driven, grant-funded. Growing ecosystem in UK/US, nascent in NZ.</div><div class="role-tags"><span class="tag">Open Data</span><span class="tag">Grants</span><span class="tag">Public APIs</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble corporate">C</div><span class="role-type-label corporate">Corporate</span></div><div class="role-title">Public Sector Consulting (Deloitte/Accenture)</div><div class="role-desc">Technology transformation for government agencies — cloud, data, service design. Influence at scale, good for pattern recognition across agencies. Deloitte TST fits squarely here.</div><div class="role-tags"><span class="tag">Cloud Migration</span><span class="tag">Service Design</span><span class="tag">Deloitte</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble public">P</div><span class="role-type-label public">Public Sector</span></div><div class="role-title">Digital Government Lead (DIA / Stats NZ)</div><div class="role-desc">Running digital service standards, data infrastructure, or open government initiatives from inside. DIA's Service Innovation Lab and Stats NZ's data platform work are legitimately interesting.</div><div class="role-tags"><span class="tag">DIA</span><span class="tag">Stats NZ</span><span class="tag">Data Infra</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 ENERGY -->
+  <div class="industry-block" onclick="toggle(this)">
+    <div class="industry-header">
+      <div class="industry-index">05</div>
+      <div class="industry-title-block">
+        <div class="industry-name">Energy</div>
+        <div class="industry-chips"><span class="industry-chip">Capital intensive</span><span class="industry-chip">Long horizon</span><span class="industry-chip">NZ-advantaged</span></div>
+      </div>
+      <div class="industry-toggle">+</div>
+    </div>
+    <div class="industry-body">
+      <div class="industry-summary-wrap"><p class="industry-summary">Enormous capital flows globally into clean energy tech. NZ's near-100% renewable grid is a genuine differentiator for pilots and innovation. Grid modernisation is the dominant near-term theme.</p></div>
+      <div class="industry-divider"></div>
+      <div class="roles-grid">
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble startup">S</div><span class="role-type-label startup">Startup</span></div><div class="role-title">CleanTech Product / Optimisation Engineer</div><div class="role-desc">Grid-edge software, demand response platforms, EV charging networks, or carbon accounting tools. Hardware-adjacent. Strong global investor interest. NZ companies like Powerswitch or emerging battery storage ventures.</div><div class="role-tags"><span class="tag">Grid Software</span><span class="tag">Carbon</span><span class="tag">EV Infra</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble corporate">C</div><span class="role-type-label corporate">Corporate</span></div><div class="role-title">Digital / Data Analyst (Meridian / Contact)</div><div class="role-desc">Pricing models, grid analytics, customer platform modernisation inside major gentailers. Underrated for tech talent — genuinely complex data problems, real consequences.</div><div class="role-tags"><span class="tag">Pricing Models</span><span class="tag">Grid Analytics</span><span class="tag">CX Platforms</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble public">P</div><span class="role-type-label public">Public Sector</span></div><div class="role-title">MBIE / Transpower Digital Advisor</div><div class="role-desc">Energy policy modelling, grid investment planning tools, or market design work at MBIE or Transpower. Directly shapes NZ's long-term energy infrastructure decisions.</div><div class="role-tags"><span class="tag">MBIE</span><span class="tag">Transpower</span><span class="tag">Market Design</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 EDUCATION -->
+  <div class="industry-block" onclick="toggle(this)">
+    <div class="industry-header">
+      <div class="industry-index">06</div>
+      <div class="industry-title-block">
+        <div class="industry-name">Education</div>
+        <div class="industry-chips"><span class="industry-chip">Mission-rich</span><span class="industry-chip">Under-resourced</span><span class="industry-chip">AI-disrupted</span></div>
+      </div>
+      <div class="industry-toggle">+</div>
+    </div>
+    <div class="industry-body">
+      <div class="industry-summary-wrap"><p class="industry-summary">Structurally underfunded but genuinely ripe for AI disruption. The most interesting EdTech plays are in the corporate L&D space, not K-12. NZ has a strong international education export angle too.</p></div>
+      <div class="industry-divider"></div>
+      <div class="roles-grid">
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble startup">S</div><span class="role-type-label startup">Startup</span></div><div class="role-title">EdTech Product Lead</div><div class="role-desc">AI tutoring, skills credentialing, corporate L&D platforms. Consumer EdTech has a brutal track record, but enterprise L&D and workforce upskilling plays are more defensible. Global market, capital-light to start.</div><div class="role-tags"><span class="tag">AI Tutoring</span><span class="tag">L&amp;D</span><span class="tag">Credentialing</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble corporate">C</div><span class="role-type-label corporate">Corporate</span></div><div class="role-title">LMS / Digital Learning Architect</div><div class="role-desc">Inside large enterprises or tertiary institutions managing learning management systems, content platforms, and workforce capability tools. Underrated technically — complex integrations and analytics challenges.</div><div class="role-tags"><span class="tag">LMS</span><span class="tag">Workday</span><span class="tag">Analytics</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble public">P</div><span class="role-type-label public">Public Sector</span></div><div class="role-title">MoE Digital Equity / EdTech Policy</div><div class="role-desc">Ministry of Education digital inclusion programmes, school infrastructure, or curriculum technology standards. High mission alignment, limited budget. More interesting if you care about equity than scale.</div><div class="role-tags"><span class="tag">MoE</span><span class="tag">Digital Equity</span><span class="tag">Infrastructure</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 LOGISTICS -->
+  <div class="industry-block" onclick="toggle(this)">
+    <div class="industry-header">
+      <div class="industry-index">07</div>
+      <div class="industry-title-block">
+        <div class="industry-name">Logistics</div>
+        <div class="industry-chips"><span class="industry-chip">Unglamorous</span><span class="industry-chip">Complex</span><span class="industry-chip">Surprisingly rich</span></div>
+      </div>
+      <div class="industry-toggle">+</div>
+    </div>
+    <div class="industry-body">
+      <div class="industry-summary-wrap"><p class="industry-summary">Chronically underestimated by tech talent. Enormous complexity, genuine optimisation problems, and real AI applicability. COVID exposed the fragility of global supply chains and capital followed.</p></div>
+      <div class="industry-divider"></div>
+      <div class="roles-grid">
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble startup">S</div><span class="role-type-label startup">Startup</span></div><div class="role-title">Supply Chain Tech / Visibility Platform</div><div class="role-desc">Real-time tracking, predictive logistics, freight marketplace, or autonomous warehouse tooling. Huge capital flows post-COVID. Founders with domain knowledge of NZ's import dependency have genuine angles.</div><div class="role-tags"><span class="tag">Visibility</span><span class="tag">Freight</span><span class="tag">Automation</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble corporate">C</div><span class="role-type-label corporate">Corporate</span></div><div class="role-title">Digital Supply Chain Consultant</div><div class="role-desc">SAP/Oracle implementation, demand forecasting, network design inside major retailers or manufacturers. Woolworths NZ, Mainfreight, or Fonterra are NZ examples. Technically deep, well compensated, not flashy.</div><div class="role-tags"><span class="tag">SAP</span><span class="tag">Demand Planning</span><span class="tag">Network Design</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble public">P</div><span class="role-type-label public">Public Sector</span></div><div class="role-title">NZTA / Customs Digital Systems</div><div class="role-desc">NZ Customs' trade facilitation systems, NZTA freight and infrastructure data, or border tech. Less obvious but genuinely critical infrastructure. National security and trade efficiency overlap here.</div><div class="role-tags"><span class="tag">NZ Customs</span><span class="tag">NZTA</span><span class="tag">Trade Systems</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 DEFENCE -->
+  <div class="industry-block" onclick="toggle(this)">
+    <div class="industry-header">
+      <div class="industry-index">08</div>
+      <div class="industry-title-block">
+        <div class="industry-name">Defence</div>
+        <div class="industry-chips"><span class="industry-chip">Capital-rich</span><span class="industry-chip">Ethically complex</span><span class="industry-chip">US/AU dominant</span></div>
+      </div>
+      <div class="industry-toggle">+</div>
+    </div>
+    <div class="industry-body">
+      <div class="industry-summary-wrap"><p class="industry-summary">Having a genuine renaissance with a new generation of software-first defence companies. Enormous capital, geopolitically significant work. Ethically non-trivial — worth thinking through deliberately.</p></div>
+      <div class="industry-divider"></div>
+      <div class="roles-grid">
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble startup">S</div><span class="role-type-label startup">Startup</span></div><div class="role-title">Defence Tech Product Engineer</div><div class="role-desc">The Palantir/Anduril generation — software-first companies building autonomous systems, intelligence platforms, and logistics tooling for defence customers. AUKUS creating AU pipeline. High compensation, requires clearance.</div><div class="role-tags"><span class="tag">Autonomy</span><span class="tag">AUKUS</span><span class="tag">Clearance</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble corporate">C</div><span class="role-type-label corporate">Corporate</span></div><div class="role-title">Defence Consulting / Systems Integration</div><div class="role-desc">Accenture Federal, Booz Allen, KPMG Defence — large programme management and systems integration for military and intelligence clients. Stable, lucrative, slower-moving. NZ adjacent through Five Eyes.</div><div class="role-tags"><span class="tag">Five Eyes</span><span class="tag">Programme Mgmt</span><span class="tag">Systems Integration</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble public">P</div><span class="role-type-label public">Public Sector</span></div><div class="role-title">NZDF / GCSB Digital Roles</div><div class="role-desc">NZDF and GCSB run genuine technology functions — cyber defence, signals intelligence infrastructure, logistics systems. Requires significant vetting. Small NZ scale limits scope but Five Eyes access is real.</div><div class="role-tags"><span class="tag">NZDF</span><span class="tag">GCSB</span><span class="tag">Cyber Defence</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09 MEDIA & CREATIVE -->
+  <div class="industry-block" onclick="toggle(this)">
+    <div class="industry-header">
+      <div class="industry-index">09</div>
+      <div class="industry-title-block">
+        <div class="industry-name">Media &amp; Creative</div>
+        <div class="industry-chips"><span class="industry-chip">Passion-driven</span><span class="industry-chip">AI-disrupted</span><span class="industry-chip">Globally competitive</span></div>
+      </div>
+      <div class="industry-toggle">+</div>
+    </div>
+    <div class="industry-body">
+      <div class="industry-summary-wrap"><p class="industry-summary">One of the most AI-disrupted verticals right now — the creative tools layer is being rebuilt from scratch. NZ has genuine footholds via Weta Digital and a small but real games industry.</p></div>
+      <div class="industry-divider"></div>
+      <div class="roles-grid">
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble startup">S</div><span class="role-type-label startup">Startup</span></div><div class="role-title">Creative Tech / AI Tools Founder</div><div class="role-desc">Generative AI creative tools, creator economy infrastructure, music tech, interactive narrative platforms, or games. The intersection of genuine creative passion and technical depth is a real differentiator.</div><div class="role-tags"><span class="tag">Generative AI</span><span class="tag">Creator Economy</span><span class="tag">Games</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble corporate">C</div><span class="role-type-label corporate">Corporate</span></div><div class="role-title">Technology Lead — Weta / Media Company</div><div class="role-desc">Weta FX runs world-class proprietary rendering and simulation tooling. Broader media corporates (TVNZ, Sky) run real digital transformation programmes. The Weta pipeline is genuinely elite for VFX/rendering engineers.</div><div class="role-tags"><span class="tag">Weta FX</span><span class="tag">Rendering</span><span class="tag">Pipeline Tech</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble public">P</div><span class="role-type-label public">Public Sector</span></div><div class="role-title">NZ On Air / Creative NZ Digital Strategy</div><div class="role-desc">Public media funding bodies (NZ On Air, RNZ, Creative NZ) are navigating digital distribution and AI policy for the creative sector. Niche, but meaningful if you care about cultural infrastructure.</div><div class="role-tags"><span class="tag">NZ On Air</span><span class="tag">RNZ</span><span class="tag">Cultural Policy</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 PROPTECH / CONTECH -->
+  <div class="industry-block" onclick="toggle(this)">
+    <div class="industry-header">
+      <div class="industry-index">10</div>
+      <div class="industry-title-block">
+        <div class="industry-name">PropTech / ConTech</div>
+        <div class="industry-chips"><span class="industry-chip">Under-digitised</span><span class="industry-chip">NZ-relevant</span><span class="industry-chip">Housing crisis angle</span></div>
+      </div>
+      <div class="industry-toggle">+</div>
+    </div>
+    <div class="industry-body">
+      <div class="industry-summary-wrap"><p class="industry-summary">Construction is one of the least digitised major industries globally — productivity has barely moved in 50 years. That's either a graveyard or a genuine opportunity. NZ's housing crisis gives local urgency.</p></div>
+      <div class="industry-divider"></div>
+      <div class="roles-grid">
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble startup">S</div><span class="role-type-label startup">Startup</span></div><div class="role-title">PropTech / ConTech Product Lead</div><div class="role-desc">Consenting automation, construction project management, real estate transaction platforms, or property data infrastructure. Procore is the global reference point. Auckland's consenting bottleneck is a real problem with startup activity around it.</div><div class="role-tags"><span class="tag">Consenting</span><span class="tag">BIM</span><span class="tag">Real Estate Data</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble corporate">C</div><span class="role-type-label corporate">Corporate</span></div><div class="role-title">Digital Transformation — Fletcher / Beca</div><div class="role-desc">Fletcher Building and engineering consultancies like Beca are running genuine digital programmes — BIM adoption, project analytics, supply chain digitisation. Good for operational depth in a traditionally analogue industry.</div><div class="role-tags"><span class="tag">Fletcher</span><span class="tag">Beca</span><span class="tag">BIM Adoption</span></div></div>
+        <div class="role-card"><div class="role-type-row"><div class="role-bubble public">P</div><span class="role-type-label public">Public Sector</span></div><div class="role-title">MBIE / Auckland Council Housing Tech</div><div class="role-desc">Building consenting systems, housing data infrastructure, or urban planning tools at MBIE or Auckland Council. Genuinely consequential — consenting process reform is one of the clearest levers on housing supply.</div><div class="role-tags"><span class="tag">MBIE</span><span class="tag">Kāinga Ora</span><span class="tag">Consenting</span></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <span class="footer-text">anthony-prajogo.github.io</span>
+  <span class="footer-text">Tech Roles by Industry · 2026</span>
+</footer>
+
+<script>
+function toggle(el) {
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>

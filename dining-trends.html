@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Restaurant Recovery — OpenTable Data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #F4F1EA;
+    --surface:    #FAF8F2;
+    --ink:        #1E1C14;
+    --ink-mid:    #6E6A58;
+    --ink-light:  #A09A88;
+    --rule:       #DDD8CC;
+    --green:      #5C9E48;
+    --green-pale: #EBF5E6;
+    --green-mid:  rgba(92,158,72,0.12);
+    --teal:       #3A5C6A;
+    --teal-pale:  rgba(58,92,106,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    padding: 40px 56px 32px;
+    border-bottom: 2px solid var(--ink);
+  }
+  h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 2.6rem;
+    font-weight: 400;
+    line-height: 1.1;
+    max-width: 680px;
+    margin-bottom: 10px;
+  }
+  h1 em { font-style: italic; color: var(--green); }
+  .subtitle {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    max-width: 560px;
+    margin-bottom: 20px;
+  }
+  .author-block { display: flex; align-items: center; gap: 12px; }
+  .author-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    color: white; flex-shrink: 0;
+  }
+  .author-info { display: flex; flex-direction: column; gap: 1px; }
+  .author-name { font-size: 0.88rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
+  .author-date { font-size: 0.82rem; font-weight: 300; color: var(--ink-mid); line-height: 1.3; }
+
+  /* MAIN */
+  main { padding: 48px 56px 56px; max-width: 1200px; }
+
+  /* STAT TILES */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 40px;
+  }
+  .stat {
+    background: var(--surface);
+    padding: 1.1rem 1.4rem;
+  }
+  .stat-number {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--green);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .stat-number.negative { color: #A83232; }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-light);
+    line-height: 1.4;
+  }
+  .stat-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-light);
+    margin-top: 2px;
+  }
+
+  /* CHART SECTION */
+  .chart-section {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 28px 28px 20px;
+    margin-bottom: 40px;
+  }
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .chart-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--ink);
+  }
+  .chart-legend {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .legend-line {
+    width: 20px; height: 2px;
+    border-radius: 2px;
+  }
+  .legend-dashed {
+    width: 20px; height: 0;
+    border-top: 2px dashed var(--ink-light);
+  }
+
+  .phase-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .phase-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .phase-btn:hover { border-color: var(--ink-mid); color: var(--ink); }
+  .phase-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .phase-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+    opacity: 0;
+  }
+  .phase-detail.open {
+    max-height: 300px;
+    opacity: 1;
+  }
+  .phase-detail-inner {
+    border-left: 3px solid var(--green);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    background: var(--green-mid);
+  }
+  .phase-detail-inner p {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+  .phase-detail-inner strong { color: var(--ink); font-weight: 500; }
+
+  .chart-wrap { position: relative; width: 100%; height: 320px; }
+
+  .chart-source {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-light);
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  /* CONTEXT TILES */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-light);
+    margin-bottom: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 40px;
+  }
+  .card {
+    background: var(--surface);
+    padding: 1.8rem 1.8rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.15s ease;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--green);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.2s ease;
+  }
+  .card:hover::after, .card.open::after { transform: scaleY(1); }
+  .card:hover, .card.open { background: white; }
+
+  .card-toggle {
+    position: absolute;
+    top: 1.6rem; right: 1.6rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 1.2rem;
+    color: var(--ink-light);
+    transition: transform 0.22s ease, color 0.15s;
+    line-height: 1;
+  }
+  .card.open .card-toggle { transform: rotate(45deg); color: var(--green); }
+
+  .card-index {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+    padding-right: 28px;
+  }
+  .card-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--ink-mid);
+    font-weight: 300;
+  }
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .card.open .card-body { max-height: 500px; }
+  .card-body-inner {
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    margin-top: 16px;
+    font-size: 0.84rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.65;
+  }
+  .card-body-inner strong { color: var(--ink); font-weight: 500; }
+  .card-example {
+    border-left: 2px solid var(--green);
+    padding: 8px 12px;
+    margin-top: 12px;
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    background: var(--green-mid);
+  }
+
+  /* FOOTNOTE ROW */
+  .footnote-row {
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .footnote {
+    flex: 1;
+    min-width: 200px;
+  }
+  .footnote-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--green);
+    margin-bottom: 6px;
+  }
+  .footnote p {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.6;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    padding: 18px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(250,248,242,0.3);
+  }
+
+  @media (max-width: 800px) {
+    header, main { padding-left: 24px; padding-right: 24px; }
+    footer { padding-left: 24px; padding-right: 24px; }
+    h1 { font-size: 1.9rem; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 500px) {
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .stat-number { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>The restaurant <em>recovery</em></h1>
+  <p class="subtitle">How OpenTable seated-diner data tracked the collapse and crawl back from Covid-19 — one of the sharpest economic shocks ever recorded in real time.</p>
+  <div class="author-block">
+    <div class="author-avatar">AP</div>
+    <div class="author-info">
+      <span class="author-name">Anthony Prajogo</span>
+      <span class="author-date">April 2026</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- STAT TILES -->
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-number negative">−100%</div>
+      <div class="stat-label">Peak collapse</div>
+      <div class="stat-desc">vs 2019, April 2020</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">~2.5 yrs</div>
+      <div class="stat-label">Time to recover</div>
+      <div class="stat-desc">Back to 2019 levels Oct 2022</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">60K+</div>
+      <div class="stat-label">Restaurants tracked</div>
+      <div class="stat-desc">OpenTable global network</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">+20%</div>
+      <div class="stat-label">2026 vs 2025</div>
+      <div class="stat-desc">US, Jan 2026 YoY</div>
+    </div>
+  </div>
+
+  <!-- CHART -->
+  <div class="chart-section">
+    <div class="chart-header">
+      <div class="chart-title">US seated diners — indexed to 2019 baseline (%)</div>
+      <div class="chart-legend">
+        <div class="legend-item">
+          <div class="legend-line" style="background:#5C9E48;"></div>
+          vs 2019 baseline
+        </div>
+        <div class="legend-item">
+          <div class="legend-dashed"></div>
+          pre-pandemic level
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-buttons">
+      <button class="phase-btn" data-phase="collapse" onclick="togglePhase(this)">01 · Collapse</button>
+      <button class="phase-btn" data-phase="survival" onclick="togglePhase(this)">02 · Survival</button>
+      <button class="phase-btn" data-phase="variants" onclick="togglePhase(this)">03 · Variant waves</button>
+      <button class="phase-btn" data-phase="recovery" onclick="togglePhase(this)">04 · Recovery</button>
+      <button class="phase-btn" data-phase="beyond" onclick="togglePhase(this)">05 · Beyond normal</button>
+    </div>
+
+    <div class="phase-detail" id="phase-collapse">
+      <div class="phase-detail-inner">
+        <p><strong>March–April 2020:</strong> The fastest demand destruction ever recorded in the hospitality sector. OpenTable reservations went from flat to literally −100% within weeks as lockdowns hit. Restaurant closures rose 32% in the US. The data was so dramatic it became a benchmark used by governments and economists worldwide to track the real-time impact of restrictions.</p>
+      </div>
+    </div>
+    <div class="phase-detail" id="phase-survival">
+      <div class="phase-detail-inner">
+        <p><strong>Mid-2020:</strong> Outdoor dining exploded — from less than 1% of seated parties pre-pandemic to over 12% by Aug–Nov 2020. The US hovered between −27% and −45% vs 2019 through the second half of 2020. OpenTable waived restaurant fees to keep its network intact during the trough.</p>
+      </div>
+    </div>
+    <div class="phase-detail" id="phase-variants">
+      <div class="phase-detail-inner">
+        <p><strong>2021:</strong> Recovery was lumpy. By April 2021 the US was back to ~97% of 2019 levels in some markets. Then Omicron hit in December — seated diners fell back to −33% vs 2019 within days. Washington DC dropped −53%, NYC −60%. The speed of the reversal was striking — from near-normal to deep contraction in under a week.</p>
+      </div>
+    </div>
+    <div class="phase-detail" id="phase-recovery">
+      <div class="phase-detail-inner">
+        <p><strong>2022:</strong> "Revenge dining" drove the final push back to baseline. Premium dining (+50% and above per person) saw the biggest uplift. Bar seating up 225% vs 2019. Monday and Tuesday dining surged as hybrid work rewrote when people went out. By October 2022, US reservations crossed the 2019 baseline and held.</p>
+      </div>
+    </div>
+    <div class="phase-detail" id="phase-beyond">
+      <div class="phase-detail-inner">
+        <p><strong>2023–2026:</strong> The dashboard shifted to YoY comparisons (vs prior year rather than 2019). Dining continued to grow — mid-week dining up 11% in 2024, solo dining up 10%, group dining (6+) up 8%. By January 2026, the US was running +20% YoY. OpenTable is now a general consumer confidence indicator, not just a restaurant metric.</p>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="mainChart"></canvas>
+    </div>
+
+    <div class="chart-source">
+      Sources: OpenTable State of the Industry dashboard · Restaurant Dive · Axios · CoStar · OpenTable blog (2020–2026).
+      2019–2022 figures are vs 2019 baseline as reported. Post-2022 converted to approximate 2019-relative index from YoY figures.
+    </div>
+  </div>
+
+  <!-- CONTEXT TILES -->
+  <p class="section-label">Why this data matters</p>
+
+  <div class="grid">
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-index">01</div>
+      <div class="card-title">The real-time signal</div>
+      <div class="card-tagline">Consumer confidence before the stats catch up</div>
+      <span class="card-toggle">+</span>
+      <div class="card-body">
+        <div class="card-body-inner">
+          OpenTable data updates daily and leads official economic figures by weeks. People cancel discretionary restaurant spending before they cancel necessities — making reservations a <strong>leading indicator</strong> of consumer sentiment, not a lagging one. Governments and central banks used it in real time during Covid to calibrate policy.
+          <div class="card-example">By the time March 2020 GDP figures were published, OpenTable had already shown the full collapse six weeks earlier.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-index">02</div>
+      <div class="card-title">Goodhart's Law immunity</div>
+      <div class="card-tagline">Nobody games a restaurant booking</div>
+      <span class="card-toggle">+</span>
+      <div class="card-body">
+        <div class="card-body-inner">
+          The best proxies work because they measure <strong>frictionless behaviour</strong> — things people do without thinking about being measured. OpenTable captures genuine demand decisions: you either want to eat out or you don't. Unlike GDP or consumer confidence surveys, there's no way to optimise for the metric itself. This is what makes it durable as a signal.
+          <div class="card-example">Compare to PMI surveys — those can be gamed by sentiment and reporting bias. Bookings cannot.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-index">03</div>
+      <div class="card-title">The coverage caveat</div>
+      <div class="card-tagline">Mid-market upward skew to keep in mind</div>
+      <span class="card-toggle">+</span>
+      <div class="card-body">
+        <div class="card-body-inner">
+          OpenTable skews towards mid-to-upmarket restaurants that use its booking system. Cash-in-hand local spots, fast food, and lower-end eateries are largely invisible. This means it <strong>overweights discretionary spending</strong> by people who have disposable income — making it sensitive to middle-class economic anxiety rather than broad population behaviour.
+          <div class="card-example">The London data in 2022 showed −14% vs the rest of the UK at +18% — partly a composition effect from London's expensive restaurant mix.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTNOTES -->
+  <div class="footnote-row">
+    <div class="footnote">
+      <div class="footnote-label">Data access</div>
+      <p>The OpenTable State of the Industry dashboard is free and public at opentable.com/c/state-of-industry. Updated daily. Granular monthly/city data available. Historical Covid-era data also on Kaggle.</p>
+    </div>
+    <div class="footnote">
+      <div class="footnote-label">Methodology note</div>
+      <p>OpenTable changed its baseline in June 2024 to online reservations only (previously included walk-ins and phone). Pre-2024 figures are not directly comparable to post-2024 figures.</p>
+    </div>
+    <div class="footnote">
+      <div class="footnote-label">Part of a series</div>
+      <p>This visualisation accompanies a broader exploration of surprising economic proxies — indicators that are unexpectedly representative of something much larger than themselves.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span class="footer-text">anthony-prajogo.github.io</span>
+  <span class="footer-text">The Restaurant Recovery · 2026</span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.2.1/chartjs-plugin-annotation.min.js"></script>
+<script>
+function toggleCard(el) {
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.card.open').forEach(c => c.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
+
+function togglePhase(btn) {
+  const phase = btn.dataset.phase;
+  const detail = document.getElementById('phase-' + phase);
+  const wasActive = btn.classList.contains('active');
+  document.querySelectorAll('.phase-btn.active').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.phase-detail.open').forEach(d => d.classList.remove('open'));
+  if (!wasActive) {
+    btn.classList.add('active');
+    detail.classList.add('open');
+  }
+}
+
+const labels = [
+  'Jan 19','','Jul 19','',
+  'Jan 20','Mar 20','Apr 20','Jun 20','Sep 20','Nov 20',
+  'Jan 21','Apr 21','Jun 21','Sep 21','Nov 21','Dec 21',
+  'Feb 22','Apr 22','Jun 22','Sep 22','Oct 22','Dec 22',
+  'Mar 23','Jul 23','Nov 23',
+  'Mar 24','Jul 24','Nov 24',
+  'Jan 25','May 25','Sep 25',
+  'Jan 26'
+];
+
+const data = [
+  0, 0, 0, 0,
+  0, -25, -100, -65, -35, -42,
+  -38, -8, -12, -18, -20, -33,
+  -22, -8, -3, 0, 1, -3,
+  1, 3, 4,
+  5, 6, 7,
+  8, 9, 10,
+  12
+];
+
+// Phase region x-indices
+const phases = {
+  collapse:  { xMin: 4,  xMax: 6,  color: 'rgba(168,50,50,0.06)',   label: 'collapse' },
+  survival:  { xMin: 6,  xMax: 9,  color: 'rgba(92,158,72,0.04)',   label: 'survival' },
+  variants:  { xMin: 9,  xMax: 15, color: 'rgba(58,92,106,0.05)',   label: 'variant waves' },
+  recovery:  { xMin: 15, xMax: 20, color: 'rgba(92,158,72,0.06)',   label: 'recovery' },
+  beyond:    { xMin: 20, xMax: 31, color: 'rgba(92,158,72,0.09)',   label: 'beyond normal' }
+};
+
+const annotations = {
+  baseline: {
+    type: 'line',
+    yMin: 0, yMax: 0,
+    borderColor: 'rgba(160,154,136,0.5)',
+    borderWidth: 1.5,
+    borderDash: [5, 4]
+  },
+  recoveryPoint: {
+    type: 'point',
+    xValue: 20,
+    yValue: 1,
+    backgroundColor: '#5C9E48',
+    radius: 6,
+    label: {
+      content: 'pre-pandemic restored',
+      display: true,
+      position: 'top',
+      font: { family: 'DM Mono', size: 10 },
+      color: '#6E6A58',
+      yAdjust: -10
+    }
+  }
+};
+
+Object.entries(phases).forEach(([key, p]) => {
+  annotations['zone_' + key] = {
+    type: 'box',
+    xMin: p.xMin,
+    xMax: p.xMax,
+    backgroundColor: p.color,
+    borderWidth: 0
+  };
+});
+
+new Chart(document.getElementById('mainChart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      label: 'vs 2019 (%)',
+      data,
+      borderColor: '#5C9E48',
+      backgroundColor: 'rgba(92,158,72,0.07)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: (ctx) => {
+        const highlight = [4,5,6,7,8,9,10,11,14,15,16,20,31];
+        return highlight.includes(ctx.dataIndex) ? 3.5 : 0;
+      },
+      pointBackgroundColor: '#5C9E48',
+      borderWidth: 2.5
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#FAF8F2',
+        borderColor: '#DDD8CC',
+        borderWidth: 1,
+        titleColor: '#1E1C14',
+        bodyColor: '#6E6A58',
+        titleFont: { family: 'DM Mono', size: 11 },
+        bodyFont: { family: 'DM Mono', size: 11 },
+        callbacks: {
+          label: (ctx) => {
+            const v = ctx.raw;
+            return `  ${v >= 0 ? '+' : ''}${v}% vs 2019`;
+          }
+        }
+      },
+      annotation: { annotations }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: {
+          color: '#A09A88',
+          font: { family: 'DM Sans', size: 10 },
+          maxRotation: 45,
+          autoSkip: true,
+          maxTicksLimit: 16
+        }
+      },
+      y: {
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: {
+          color: '#A09A88',
+          font: { family: 'DM Sans', size: 10 },
+          callback: (v) => `${v >= 0 ? '+' : ''}${v}%`
+        },
+        min: -110,
+        max: 20
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How NZ Politics Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4F1EA;
+  --surface: #FAF8F2;
+  --ink: #1E1C14;
+  --ink-mid: #6E6A58;
+  --ink-light: #A09A88;
+  --rule: #DDD8CC;
+  --green: #5C9E48;
+  --green-pale: #EBF5E6;
+  --green-mid: rgba(92,158,72,0.12);
+  --teal: #3A5C6A;
+  --teal-pale: rgba(58,92,106,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  padding: 40px 56px 32px;
+  border-bottom: 2px solid var(--ink);
+}
+h1 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 2.6rem;
+  font-weight: 400;
+  line-height: 1.1;
+  max-width: 680px;
+  margin-bottom: 10px;
+}
+h1 em { font-style: italic; color: var(--green); }
+.subtitle {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--ink-mid);
+  line-height: 1.65;
+  max-width: 560px;
+  margin-bottom: 20px;
+}
+.author-block { display: flex; align-items: center; gap: 12px; }
+.author-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 0.68rem; color: white; flex-shrink: 0;
+}
+.author-info { display: flex; flex-direction: column; gap: 1px; }
+.author-name { font-size: 0.88rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
+.author-date { font-size: 0.82rem; font-weight: 300; color: var(--ink-mid); line-height: 1.3; }
+
+/* TABS */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 0 56px;
+  background: var(--surface);
+}
+.tab-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 16px 24px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--ink-mid); }
+.tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
+
+.tab-panel { display: none; padding: 48px 56px 64px; }
+.tab-panel.active { display: block; }
+
+/* SECTION HEADERS */
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+.section-desc {
+  font-size: 0.88rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  max-width: 600px;
+  margin-bottom: 28px;
+}
+
+/* ── TAB 1: MMP ── */
+
+/* Ballot card */
+.ballot-section { margin-bottom: 48px; }
+.ballot-intro {
+  font-size: 0.88rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  max-width: 640px;
+  margin-bottom: 24px;
+  line-height: 1.65;
+}
+.ballot-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  max-width: 480px;
+  overflow: hidden;
+}
+.ballot-header {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 12px 24px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ballot-body { display: grid; grid-template-columns: 1fr 1fr; }
+.ballot-col {
+  padding: 20px 24px;
+}
+.ballot-col:first-child {
+  border-right: 1px solid var(--rule);
+}
+.ballot-col-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+.ballot-vote-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.84rem;
+}
+.ballot-vote-row:last-child { border-bottom: none; }
+.ballot-circle {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid var(--ink-light);
+  flex-shrink: 0;
+  position: relative;
+}
+.ballot-circle.filled { background: var(--green); border-color: var(--green); }
+.ballot-circle.filled::after {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 6px; height: 6px; border-radius: 50%;
+  background: white;
+}
+.ballot-note {
+  font-size: 0.78rem;
+  color: var(--teal);
+  font-family: 'DM Mono', monospace;
+  font-style: italic;
+}
+
+/* Two-vote explainer */
+.votes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 48px;
+}
+.vote-card {
+  background: var(--surface);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+}
+.vote-card-content { flex: 1; }
+.vote-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 2rem;
+  color: var(--green);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.vote-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+.vote-desc {
+  font-size: 0.84rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.vote-tag {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--rule);
+  color: var(--ink-light);
+  border-radius: 2px;
+}
+.vote-tag.important {
+  background: var(--green-pale);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* Electorate explainer */
+.electorate-section { margin-bottom: 48px; }
+.electorates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 16px;
+}
+.elec-card {
+  background: var(--surface);
+  padding: 20px 22px;
+}
+.elec-icon {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.5rem;
+  color: var(--green);
+  margin-bottom: 8px;
+  font-weight: 300;
+}
+.elec-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+.elec-desc {
+  font-size: 0.82rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  line-height: 1.55;
+}
+.elec-stat {
+  margin-top: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--green);
+}
+
+/* Threshold box */
+.threshold-box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--green);
+  padding: 16px 20px;
+  margin-bottom: 48px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.threshold-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.threshold-text {
+  font-size: 0.86rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  line-height: 1.6;
+}
+.threshold-text strong { color: var(--ink); font-weight: 500; }
+
+/* Flow diagram */
+.flow-section { margin-bottom: 48px; }
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.flow-step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  border-bottom: 1px solid var(--rule);
+}
+.flow-step:last-child { border-bottom: none; }
+.flow-num {
+  background: var(--green-mid);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 1rem;
+  color: var(--green);
+  border-right: 1px solid var(--rule);
+  font-weight: 400;
+}
+.flow-content { padding: 16px 20px; }
+.flow-title {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+.flow-detail {
+  font-size: 0.82rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  line-height: 1.55;
+}
+.flow-detail strong { color: var(--ink); font-weight: 500; }
+
+/* Overhang note */
+.callout {
+  background: var(--teal-pale);
+  border: 1px solid rgba(58,92,106,0.2);
+  border-left: 3px solid var(--teal);
+  padding: 14px 18px;
+  margin-top: 16px;
+}
+.callout-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 4px;
+}
+.callout-text {
+  font-size: 0.83rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  line-height: 1.55;
+}
+.callout-text strong { color: var(--ink); font-weight: 500; }
+
+/* ── TAB 2: STRUCTURE ── */
+
+/* Power flow diagram - SVG-based */
+.structure-intro {
+  font-size: 0.88rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  max-width: 640px;
+  margin-bottom: 32px;
+  line-height: 1.65;
+}
+
+/* Entity cards - layered representation */
+.layers-container { display: flex; flex-direction: column; gap: 1.5px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 48px; }
+
+.layer {
+  background: var(--surface);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s ease;
+}
+.layer::after {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--green);
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform 0.2s ease;
+}
+.layer:hover::after, .layer.open::after { transform: scaleY(1); }
+.layer:hover, .layer.open { background: white; }
+
+.layer-header {
+  display: grid;
+  grid-template-columns: auto 1fr minmax(0, 140px) 40px;
+  align-items: center;
+  padding: 18px 24px;
+  gap: 16px;
+}
+
+.layer-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.badge-voter { background: var(--bg); border: 1px solid var(--rule); color: var(--ink-light); }
+.badge-parl { background: var(--green-pale); border: 1px solid rgba(92,158,72,0.3); color: var(--green); }
+.badge-exec { background: var(--ink); color: var(--surface); }
+.badge-cabinet { background: var(--green); color: white; }
+.badge-pm { background: var(--ink); color: var(--surface); }
+
+.layer-name {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  min-width: 0;
+}
+.layer-size {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--ink-light);
+  text-align: right;
+  white-space: normal;
+  min-width: 0;
+  line-height: 1.35;
+}
+.layer-toggle {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.1rem;
+  color: var(--ink-light);
+  transition: transform 0.22s ease, color 0.15s;
+  text-align: center;
+}
+.layer.open .layer-toggle { transform: rotate(45deg); color: var(--green); }
+
+.layer-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.layer.open .layer-body { max-height: 800px; }
+
+.layer-inner {
+  padding: 0 24px 20px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 0;
+  padding-top: 20px;
+}
+
+.layer-desc {
+  font-size: 0.86rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  line-height: 1.65;
+  margin-bottom: 16px;
+  max-width: 680px;
+}
+.layer-desc strong { color: var(--ink); font-weight: 500; }
+
+.responsibilities {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 14px;
+}
+.resp-item {
+  background: var(--surface);
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+}
+.resp-item::before {
+  content: '→ ';
+  color: var(--green);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+}
+
+/* Connection arrows between layers */
+.connector {
+  display: flex;
+  align-items: center;
+  padding: 6px 24px;
+  background: var(--bg);
+  gap: 12px;
+}
+.connector-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--rule), var(--green), var(--rule));
+}
+.connector-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  white-space: nowrap;
+}
+.connector-arrow {
+  color: var(--green);
+  font-size: 0.9rem;
+}
+
+/* Parliament composition visual */
+.parliament-visual { margin-bottom: 32px; }
+.parliament-bar-wrap {
+  position: relative;
+  margin-bottom: 18px;
+  margin-top: 32px;
+}
+.parliament-bar {
+  display: grid;
+  height: 36px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.pbar-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  color: white;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.pbar-seg.narrow { font-size: 0; }
+.pbar-nat { background: #2E5FA3; }
+.pbar-act { background: #FFCC00; color: var(--ink); }
+.pbar-nzf { background: #00553A; }
+.pbar-opp { background: var(--ink-light); }
+.pbar-fifty-line {
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  width: 2px;
+  background: #C0392B;
+  z-index: 2;
+}
+.pbar-fifty-label {
+  position: absolute;
+  top: -26px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: #C0392B;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.parliament-legend {
+  display: flex; gap: 20px; flex-wrap: wrap;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--ink-mid);
+}
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 1px; flex-shrink: 0;
+}
+
+/* Power flow horizontal */
+.power-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 32px;
+}
+.pf-step {
+  background: var(--surface);
+  padding: 20px 18px;
+  position: relative;
+}
+.pf-step:not(:last-child)::after {
+  content: '›';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: var(--green);
+  z-index: 1;
+}
+.pf-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.pf-label {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+.pf-desc {
+  font-size: 0.78rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+/* Key mechanics */
+.mechanics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.mech-card {
+  background: var(--surface);
+  padding: 22px 22px;
+}
+.mech-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+.mech-desc {
+  font-size: 0.82rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+  line-height: 1.6;
+}
+.mech-desc strong { color: var(--ink); font-weight: 500; }
+
+/* FOOTER */
+footer {
+  background: var(--ink);
+  padding: 18px 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(250,248,242,0.3);
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  header, .tab-bar, .tab-panel { padding-left: 24px; padding-right: 24px; }
+  h1 { font-size: 1.9rem; }
+  .votes-grid, .electorates-grid, .responsibilities, .mechanics-grid { grid-template-columns: 1fr; }
+  .power-flow { grid-template-columns: 1fr 1fr; }
+  .ballot-body { grid-template-columns: 1fr; }
+  .ballot-col:first-child { border-right: none; border-bottom: 1px solid var(--rule); }
+  .layer-header { grid-template-columns: auto 1fr 32px; }
+  .layer-size { display: none; }
+  footer { padding: 18px 24px; flex-direction: column; gap: 6px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>How <em>New Zealand</em> politics works</h1>
+  <p class="subtitle">A plain-language guide to MMP voting, Parliament, and the structure of government — from ballot paper to Cabinet table.</p>
+  <div class="author-block">
+    <div class="author-avatar">AP</div>
+    <div class="author-info">
+      <span class="author-name">Anthony Prajogo</span>
+      <span class="author-date">April 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('mmp', this)">The MMP System</button>
+  <button class="tab-btn" onclick="switchTab('structure', this)">Parliamentary Structure</button>
+</div>
+
+<!-- ════ TAB 1: MMP ════ -->
+<div id="tab-mmp" class="tab-panel active">
+
+  <!-- Ballot card -->
+  <div class="ballot-section">
+    <div class="section-label">Your ballot paper</div>
+    <div class="section-title">Two votes, two purposes</div>
+    <p class="ballot-intro">When you vote in a New Zealand general election, you receive a single ballot paper split into two halves. Each vote does something completely different — one shapes who represents your local area, the other determines how Parliament is actually composed.</p>
+
+    <div class="ballot-card">
+      <div class="ballot-header">NZ General Election — Example Ballot</div>
+      <div class="ballot-body">
+        <div class="ballot-col">
+          <div class="ballot-col-label">Electorate Vote</div>
+          <div class="ballot-vote-row"><div class="ballot-circle filled"></div> Jane Smith — Labour</div>
+          <div class="ballot-vote-row"><div class="ballot-circle"></div> Tom Brown — National</div>
+          <div class="ballot-vote-row"><div class="ballot-circle"></div> Alice Lee — ACT</div>
+          <div class="ballot-vote-row"><div class="ballot-circle"></div> Mark Williams — Greens</div>
+          <div class="ballot-vote-row"><div class="ballot-circle"></div> Sarah Jones — NZ First</div>
+          <div style="margin-top:10px;"><span class="ballot-note">→ vote for one person</span></div>
+        </div>
+        <div class="ballot-col">
+          <div class="ballot-col-label">Party Vote</div>
+          <div class="ballot-vote-row"><div class="ballot-circle"></div> Labour Party</div>
+          <div class="ballot-vote-row"><div class="ballot-circle"></div> National Party</div>
+          <div class="ballot-vote-row"><div class="ballot-circle"></div> ACT New Zealand</div>
+          <div class="ballot-vote-row"><div class="ballot-circle filled"></div> Green Party</div>
+          <div class="ballot-vote-row"><div class="ballot-circle"></div> NZ First</div>
+          <div style="margin-top:10px;"><span class="ballot-note">→ vote for a party</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two votes grid -->
+  <div class="section-label">What each vote does</div>
+  <div class="section-title" style="margin-bottom:6px;">The electorate vote vs the party vote</div>
+  <p class="section-desc">They look similar on the paper but work very differently.</p>
+
+  <div class="votes-grid">
+    <div class="vote-card">
+      <div class="vote-card-content">
+        <div class="vote-number">01</div>
+        <div class="vote-title">The Electorate Vote</div>
+        <p class="vote-desc">You vote for a specific person to represent your local geographic area (your "electorate"). There are 72 general electorates and 7 Māori electorates. Whoever gets the most votes in your electorate wins that seat — simple first-past-the-post at the local level.</p>
+        <p class="vote-desc">This determines <em>who</em> holds certain seats, but has limited effect on overall party composition in Parliament.</p>
+      </div>
+      <span class="vote-tag">Local representative</span>
+    </div>
+    <div class="vote-card">
+      <div class="vote-card-content">
+        <div class="vote-number">02</div>
+        <div class="vote-title">The Party Vote</div>
+        <p class="vote-desc">You vote for a party, not a person. This determines how many seats each party gets in total. If a party wins 30% of party votes, they get roughly 30% of Parliament's 123 seats.</p>
+        <p class="vote-desc">This is the vote that actually shapes the composition of Parliament and therefore which parties can form a government.</p>
+      </div>
+      <span class="vote-tag important">Determines Parliament's makeup</span>
+    </div>
+  </div>
+
+  <!-- Threshold -->
+  <div class="threshold-box" style="margin-top:1.5px;">
+    <span class="threshold-label">Threshold rule</span>
+    <p class="threshold-text">To enter Parliament, a party must either win <strong>5% or more of the party vote</strong> nationwide, or win <strong>at least one electorate seat</strong>. This stops tiny fringe parties from fragmenting Parliament — but also means a small party can enter with full proportional representation if they win a single local seat.</p>
+  </div>
+
+  <!-- Electorates -->
+  <div class="electorate-section" style="margin-top:48px;">
+    <div class="section-label">Electorates</div>
+    <div class="section-title">How geographic representation works</div>
+    <p class="section-desc">NZ is divided into local electorates, each electing one MP. There are two tracks.</p>
+
+    <div class="electorates-grid">
+      <div class="elec-card">
+        <div class="elec-icon">72</div>
+        <div class="elec-title">General Electorates</div>
+        <p class="elec-desc">Geographically defined areas. Every NZ voter not on the Māori roll votes in one of these. Sizes vary — rural electorates cover more land, urban ones are smaller geographically but denser.</p>
+      </div>
+      <div class="elec-card">
+        <div class="elec-icon">7</div>
+        <div class="elec-title">Māori Electorates</div>
+        <p class="elec-desc">Special seats for voters on the Māori electoral roll. Māori voters can choose to enrol on either the general or Māori roll. These seven seats overlay the general electorates nationally.</p>
+      </div>
+      <div class="elec-card">
+        <div class="elec-icon">~</div>
+        <div class="elec-title">List MPs</div>
+        <p class="elec-desc">After electorate seats are allocated, remaining party seats are filled from each party's ranked list of candidates. List MPs have no local electorate — they represent the country at large. Most Cabinet ministers are List MPs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- How votes become seats -->
+  <div class="flow-section">
+    <div class="section-label">From votes to government</div>
+    <div class="section-title">The sequence after polling day</div>
+    <p class="section-desc">The journey from your vote to a functioning government involves several distinct steps.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-content">
+          <div class="flow-title">Votes are counted, seat shares calculated</div>
+          <p class="flow-detail">Party votes are tallied nationwide. Using the <strong>Sainte-Laguë formula</strong> (an iterative allocation method), seats are distributed proportionally. A party with 30% of party votes gets roughly 37 of Parliament's 123 seats.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-content">
+          <div class="flow-title">Electorate seats are allocated first</div>
+          <p class="flow-detail">Each party's electorate winners take their seats. The party vote then determines the <em>total</em> seats each party is entitled to — electorate wins count toward that total. List MPs are added to bring each party up to their entitled share.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-content">
+          <div class="flow-title">Coalition negotiations begin</div>
+          <p class="flow-detail">Almost no single party wins 62+ seats alone. The party with the best chance of building a majority starts negotiations with potential partners. This typically takes <strong>3–6 weeks</strong> after the election. The results — policy concessions, ministerial roles, confidence and supply commitments — are published publicly.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-content">
+          <div class="flow-title">The leader who commands a majority becomes PM</div>
+          <p class="flow-detail">Once a coalition or confidence arrangement is confirmed, the Governor-General formally invites that leader to form a government. The Prime Minister appoints Cabinet. Parliament is opened by the Governor-General.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">Overhang seats</div>
+      <p class="callout-text">Occasionally a party wins <strong>more electorate seats</strong> than their party vote entitles them to. They keep those seats — they can't be taken away. Parliament temporarily expands beyond 123 to accommodate them. This is called an "overhang" and has happened in NZ (NZ First in 2005).</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════ TAB 2: STRUCTURE ════ -->
+<div id="tab-structure" class="tab-panel">
+
+  <div class="section-label">How it all fits together</div>
+  <div class="section-title">Parliament, Government, and Cabinet</div>
+  <p class="structure-intro">NZ has three distinct but interlocking layers: the <strong>voters</strong> who elect Parliament, <strong>Parliament</strong> which is the full chamber of all elected MPs, and the <strong>Government</strong> (a subset of Parliament) which holds executive power. Understanding which layer does what is the key to understanding how NZ politics actually works.</p>
+
+  <!-- Power flow summary -->
+  <div class="section-label" style="margin-bottom:8px;">Flow of representation</div>
+  <div class="power-flow" style="margin-bottom:32px;">
+    <div class="pf-step">
+      <div class="pf-num">Step 01</div>
+      <div class="pf-label">Voters</div>
+      <p class="pf-desc">~3.5m eligible voters elect MPs every 3 years via MMP ballot</p>
+    </div>
+    <div class="pf-step">
+      <div class="pf-num">Step 02</div>
+      <div class="pf-label">Parliament</div>
+      <p class="pf-desc">123 MPs from all parties. Passes laws, approves spending, holds government to account</p>
+    </div>
+    <div class="pf-step">
+      <div class="pf-num">Step 03</div>
+      <div class="pf-label">Government</div>
+      <p class="pf-desc">Coalition parties holding 62+ seats. Cabinet drawn from these MPs runs the country</p>
+    </div>
+    <div class="pf-step">
+      <div class="pf-num">Step 04</div>
+      <div class="pf-label">Prime Minister</div>
+      <p class="pf-desc">Leader of governing coalition. Sets direction, chairs Cabinet, represents NZ internationally</p>
+    </div>
+  </div>
+
+  <!-- Layers - expandable -->
+  <div class="section-label" style="margin-bottom:8px;">The layers — click to expand</div>
+
+  <div class="layers-container">
+
+    <!-- Voters -->
+    <div class="layer" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <span class="layer-badge badge-voter">Foundation</span>
+        <span class="layer-name">The Voters</span>
+        <span class="layer-size">3.5m eligible voters</span>
+        <span class="layer-toggle">+</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-inner">
+          <p class="layer-desc">All NZ citizens and permanent residents aged 18+ can enrol and vote. Voting is not legally compulsory, but enrolment is. Voters elect Parliament every three years — they do not directly elect the Prime Minister, Cabinet, or the government. Their only formal democratic act is choosing their local MP and their preferred party.</p>
+          <div class="responsibilities">
+            <div class="resp-item">Elect their local electorate MP</div>
+            <div class="resp-item">Choose which party gets Parliament seats via party vote</div>
+            <div class="resp-item">Indirectly determine which coalition can form government</div>
+            <div class="resp-item">Can remove government at the next election</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parliament -->
+    <div class="layer" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <span class="layer-badge badge-parl">Legislature</span>
+        <span class="layer-name">Parliament (The House)</span>
+        <span class="layer-size">123 MPs, all parties</span>
+        <span class="layer-toggle">+</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-inner">
+          <p class="layer-desc">Parliament is <strong>the full chamber</strong> — every MP elected, from every party, including the government and the opposition. It is the supreme law-making body in NZ. Parliament passes all legislation, approves the government's budget, and holds the government accountable. The government must always maintain Parliament's confidence to stay in power.</p>
+          <p class="layer-desc">NZ has a <strong>unicameral Parliament</strong> — only one chamber. There is no Senate or upper house. The Legislative Council (NZ's old upper house) was abolished in 1951, making NZ's Parliament unusually streamlined: a bill passed by a simple majority becomes law without a second chamber reviewing it.</p>
+
+          <div style="margin-bottom:16px;">
+            <div class="section-label" style="margin-bottom:8px; font-size:0.65rem;">Current Parliament composition (2023–2026)</div>
+            <div class="parliament-bar-wrap">
+              <span class="pbar-fifty-label" style="left:50%;">← 50% majority line</span>
+              <div class="parliament-bar" style="grid-template-columns: 49fr 11fr 8fr 55fr;">
+                <div class="pbar-seg pbar-nat">National 49</div>
+                <div class="pbar-seg pbar-act">ACT 11</div>
+                <div class="pbar-seg pbar-nzf">NZF 8</div>
+                <div class="pbar-seg pbar-opp">Opposition 55</div>
+              </div>
+              <div class="pbar-fifty-line" style="left:50%;"></div>
+            </div>
+            <div class="parliament-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:#2E5FA3;"></div>National (governing, 49)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#FFCC00;"></div>ACT (coalition, 11)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#00553A;"></div>NZ First (coalition, 8)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--ink-light);"></div>Opposition — Labour, Greens, Te Pāti Māori (55)</div>
+            </div>
+          </div>
+
+          <div class="responsibilities">
+            <div class="resp-item">Passes, amends, and repeals legislation</div>
+            <div class="resp-item">Approves the government's annual budget</div>
+            <div class="resp-item">Scrutinises the government via question time</div>
+            <div class="resp-item">Select committees examine bills and policy</div>
+            <div class="resp-item">Can pass a vote of no confidence to remove government</div>
+            <div class="resp-item">Speaker of the House chairs proceedings, maintains order</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Government / Executive -->
+    <div class="layer" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <span class="layer-badge badge-exec">Executive</span>
+        <span class="layer-name">The Government</span>
+        <span class="layer-size">62+ seats from coalition</span>
+        <span class="layer-toggle">+</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-inner">
+          <p class="layer-desc">The government is the subset of Parliament's MPs who form the ruling coalition — in NZ currently National, ACT, and NZ First. They hold a majority of seats, which means they can pass legislation and survive confidence votes. The government is not separate from Parliament — its ministers are MPs who sit in Parliament while simultaneously running their departments.</p>
+          <p class="layer-desc">This fusion of executive and legislature is the defining feature of a parliamentary system. The government must always maintain Parliament's confidence. If it loses a confidence vote, it must either resign or call a snap election.</p>
+          <div class="responsibilities">
+            <div class="resp-item">Proposes most legislation (as bills to Parliament)</div>
+            <div class="resp-item">Runs day-to-day administration of the country</div>
+            <div class="resp-item">Controls the public service and government departments</div>
+            <div class="resp-item">Sets the annual budget and fiscal policy</div>
+            <div class="resp-item">Conducts foreign policy and international negotiations</div>
+            <div class="resp-item">Must maintain majority confidence in Parliament to survive</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cabinet -->
+    <div class="layer" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <span class="layer-badge badge-cabinet">Cabinet</span>
+        <span class="layer-name">Cabinet</span>
+        <span class="layer-size">~20 senior ministers</span>
+        <span class="layer-toggle">+</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-inner">
+          <p class="layer-desc">Cabinet is the inner decision-making body of the government — typically around 20 senior MPs who each hold one or more ministerial portfolios (Finance, Health, Education, etc.). Cabinet meets weekly, usually on Mondays. Decisions made in Cabinet are binding on all ministers — Cabinet collective responsibility means ministers must publicly support Cabinet decisions even if they disagreed privately.</p>
+          <p class="layer-desc">Not all government MPs are in Cabinet. There are also <strong>Ministers outside Cabinet</strong> (junior ministers with specific portfolios) and <strong>Parliamentary Under-Secretaries</strong> (supporting senior ministers). Coalition parties negotiate which portfolios each party holds — ACT and NZ First typically secure specific ministerial roles as part of their coalition deal.</p>
+          <div class="responsibilities">
+            <div class="resp-item">Approves all major policy decisions</div>
+            <div class="resp-item">Each minister runs a government department</div>
+            <div class="resp-item">Collective responsibility — all publicly back Cabinet decisions</div>
+            <div class="resp-item">Sets the government's legislative agenda</div>
+            <div class="resp-item">Chaired and led by the Prime Minister</div>
+            <div class="resp-item">Includes ministers from all coalition parties</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prime Minister -->
+    <div class="layer" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <span class="layer-badge badge-pm">PM</span>
+        <span class="layer-name">Prime Minister</span>
+        <span class="layer-size">1 person, first among equals</span>
+        <span class="layer-toggle">+</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-inner">
+          <p class="layer-desc">The PM is the head of government — but not a directly elected position. They become PM because they lead the party (or coalition) that commands a parliamentary majority. The Governor-General formally appoints them. The PM chairs Cabinet, sets the government's strategic direction, and represents NZ internationally.</p>
+          <p class="layer-desc">The phrase "first among equals" matters: the PM is constitutionally a Cabinet minister like the others, not a president-style figure above them. Their power rests on maintaining the confidence of their coalition partners. A PM who loses the support of their own caucus or coalition partners can be removed without any public vote.</p>
+          <div class="responsibilities">
+            <div class="resp-item">Chairs and directs Cabinet</div>
+            <div class="resp-item">Appoints and dismisses ministers</div>
+            <div class="resp-item">Sets overall government strategy and priorities</div>
+            <div class="resp-item">Represents NZ in international diplomacy</div>
+            <div class="resp-item">Advises Governor-General on constitutional matters</div>
+            <div class="resp-item">Can recommend dissolution of Parliament and a snap election</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Governor-General -->
+    <div class="layer" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <span class="layer-badge badge-voter">Crown</span>
+        <span class="layer-name">Governor-General</span>
+        <span class="layer-size">1 ceremonial head of state</span>
+        <span class="layer-toggle">+</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-inner">
+          <p class="layer-desc">The Governor-General is the King's representative in NZ, appointed on the PM's advice. The role is almost entirely ceremonial: they formally appoint the PM, open and dissolve Parliament, sign bills into law (Royal Assent), and grant honours. In practice they act on the advice of the elected government in all but exceptional constitutional circumstances.</p>
+          <p class="layer-desc">The GG holds <strong>reserve powers</strong> — theoretical authority to refuse to sign a bill, dissolve Parliament, or appoint a PM without clear parliamentary support. These have not been exercised in modern NZ. They exist as a backstop against constitutional breakdown, not as a check on day-to-day governance. The current GG is <strong>Dame Cindy Kiro</strong>.</p>
+          <div class="responsibilities">
+            <div class="resp-item">Formally appoints the Prime Minister</div>
+            <div class="resp-item">Grants Royal Assent to bills (making them law)</div>
+            <div class="resp-item">Opens Parliament after each election</div>
+            <div class="resp-item">Can dissolve Parliament if government requests</div>
+            <div class="resp-item">Constitutional backstop — reserve powers in extreme scenarios</div>
+            <div class="resp-item">Acts entirely on government advice in normal circumstances</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Key mechanics -->
+  <div style="margin-top:48px;">
+    <div class="section-label">Key mechanics to know</div>
+    <div class="section-title" style="margin-bottom:6px;">How power actually moves</div>
+    <p class="section-desc">Three concepts that explain most of what you read in NZ political news.</p>
+
+    <div class="mechanics-grid">
+      <div class="mech-card">
+        <div class="mech-title">Confidence &amp; Supply</div>
+        <p class="mech-desc">A smaller party can support a government <strong>without being in it</strong>. They agree to vote for the government in confidence votes and on budgets, in exchange for policy wins or influence. They don't hold ministerial positions. This is common in NZ — it gives small parties influence while keeping their independence.</p>
+      </div>
+      <div class="mech-card">
+        <div class="mech-title">Vote of No Confidence</div>
+        <p class="mech-desc">Any MP can move a motion of no confidence in the government. If it passes — meaning more than half of Parliament votes against the government — the PM must either <strong>resign</strong> or <strong>advise the GG to call an election</strong>. This is the ultimate check Parliament has over the executive.</p>
+      </div>
+      <div class="mech-card">
+        <div class="mech-title">Collective Responsibility</div>
+        <p class="mech-desc">All Cabinet ministers must <strong>publicly support</strong> Cabinet decisions, even if they argued against them in the room. If a minister can't support a decision, they must resign. This keeps government messaging consistent and prevents ministers from publicly undermining their own government's policies.</p>
+      </div>
+      <div class="mech-card">
+        <div class="mech-title">The Three-Year Term</div>
+        <p class="mech-desc">NZ has one of the <strong>shortest electoral cycles</strong> in the world. Governments must go to an election every three years — there's no mechanism to extend it (unlike the UK's five-year maximum). This creates constant electoral pressure and means policy must show results quickly.</p>
+      </div>
+      <div class="mech-card">
+        <div class="mech-title">Select Committees</div>
+        <p class="mech-desc">Parliament operates through committees of MPs that examine specific bills and policy areas in depth. Committees include members from <strong>all parties</strong>, including opposition. They call experts, take public submissions, and recommend amendments. This is where much of the real scrutiny of legislation happens — not the floor debates.</p>
+      </div>
+      <div class="mech-card">
+        <div class="mech-title">No Upper House</div>
+        <p class="mech-desc">Unlike the UK (House of Lords), Australia (Senate), or the US (Senate), NZ has <strong>no second chamber</strong>. A bill passed by a majority in Parliament becomes law. This makes NZ's system fast but means there is less revision and fewer checks on majority governments. The courts and the media do more of this work in NZ.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-text">anthony-prajogo.github.io</span>
+  <span class="footer-text">How NZ Politics Works · 2026</span>
+</footer>
+
+<script>
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleLayer(el) {
+  const isOpen = el.classList.contains('open');
+  el.classList.toggle('open', !isOpen);
+}
+</script>
+</body>
+</html>
