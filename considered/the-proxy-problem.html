@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Proxy Problem - Anthony Prajogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --page-bg:     #ffffff;
+      --panel-bg:    #F4F1EA;
+      --surface:     #FAFCF8;
+      --ink:         #1E1C14;
+      --ink-mid:     #6E6A58;
+      --ink-light:   #A09A88;
+      --rule:        #DDD9D0;
+      --green:       #5C9E48;
+      --green-pale:  #EBF5E6;
+      --green-mid:   rgba(92,158,72,0.10);
+      --radius-sm:   6px;
+      --radius-md:   10px;
+      --radius-lg:   14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--page-bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 16px 0;
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 1400px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+      box-shadow: 0 2px 24px rgba(30,28,20,0.06);
+      margin-bottom: 16px;
+    }
+
+    nav {
+      background: var(--panel-bg);
+      padding: 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      margin-top: 20px;
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-logo:hover { color: var(--green); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--ink-mid);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--ink); background: var(--green-mid); }
+
+    .nav-links a.active {
+      color: var(--ink);
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: var(--ink-light);
+    }
+
+    .nav-links a.nav-cta {
+      background: var(--ink);
+      color: var(--panel-bg);
+      padding: 7px 18px;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      margin-left: 8px;
+      transition: background 0.15s;
+    }
+    .nav-links a.nav-cta:hover { background: var(--green); }
+
+    /* ── Article layout ─────────────────────────────────────── */
+    .article-outer {
+      padding: 52px 52px 96px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .article-back {
+      width: 100%;
+      max-width: 720px;
+      margin-bottom: 44px;
+    }
+
+    .article-back a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .article-back a:hover { color: var(--green); }
+
+    .article {
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .article-header {
+      margin-bottom: 32px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .article-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-light);
+    }
+
+    .article-meta-sep {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--rule);
+    }
+
+    .article-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      background: rgba(160,154,136,0.14);
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+
+    .article h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.9rem, 3.8vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.12;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+
+    .article-summary {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.8;
+      color: var(--ink-mid);
+      padding-left: 20px;
+      border-left: 2px solid var(--green);
+    }
+
+    .article-rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 36px 0 44px;
+    }
+
+    .article-body h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-top: 52px;
+      margin-bottom: 18px;
+    }
+
+    .article-body h2:first-child {
+      margin-top: 0;
+    }
+
+    .article-body p {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--ink-mid);
+      line-height: 1.9;
+      margin-bottom: 22px;
+    }
+
+    .article-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .article-body a {
+      color: var(--ink-mid);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.15s;
+    }
+    .article-body a:hover { color: var(--ink); }
+
+    .article-body strong {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .article-body em {
+      font-style: italic;
+    }
+
+    .article-body ol {
+      margin: 0 0 22px 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .article-body li {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--ink-mid);
+      line-height: 1.9;
+      padding-left: 6px;
+    }
+
+    .article-body img {
+      width: 100%;
+      border-radius: var(--radius-md);
+      margin: 4px 0 28px;
+      display: block;
+    }
+
+    .article-disclaimer {
+      margin-top: 52px;
+      padding-top: 28px;
+      border-top: 1px solid var(--rule);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--ink-light);
+      line-height: 1.75;
+      font-style: italic;
+    }
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    footer {
+      background: var(--panel-bg);
+      padding: 18px 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-top: auto;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 52px;
+      right: 52px;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-decoration: none;
+    }
+
+    .footer-divider {
+      color: var(--rule);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+    }
+
+    .footer-link { transition: color 0.15s; }
+    .footer-link:hover { color: var(--ink-mid); }
+
+    .footer-totop {
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .footer-totop:hover { color: var(--ink-mid); border-color: var(--ink-mid); }
+
+    @media (max-width: 860px) {
+      body { padding: 10px 10px 0; }
+      nav { padding: 0 24px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .article-outer { padding: 36px 24px 72px; }
+      footer { padding: 18px 24px; }
+      footer::before { left: 24px; right: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="panel">
+
+    <nav>
+      <a href="../index.html" class="nav-logo">Anthony Prajogo</a>
+      <ul class="nav-links">
+        <li><a href="../considered.html" class="active">Considered</a></li>
+        <li><a href="../macro.html">Macro</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../contact.html" class="nav-cta">Contact</a></li>
+      </ul>
+    </nav>
+
+    <main class="article-outer">
+
+      <div class="article-back">
+        <a href="../considered.html">← Considered</a>
+      </div>
+
+      <article class="article">
+
+        <header class="article-header">
+          <div class="article-meta">
+            <span class="article-date">Jul 2026</span>
+            <span class="article-meta-sep">|</span>
+            <span class="article-tag">Systems &amp; Structure</span>
+          </div>
+          <h1>The Proxy Problem</h1>
+          <p class="article-summary">Enterprise SaaS spent thirty years pricing software against headcount - a number that AI is now shrinking at lightning pace. The scramble to reprice away from the per-seat model reveals just how quickly assumptions can be invalidated and business models unravelled.</p>
+        </header>
+
+        <hr class="article-rule" />
+
+        <div class="article-body">
+
+          <h2>Two of a kind</h2>
+
+          <p>Black Wednesday for software hit on January 29, 2026. ServiceNow dropped <a href="https://finviz.com/news/292978/servicenow-now-falls-994-as-ai-threatens-saas-sector">9.94%</a> - despite beating earnings for the <em>ninth consecutive quarter.</em> SAP fell <a href="https://www.investing.com/news/earnings/sap-cloud-bookings-jump-30-as-ai-demand-drives-record-77-bln-backlog-4471838">~14%</a> the same day because growth expectations missed by a single percentage point. HubSpot dropped 11.2%. Atlassian 10.7%. Things didn't ease up and by mid-February, <a href="https://markets.financialcontent.com/stocks/article/marketminute-2026-3-24-the-2026-saaspocalypse-why-b2b-software-stocks-are-plunging-20">roughly $2 trillion</a> in enterprise software market cap had been erased. It had been a downhill run <a href="https://tech-insider.org/saas-stock-crash-ai-agents-2-trillion-2026/">worse than the relative decline of the dot-com era</a> with one leading explanation: AI.</p>
+
+          <p>Scanning the headlines, the prevailing narrative was that rampant "AI disruption" was punishing SaaS companies severely and indiscriminately. But look more closely, and the damage was strikingly uneven. HubSpot was <a href="https://www.investing.com/equities/hubspot-inc-historical-data">down over 60%</a> in the twelve months to mid-February. Meanwhile, CrowdStrike, the cybersecurity platform, ended the period down less than 5%. Why such a stark imbalance?</p>
+
+          <p>Unpacking the blanket "AI disruption" narrative, we find two distinct threats that were being conflated:</p>
+
+          <ol>
+            <li>The first - and more commonly cited - is <strong>capability commoditisation:</strong> The belief that AI could replicate what SaaS companies provide, but better and cheaper. If Claude can help a team vibe-code a bespoke CRM in a weekend, why pay Hubspot?</li>
+            <li>But the second - and more subtle threat - is <strong>seat compression:</strong> If AI is reducing headcount, then the human seat - the fundamental unit of value SaaS has priced itself against over the last thirty years - also begins to tank. The pre-disruption logic was sound. You pay per user because more users means more value delivered. Salesforce charges per salesperson. ServiceNow per employee touching the platform. Workday per person in the HR system. The seat count is just the <em>proxy</em> for the value the software creates. AI is breaking that proxy. A company running 30% fewer knowledge workers on the same workflows doesn't need 30% fewer of the software - it needs the same value, just with fewer humans in the loop.</li>
+          </ol>
+
+          <p>Critically, the two threats behave in structurally different ways: Capability commoditisation requires a specific competitive threat or internal buildout to materialise: a credible alternative that customers actually switch to. Meanwhile, seat compression just requires AI to improve over time - something it has been reliably doing since its inception. It's the quieter, more durable threat.</p>
+
+          <p>This is what creates the uneven risk landscape. Some companies are somewhat insulated to both, some to one, some to neither.</p>
+
+          <h2>A lay of the land</h2>
+
+          <p>To visualise the uneven terrain, we can map vendors across two axes - capability commoditisation and seat compression risk - to produce four distinct risk profiles that explain the divergence more precisely than a single "AI disrupts SaaS" narrative.</p>
+
+          <img src="https://media.licdn.com/dms/image/v2/D4E12AQFL6g2K1Ioqjg/article-inline_image-shrink_1000_1488/B4EZ8Vx3SeJYAI-/0/1782776821338?e=1784764800&v=beta&t=Fi872VsBKe61W5uOn8Io6KBXVR2sHtEWs4__cqkmaPU" alt="2x2 matrix mapping SaaS vendors across capability commoditisation risk and seat compression risk" />
+
+          <p><strong>Quadrant 1: High commoditisation risk, high seat compression risk.</strong> Pure productivity tools: document management, basic HR analytics, basic marketing workflows - anything that is simple and repeatable is a task that AI can automate. These face the worst outcome: simultaneous existential threat from customers who might build in-house alternatives and revenue decline from contracting headcount. HubSpot sits here uncomfortably: a mid-market CRM and marketing automation platform whose workflows are exactly what AI agents automate best, serving exactly the companies reducing headcount most aggressively. The proof is in the pudding: HubSpot was down over 60% in the twelve months to mid-February. Similarly, Atlassian reported its <a href="https://www.taskade.com/blog/great-saas-unbundling">first-ever decline in enterprise seat counts</a> in early 2026. It's the canary in the coal mine: not a single company under stress, but an entire pricing model under threat.</p>
+
+          <p><strong>Quadrant 2: High commoditisation risk, low seat compression risk.</strong> A rarer find, but cybersecurity is a good example: AI commoditises specific analytical capabilities while simultaneously expanding the attack surface, meaning the function grows even as individual tasks get automated. Attackers benefit from AI too, so defenders can never reduce headcount below a certain floor. CrowdStrike is the exemplar: <a href="https://markets.financialcontent.com/stocks/article/barchart-2026-2-2-do-wall-street-analysts-like-crowdstrike-stock">down less than 6%</a> while peers fell 20%+ over the same period. Markets correctly identified that more capable AI systems increase demand for security platforms rather than threatening them.</p>
+
+          <p>The danger is that it's likely a temporary window. While the expanding attack surface sounds like a Jevons Paradox, cautionary tales suggest otherwise. Developer tooling followed an intuitive argument - AI makes coding cheaper, more software gets built, demand for engineers grows - but by early 2024, the US employed <a href="https://www.adpresearch.com/the-rise-and-fall-of-the-software-developer/">fewer software developers than it did in 2018</a>, despite years of unprecedented demand. The demand did grow, but it was uneven: AI-specialist and senior engineering roles grew while junior and generalist roles almost vanished. The aggregate headcount fell because the <em>composition</em> of demand shifted faster than the volume increased. That's the trap that might face cybersecurity too.</p>
+
+          <p><strong>Quadrant 3: Low commoditisation risk, high seat compression risk.</strong> ERP vendors: SAP, Oracle Fusion, Microsoft Dynamics. Customers automate back-office work, get leaner, and need fewer seats. But ERP systems are so embedded in mission-critical business processes that switching costs are not just high - for some organisations, replacement is operationally impossible on any reasonable timeline. This insulates against capability commoditisation almost entirely. Classic ERP moat.</p>
+
+          <p><strong>Quadrant 4: Low commoditisation risk, low seat compression risk.</strong> Regulated-industry incumbents: healthcare records platforms, legal workflow software, financial compliance tools. Their moat lies in the liability paper trail. Someone has to be legally accountable when a medical record is wrong or a financial trade is misreported. Regulatory frameworks are built around human accountability, and that accountability can't be automated away because courts and regulators require an institutionally-licensed entity to own it. AI augments these functions, but it doesn't eliminate the requirement for the function to exist and be certified.</p>
+
+          <p>Interestingly, the markets punished these providers regardless. Veeva Systems lost <a href="https://www.macrotrends.net/stocks/charts/VEEV/veeva-systems/stock-price-history">roughly 43% from its September 2025 peak</a> despite <a href="https://seekingalpha.com/article/4867690-veeva-la-vida-here-comes-the-rebound-for-veeva-systems">16% revenue growth, 75%+ gross margins, 80% market share in life sciences SaaS, and a $5B+ cash position</a>. One read was that it was a fair correction. Another is that the company's fundamentals were still intact - it just got swept along by the wave of indiscriminate SaaS sell-offs. The latter received institutional validation: just a month and a half later, Veeva was announced as a <a href="https://press.spglobal.com/2026-04-30-Veeva-Systems-Set-to-Join-S-P-500">new S&amp;P 500 constituent</a> - a quality indicator that signalled official conviction of their business model durability. Shares rose <a href="https://seekingalpha.com/news/4583583-veeva-systems-climbs-9-after-sp-500-addition">~9% in a single session</a>, not because of good earnings, but because the market corrected a misclassification.</p>
+
+          <h2>Watching the action</h2>
+
+          <p>Fast forward to today and the transition away from per-seat licensing - already underway at SAP, Salesforce, ServiceNow, and Microsoft - is an implicit acknowledgement that the proxy is broken and the post-disruption seat model arithmetic just doesn't add up.</p>
+
+          <p>Different solutions are springing up: Consumption-based models - where customers pay per API call, per transaction, or per unit of compute used rather than per user - are the leading candidate, but enterprises historically resist unpredictable software costs and procurement teams are built around fixed commitments. Outcome-based models - where vendors charge based on measurable business results delivered, such as revenue generated or cases resolved - seem sensible but are subjective and almost impossible to audit. Either way, each solution is attempting the same thing: to reprice around the unit of value that will actually persist.</p>
+
+          <p>The action is unfolding in real time. The vendors who can build credible bridges to new pricing models before seat contraction bites will survive. The ones who don't will spend the following years arguing their moat is still intact while their revenue quietly disagrees.</p>
+
+          <h2>Permanence</h2>
+
+          <p>The underpinning insight is that every business position rests on assumptions of status quo stability. Salesforce - the pioneer of the pay-per-seat model - had a $200B+ peak valuation which rested on seat growth tracking headcount growth, headcount growing with business and economic growth, and recurring revenue compounding. The assumptions were real, the model worked, and the market priced it accordingly.</p>
+
+          <p>What AI revealed is how quickly assumptions can be invalidated, grounding can become shaky, and business models can rapidly unravel. Salesforce hit an <a href="https://www.statmuse.com/money/ask/all-time-high-salesforce-stock">all-time high closing price of ~$365</a> in December 2024 and a <a href="https://www.investing.com/equities/salesforce-com-historical-data">52-week low of $163.52</a> in April 2026 - a peak-to-trough decline of over 55% in under eighteen months. Salesforce didn't execute poorly. But it was betting on a relationship between human headcount and value-creation which eventually stopped being true. Once that assumption moved, the valuation built on top of it had to move with it.</p>
+
+          <p>Importantly, that movement was compressed into timeframes that reflect the magnitude of threat, <em>and</em> the durability of incumbent position. While both are important factors in determining the length of the ticking time bomb, it's only the latter that is directly controllable. The businesses which understand which assumptions their position depends on, the nature of the imminent threat, and how exposed they are to those forces have a competitive advantage over those who simply accept the industry model.</p>
+
+          <p>The seat was never the point, it was always a proxy for value. The real lesson here is not about software pricing: it's that longevity should never be conflated with stability, that every durable business model is a bet on a position whose foundations can be challenged, and that those that survive are the ones who understand which assumptions they're depending on, not the ones who assume those assumptions are permanent.</p>
+
+          <p class="article-disclaimer">This article is for informational purposes only and does not constitute financial advice. Nothing herein should be construed as a recommendation to buy or sell any security. Always consult a qualified financial adviser before making investment decisions.</p>
+
+        </div>
+      </article>
+    </main>
+
+    <footer>
+      <div class="footer-left">
+        <span class="footer-text">Anthony Prajogo</span>
+        <span class="footer-divider">|</span>
+        <a href="https://www.linkedin.com/in/anthony-prajogo/" class="footer-text footer-link" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+      <button class="footer-totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+    </footer>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oracles and Insiders - Anthony Prajogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --page-bg:     #ffffff;
+      --panel-bg:    #F4F1EA;
+      --surface:     #FAFCF8;
+      --ink:         #1E1C14;
+      --ink-mid:     #6E6A58;
+      --ink-light:   #A09A88;
+      --rule:        #DDD9D0;
+      --green:       #5C9E48;
+      --green-pale:  #EBF5E6;
+      --green-mid:   rgba(92,158,72,0.10);
+      --radius-sm:   6px;
+      --radius-md:   10px;
+      --radius-lg:   14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--page-bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 16px 0;
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 1400px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+      box-shadow: 0 2px 24px rgba(30,28,20,0.06);
+      margin-bottom: 16px;
+    }
+
+    nav {
+      background: var(--panel-bg);
+      padding: 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      margin-top: 20px;
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-logo:hover { color: var(--green); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--ink-mid);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--ink); background: var(--green-mid); }
+
+    .nav-links a.active {
+      color: var(--ink);
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: var(--ink-light);
+    }
+
+    .nav-links a.nav-cta {
+      background: var(--ink);
+      color: var(--panel-bg);
+      padding: 7px 18px;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      margin-left: 8px;
+      transition: background 0.15s;
+    }
+    .nav-links a.nav-cta:hover { background: var(--green); }
+
+    /* ── Article layout ─────────────────────────────────────── */
+    .article-outer {
+      padding: 52px 52px 96px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .article-back {
+      width: 100%;
+      max-width: 720px;
+      margin-bottom: 44px;
+    }
+
+    .article-back a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .article-back a:hover { color: var(--green); }
+
+    .article {
+      width: 100%;
+      max-width: 720px;
+    }
+
+    /* Header */
+    .article-header {
+      margin-bottom: 32px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .article-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-light);
+    }
+
+    .article-meta-sep {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--rule);
+    }
+
+    .article-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      background: rgba(160,154,136,0.14);
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+
+    .article h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.9rem, 3.8vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.12;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+
+    .article-summary {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.8;
+      color: var(--ink-mid);
+      padding-left: 20px;
+      border-left: 2px solid var(--green);
+    }
+
+    .article-rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 36px 0 44px;
+    }
+
+    /* Body */
+    .article-body h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-top: 52px;
+      margin-bottom: 18px;
+    }
+
+    .article-body h2:first-child {
+      margin-top: 0;
+    }
+
+    .article-body p {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--ink-mid);
+      line-height: 1.9;
+      margin-bottom: 22px;
+    }
+
+    .article-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .article-body a {
+      color: var(--ink-mid);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.15s;
+    }
+    .article-body a:hover { color: var(--ink); }
+
+    .article-body strong {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .article-body em {
+      font-style: italic;
+    }
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    footer {
+      background: var(--panel-bg);
+      padding: 18px 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-top: auto;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 52px;
+      right: 52px;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-decoration: none;
+    }
+
+    .footer-divider {
+      color: var(--rule);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+    }
+
+    .footer-link { transition: color 0.15s; }
+    .footer-link:hover { color: var(--ink-mid); }
+
+    .footer-totop {
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .footer-totop:hover { color: var(--ink-mid); border-color: var(--ink-mid); }
+
+    /* ── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      body { padding: 10px 10px 0; }
+      nav { padding: 0 24px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .article-outer { padding: 36px 24px 72px; }
+      footer { padding: 18px 24px; }
+      footer::before { left: 24px; right: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="panel">
+
+    <nav>
+      <a href="../index.html" class="nav-logo">Anthony Prajogo</a>
+      <ul class="nav-links">
+        <li><a href="../considered.html" class="active">Considered</a></li>
+        <li><a href="../macro.html">Macro</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../contact.html" class="nav-cta">Contact</a></li>
+      </ul>
+    </nav>
+
+    <main class="article-outer">
+
+      <div class="article-back">
+        <a href="../considered.html">← Considered</a>
+      </div>
+
+      <article class="article">
+
+        <header class="article-header">
+          <div class="article-meta">
+            <span class="article-date">Jul 2026</span>
+            <span class="article-meta-sep">|</span>
+            <span class="article-tag">Systems &amp; Structure</span>
+            <span class="article-tag">The World Right Now</span>
+          </div>
+          <h1>Oracles and Insiders</h1>
+          <p class="article-summary">Prediction markets present themselves as collective intelligence engines - and genuinely are, under the right conditions. But the same structural features that make them useful for forecasting make them structurally inevitable vehicles for insider exploitation at scale.</p>
+        </header>
+
+        <hr class="article-rule" />
+
+        <div class="article-body">
+
+          <h2>Christmas bonus</h2>
+
+          <p>A couple days after Christmas, <a href="https://www.justice.gov/opa/pr/us-soldier-charged-using-classified-information-profit-prediction-market-bets"><strong>Van Dyke</strong></a>, a US Army Special Forces soldier, used classified information about the January 2026 capture of Nicolás Maduro to begin making bets on Polymarket. 13 bets totalling roughly $34,000 later, he'd made a tidy profit of $409,000. A sweet Christmas bonus. But fast forward 4 months later and we are seeing the same individual exposed, prosecuted, and facing charges upwards of 20 years in prison if convicted on the most serious charges.</p>
+
+          <p>At first glance, this seems like a successful crackdown on the insider trading that has been consistently plaguing the platforms. But really, it's a win with shallow impact.</p>
+
+          <p>Let's rewind the tape. Apps like Polymarket and Kalshi are built on a simple idea: if you force people to put money on their beliefs, you filter out the noise that distorts polls, expert opinion, and public analysis. Capital is at stake = incentives align + people care about being right + people care less about signalling allegiance. Once a thesis is now reality - <a href="https://www.cnn.com/2024/11/08/business/polymarket-election-trump-nightcap">these markets often outperform traditional forecasting when participation is broad</a>. The 2024 US election, where prediction markets had Trump significantly ahead of polling averages well before the result, is the most prominent recent example.</p>
+
+          <p>That's the theory anyways. But take a peek under the hood and things get ugly fast. The same feature that makes prediction markets useful - that better information reliably wins - also makes them an inevitably attractive venue for people with the best information of all. Not better analysis. Not sharper intuition. Actual non-public knowledge of what's going to happen. Insider trading.</p>
+
+          <p>Fast forward to today and Van Dyke's prosecution is a first of its kind in anti-insider trading enforcement. It is absolutely a win and a step in the right direction. But where there's one cockroach, there's a thousand - translation: Van Dyke isn't an anomaly. He was simply the first person charged.</p>
+
+          <h2>Whack-a-mole</h2>
+
+          <p>Imagine you're playing whack-a-mole, except the moles are extra clever and know to duck just as you're about to whack. You keep whacking away at the moles but it feels like they are always just out of arm's reach. It just feels like the game is against you somehow. Feel unfair? Sure it does. That's the regulator's "game" - where the moles are insider traders ducking out of harm's way each time the hammer (of justice) comes down. Swap out rigged arcade game for prediction platforms and you've got the events that have been unfolding in front of us.</p>
+
+          <p>The devil's in the scope. In traditional regulated betting markets, this problem is somewhat contained - nobody knows in advance who's going to win the NBA Championships. But prediction markets are different - betting has expanded into government actions, military operations, and geopolitical events. In those domains, someone always knows. Lying in plain sight is an information asymmetry that isn't incidental - it's baked into the asset class. As the scope of bettable events broadens, the universe of potential insiders expands too, until someone giving in to opportunistic temptation becomes a statistical certainty.</p>
+
+          <p>The size of that opportunity window is what makes it all possible. The entire betting timeline - markets open, positions taken, events occur, contracts resolve, cash paid - can happen over the course of days. In stark contrast, the enforcement timeline operates on an entirely different clock - and it's seriously lagging. Van Dyke's arrest came <em>months</em> after his trades. Most profitable insider trades will never be investigated because the sophistication required to identify suspicious patterns, pierce anonymous blockchain accounts, and build criminal cases is substantially higher than the sophistication required to place the bets. The attack front is simply expanding faster than enforcement can follow.</p>
+
+          <p>And we've seen this play out in real time. <a href="https://www.cnn.com/2026/03/24/politics/iran-war-bets-prediction-markets">A trader had already made nearly $1 million</a> on suspiciously well-timed bets across multiple US and Israeli military strikes against Iran. <a href="https://www.euronews.com/business/2026/04/09/newly-made-polymarket-accounts-won-massively-on-us-iran-ceasefire-bets">At least 50 newly-created accounts</a> placed precise bets on the US-Iran ceasefire hours before Trump announced it. <a href="https://www.timesofisrael.com/two-indicted-for-using-classified-info-to-place-online-bets-on-military-operations/">Israeli authorities indicted a military reservist and a civilian</a> for using classified information to bet on Polymarket. Van Dyke wasn't walking an untrodden path.</p>
+
+          <h2>A civic disguise</h2>
+
+          <p>When you walk into the arcade, you <em>expect</em> to play a fun game and whack some moles - and that's more or less what you get. No surprises. Meanwhile, when you log onto a prediction markets platform, you <em>expect</em> that with enough strategic reasoning, you stand a fair chance at positive ROI. What <a href="https://finance.yahoo.com/markets/crypto/articles/100-000-polymarket-accounts-booked-062234759.html">roughly 70% of participants</a> found was that this was not the case. And that expectation-reality mismatch isn't accidental - it's the product of a deliberate disguise.</p>
+
+          <p>It starts with the name. "Prediction" carries a connotation that "bet" doesn't: rigour, analysis, intellectual seriousness. You're not a rowdy gambler throwing money at odds. You're a forecaster. That framing is precise and it's chosen carefully, because it recruits a specific kind of participant: someone who believes the edge goes to the person who thinks the hardest.</p>
+
+          <p>The platform design reinforces it. No fees to join, no commissions on trades, a user experience built to feel like you're doing something intellectually serious. Then the marketing turns the volume up. Platforms describe themselves as democratising forecasting, aggregating the wisdom of crowds, giving everyone access to the same information that was once gatekept behind institutional doors. The media angle is especially subtle. Kalshi partners with CNN and CNBC, Polymarket signs a contract with Dow Jones, and suddenly prediction odds are appearing on election night coverage. Journalists cite the platforms as data sources → the platforms gain credibility from being cited → that credibility pulls in more participants → more participants makes the data richer and more cite-worthy. It's a self-reinforcing loop which the platforms sit at the centre of, sponging institutional trust that skews public perception.</p>
+
+          <p>It's one thing to play a rigged game. It's another to play <em>believing</em> you could, with enough analytical seriousness, walk away in the green. Then it's another when your participation is providing exactly the liquidity the platform needs to function. You could be the dry powder insiders were waiting to ignite.</p>
+
+          <h2>Shifting stance</h2>
+
+          <p>The standard mechanism for managing this kind of structural extraction is regulation. Meanwhile, the standard obstacle is regulatory capture - where regulated entities successfully shape the regulatory environment in their favour.</p>
+
+          <p>Prediction markets are currently offering a real-time case study. Donald Trump Jr. is both an investor in Polymarket and an adviser to Kalshi. I.e., the president's son literally holds equity in the platforms the administration's regulators are now actively enabling. Meanwhile, The Trump Organisation is reportedly developing its own prediction market called Truth Predict. The platforms had to lobby well - not as gambling operators seeking a legal workaround, but as forecasting infrastructure providers whose products serve the public interest. The investment speaks for itself. <a href="https://www.cnbc.com/2026/04/15/kalshi-and-polymarket-congress-regulation-washington-influence.html">Kalshi and Polymarket spent nearly $1 million combined on federal lobbying in 2025</a>. Kalshi opened a permanent DC office, ran ads across Washington declaring it bans insider trading, and hired a Biden administration alumni as head of government relations. The regulated entities spent aggressively on influencing Washington - and it seems to be paying off.</p>
+
+          <p>The enforcement stance has shifted decisively. In 2022, <a href="https://www.cftc.gov/PressRoom/PressReleases/8478-22">Polymarket was fined $1.4 million</a> by the CFTC and banned from serving US users. Today, it has been allowed to re-enter the US market in a limited capacity after it spent <a href="https://www.cryptopolitan.com/polymarket-seeks-cftc-approval-us-traders/">$112 million acquiring QCEX</a>, a CFTC-licensed exchange as its compliance vehicle. Meanwhile, the chair of the CFTC <a href="https://www.cftc.gov/PressRoom/SpeechesTestimony/seligstatement021726">published a WSJ op-ed</a> defending prediction markets and describing them as "exciting" products.</p>
+
+          <p>But re-entering the market and staying in it are different games - and the platforms knew they had to get creative to stay alive. That creativity was self-policing. The Van Dyke prosecution is real accountability. But importantly, the prosecutors acted on a referral from Polymarket itself. Why oust themselves? The platforms are learning that occasional, high-profile cooperation with enforcement protects the broader model better than blanket non-cooperation would. One soldier's arrest, processed loudly, is cheap insurance for a machine that will generate hundreds of similar trades that never get prosecuted.</p>
+
+          <p>Importantly, the underlying business model doesn't really care about the information asymmetry it creates per se. Their economic logic still rests on the Uber playbook: operate at a loss, accumulate volume and network effects, then monetise after establishing market dominance. This means the platforms don't have to be malicious actors at all for users to get burnt along the way - the business model itself rests on structural conditions that do the heavy lifting. Whether that's a moral shortfall or an effective business model is up for debate.</p>
+
+          <h2>Oracles and insiders</h2>
+
+          <p>Where does this leave us?</p>
+
+          <p>Prediction markets aren't a scam: The forecasting mechanism works. The information aggregation is real. There are stable, bounded, verifiable events where these markets produce genuinely useful insights that polls and expert opinion don't. In theory, they provide the means for oracle-worthy predictions.</p>
+
+          <p>But the same feature that makes them work is what makes them structurally exploitable. Better information wins. And in the domains prediction markets have expanded into - government operations, military strikes, geopolitical events - the people with the best information aren't better analysts. They're insiders.</p>
+
+          <p>Van Dyke's arrest is a data point, not a solution. Prosecutions move on individual timelines. Markets move on transaction timelines. That gap - between when classified information enters a trade and when any enforcement follows - is where the real challenge lies, and it's widening faster than anyone is willing to admit.</p>
+
+        </div>
+      </article>
+    </main>
+
+    <footer>
+      <div class="footer-left">
+        <span class="footer-text">Anthony Prajogo</span>
+        <span class="footer-divider">|</span>
+        <a href="https://www.linkedin.com/in/anthony-prajogo/" class="footer-text footer-link" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+      <button class="footer-totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+    </footer>
+
+  </div>
+
+</body>
+</html>
