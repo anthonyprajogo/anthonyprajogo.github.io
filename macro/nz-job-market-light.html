@@ -17,6 +17,17 @@
   }
   body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; min-height: 100vh; }
 
+  /* ── SITE NAV ── */
+  .site-nav { background: var(--bg); padding: 20px 56px 0; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .site-nav-logo { font-family: 'Libre Baskerville', serif; font-size: 1.15rem; font-weight: 700; color: var(--ink); text-decoration: none; }
+  .site-nav-logo:hover { color: var(--green); }
+  .site-nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+  .site-nav-links a { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--ink-mid); text-decoration: none; padding: 6px 14px; border-radius: 6px; transition: color 0.15s, background 0.15s; }
+  .site-nav-links a:hover { color: var(--ink); background: var(--green-pale); }
+  .site-nav-links a.active { color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--ink-light); }
+  .site-nav-links a.site-nav-cta { background: var(--ink); color: var(--bg); padding: 7px 18px; font-weight: 500; border-radius: 6px; margin-left: 8px; }
+  .site-nav-links a.site-nav-cta:hover { background: var(--green); }
+
   /* ── STANDARD HEADER ── */
   header { padding: 40px 56px 32px; border-bottom: 2px solid var(--ink); }
   h1 { font-family: 'Libre Baskerville', serif; font-size: 2.6rem; font-weight: 400; line-height: 1.2; max-width: 640px; margin-bottom: 10px; }
@@ -79,15 +90,32 @@
 
   footer { background: var(--ink); padding: 18px 56px; display: flex; justify-content: space-between; align-items: center; }
   .footer-text { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,248,242,0.3); }
+  .footer-left { display: flex; align-items: center; gap: 12px; }
+  .footer-link { color: rgba(250,248,242,0.5); text-decoration: none; transition: color 0.15s; }
+  .footer-link:hover { color: rgba(250,248,242,0.85); }
+  .footer-totop { background: none; border: 1px solid rgba(250,248,242,0.25); border-radius: 4px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,248,242,0.5); padding: 5px 10px; cursor: pointer; transition: color 0.15s, border-color 0.15s; }
+  .footer-totop:hover { color: rgba(250,248,242,0.85); border-color: rgba(250,248,242,0.5); }
 
   @media (max-width: 800px) {
     header, .content, footer { padding-left: 24px; padding-right: 24px; }
     .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .site-nav { padding: 20px 24px 0; }
+    .site-nav-links a:not(.site-nav-cta) { display: none; }
   }
   @media (max-width: 500px) { .stats-row { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
+
+<nav class="site-nav">
+  <a href="../index.html" class="site-nav-logo">Anthony Prajogo</a>
+  <ul class="site-nav-links">
+    <li><a href="../considered.html">Considered</a></li>
+    <li><a href="../macro.html" class="active">Macro</a></li>
+    <li><a href="../about.html">About</a></li>
+    <li><a href="../contact.html" class="site-nav-cta">Contact</a></li>
+  </ul>
+</nav>
 
 <header>
   <h1>The <em>boom, bust</em> and <em>recovery</em> of NZ job listings</h1>
@@ -137,8 +165,14 @@
 </div>
 
 <footer>
-  <span class="footer-text">anthony-prajogo.github.io</span>
-  <span class="footer-text">NZ Labour Market · 2026</span>
+  <div class="footer-left">
+    <span class="footer-text">anthony-prajogo.github.io</span>
+    <span class="footer-text">NZ Labour Market · 2026</span>
+  </div>
+  <div class="footer-left">
+    <a href="https://www.linkedin.com/in/anthony-prajogo/" class="footer-text footer-link" target="_blank" rel="noopener">LinkedIn ↗</a>
+    <button class="footer-totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+  </div>
 </footer>
 
 <script>
