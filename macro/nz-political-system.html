@@ -24,12 +24,29 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: var(--bg);
+  background: #ffffff;
   color: var(--ink);
   font-family: 'DM Sans', sans-serif;
   font-size: 15px;
   line-height: 1.6;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 16px 0;
+}
+
+.panel {
+  background: var(--bg);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 1320px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  box-shadow: 0 2px 24px rgba(30,28,20,0.06);
+  margin-bottom: 16px;
 }
 
 /* SITE NAV */
@@ -79,12 +96,26 @@ body {
 @media (max-width: 860px) {
   .site-nav { padding: 20px 24px 0; }
   .site-nav-links a:not(.site-nav-cta) { display: none; }
+  .macro-back { padding: 24px 24px 0; }
+  .macro-divider { margin: 0 24px; }
 }
+
+/* BACKLINK */
+.macro-back { padding: 24px 56px 0; }
+.macro-back a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.macro-back a:hover { color: var(--green); }
 
 /* HEADER */
 header {
-  padding: 40px 56px 32px;
-  border-bottom: 2px solid var(--ink);
+  padding: 20px 56px 32px;
 }
 h1 {
   font-family: 'Libre Baskerville', serif;
@@ -103,16 +134,9 @@ h1 em { font-style: italic; color: var(--green); }
   max-width: 560px;
   margin-bottom: 20px;
 }
-.author-block { display: flex; align-items: center; gap: 12px; }
-.author-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--green);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'DM Mono', monospace; font-size: 0.68rem; color: white; flex-shrink: 0;
-}
-.author-info { display: flex; flex-direction: column; gap: 1px; }
-.author-name { font-size: 0.88rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
-.author-date { font-size: 0.82rem; font-weight: 300; color: var(--ink-mid); line-height: 1.3; }
+.header-date { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.06em; color: var(--ink-light); }
+
+.macro-divider { border: none; border-top: 1px solid var(--rule); margin: 0 56px; }
 
 /* TABS */
 .tab-bar {
@@ -699,36 +723,48 @@ h1 em { font-style: italic; color: var(--green); }
 
 /* FOOTER */
 footer {
-  background: var(--ink);
+  background: var(--bg);
   padding: 18px 56px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  margin-top: auto;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 56px;
+  right: 56px;
+  height: 1px;
+  background: var(--rule);
 }
 .footer-text {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(250,248,242,0.3);
+  color: var(--ink-light);
+  text-decoration: none;
 }
 .footer-left { display: flex; align-items: center; gap: 12px; }
-.footer-link { color: rgba(250,248,242,0.5); text-decoration: none; transition: color 0.15s; }
-.footer-link:hover { color: rgba(250,248,242,0.85); }
+.footer-link { transition: color 0.15s; }
+.footer-link:hover { color: var(--ink-mid); }
 .footer-totop {
   background: none;
-  border: 1px solid rgba(250,248,242,0.25);
-  border-radius: 4px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(250,248,242,0.5);
+  color: var(--ink-light);
   padding: 5px 10px;
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
 }
-.footer-totop:hover { color: rgba(250,248,242,0.85); border-color: rgba(250,248,242,0.5); }
+.footer-totop:hover { color: var(--ink-mid); border-color: var(--ink-mid); }
 
 /* RESPONSIVE */
 @media (max-width: 800px) {
@@ -748,6 +784,8 @@ footer {
 </head>
 <body>
 
+<div class="panel">
+
 <nav class="site-nav">
   <a href="../index.html" class="site-nav-logo">Anthony Prajogo</a>
   <ul class="site-nav-links">
@@ -758,17 +796,17 @@ footer {
   </ul>
 </nav>
 
+<div class="macro-back">
+  <a href="../macro.html">← Macro</a>
+</div>
+
 <header>
   <h1>How <em>New Zealand</em> politics works</h1>
   <p class="subtitle">A plain-language guide to MMP voting, Parliament, and the structure of government - from ballot paper to Cabinet table.</p>
-  <div class="author-block">
-    <div class="author-avatar">AP</div>
-    <div class="author-info">
-      <span class="author-name">Anthony Prajogo</span>
-      <span class="author-date">April 2026</span>
-    </div>
-  </div>
+  <span class="header-date">April 2026</span>
 </header>
+
+<hr class="macro-divider" />
 
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('mmp', this)">The MMP System</button>
@@ -1150,14 +1188,14 @@ footer {
 
 <footer>
   <div class="footer-left">
-    <span class="footer-text">anthony-prajogo.github.io</span>
-    <span class="footer-text">How NZ Politics Works · 2026</span>
-  </div>
-  <div class="footer-left">
+    <span class="footer-text">Anthony Prajogo</span>
+    <span class="footer-text">|</span>
     <a href="https://www.linkedin.com/in/anthony-prajogo/" class="footer-text footer-link" target="_blank" rel="noopener">LinkedIn ↗</a>
-    <button class="footer-totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
   </div>
+  <button class="footer-totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
 </footer>
+
+</div>
 
 <script>
 function switchTab(tabId, btn) {
