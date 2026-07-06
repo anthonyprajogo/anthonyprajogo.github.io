@@ -2,20 +2,26 @@
 
 Personal portfolio site for Anthony Prajogo — writer and consultant.
 
-Hosted on GitHub Pages at [anthonyprajogo.github.io](https://anthonyprajogo.github.io) (custom domain: anthonyprajogo.com).
+Hosted on GitHub Pages at [anthonyprajogo.github.io](https://anthonyprajogo.github.io), served on the custom domain [anthonyprajogo.com](https://anthonyprajogo.com).
 
 ## Structure
 
+Every page is `[slug]/index.html` so URLs have no `.html` extension (e.g. `/about/`, `/considered/oracles-and-insiders/`).
+
 ```
 /
-├── index.html          # Home
-├── considered.html     # Considered index
-├── macro.html          # Macro index
-├── about.html          # About
-├── contact.html        # Contact
-├── considered/         # Long-form essays
-└── macro/              # Interactive learning resources
+├── index.html           # Home (the one page not in its own folder)
+├── considered/
+│   ├── index.html       # Considered index
+│   └── [slug]/index.html  # One folder per essay
+├── macro/
+│   ├── index.html       # Macro index
+│   └── [slug]/index.html  # One folder per resource
+├── about/index.html
+└── contact/index.html
 ```
+
+See [CLAUDE.md](CLAUDE.md) for the full linking convention and how to add new content.
 
 ## Development
 

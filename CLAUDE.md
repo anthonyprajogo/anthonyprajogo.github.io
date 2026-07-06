@@ -13,21 +13,34 @@ Static HTML/CSS portfolio site for Anthony Prajogo. No build step, no frameworks
 
 ## File structure
 
+Every page lives at `[slug]/index.html` so GitHub Pages serves it without a `.html` extension in the URL (e.g. `/about/`, `/considered/oracles-and-insiders/`). The only exception is the root `index.html`, which serves `/`.
+
 ```
 /
 ├── index.html
-├── considered.html     # Article index with filter/sort JS
-├── macro.html          # Resource index with filter/sort JS
-├── about.html
-├── contact.html
-├── considered/         # One HTML file per Considered essay
-└── macro/              # One HTML file per Macro resource
+├── considered/
+│   ├── index.html              # Article index with filter/sort JS
+│   ├── images/                 # Shared images for Considered articles
+│   ├── oracles-and-insiders/index.html
+│   └── the-proxy-problem/index.html
+├── macro/
+│   ├── index.html              # Resource index with filter/sort JS
+│   ├── images/                 # Shared images for Macro resources
+│   ├── nz-political-system/index.html
+│   ├── tech-roles-by-industry-light/index.html
+│   ├── nz-job-market-light/index.html
+│   ├── business-models-light/index.html
+│   └── dining-trends/index.html
+├── about/index.html
+└── contact/index.html
 ```
+
+**Linking convention:** all internal `href`/`src` values use absolute root-relative paths (e.g. `href="/considered/"`, `src="/macro/images/foo.jpg"`), never `../` relative paths or bare filenames. This avoids recalculating path depth as pages get nested, and works because the site has a fixed custom domain. Never link to `index.html` directly — link to the folder (e.g. `href="/"` not `href="/index.html"`), otherwise the `.html`/filename shows in the address bar.
 
 ## Adding a new Considered article
 
-1. Create `considered/[slug].html` using `considered/oracles-and-insiders.html` as the template
-2. Add an `.article-card` entry in `considered.html` — follow the data-tags/data-date/data-name pattern in the comments
+1. Create `considered/[slug]/index.html` using `considered/oracles-and-insiders/index.html` as the template
+2. Add an `.article-card` entry in `considered/index.html` — follow the data-tags/data-date/data-name pattern in the comments
 3. Add a `.featured-card` entry in `index.html` if it should be featured on the home page
 4. Tags: `tag-systems`, `tag-strategy`, `tag-ideas`, `tag-world`, `tag-philosophy` (displayed as "Ground Truths"), `tag-favourites`
 
@@ -35,8 +48,8 @@ Static HTML/CSS portfolio site for Anthony Prajogo. No build step, no frameworks
 
 ## Adding a new Macro resource
 
-1. Place the HTML file in `macro/`
-2. Add a `.macro-card` entry in `macro.html` — follow the data-tags/data-date/data-name pattern
+1. Create the resource at `macro/[slug]/index.html`
+2. Add a `.macro-card` entry in `macro/index.html` — follow the data-tags/data-date/data-name pattern
 3. Tags: `tag-tech`, `tag-finance`, `tag-governance`, `tag-trade`, `tag-society`
 
 ## Conventions
