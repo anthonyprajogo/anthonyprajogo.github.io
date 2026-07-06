@@ -29,7 +29,9 @@ Static HTML/CSS portfolio site for Anthony Prajogo. No build step, no frameworks
 1. Create `considered/[slug].html` using `considered/oracles-and-insiders.html` as the template
 2. Add an `.article-card` entry in `considered.html` — follow the data-tags/data-date/data-name pattern in the comments
 3. Add a `.featured-card` entry in `index.html` if it should be featured on the home page
-4. Tags: `tag-systems`, `tag-strategy`, `tag-ideas`, `tag-world`, `tag-philosophy`, `tag-favourites`
+4. Tags: `tag-systems`, `tag-strategy`, `tag-ideas`, `tag-world`, `tag-philosophy` (displayed as "Ground Truths"), `tag-favourites`
+
+**Ordering rule:** the most recently published entry always goes first — in the `.featured-row` on `index.html`, and left-to-right/top-to-bottom in any hand-ordered card list. This is a manual convention (cards aren't sorted by script on `index.html`), so when adding a new piece, re-check the order of existing cards and move the newest to the front.
 
 ## Adding a new Macro resource
 

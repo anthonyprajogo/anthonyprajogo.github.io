@@ -616,9 +616,8 @@
     const emptyState = document.getElementById('emptyState');
     const filterBtns = document.querySelectorAll('.filter-btn');
     const sortBtns = document.querySelectorAll('.sort-btn');
-    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
 
-    let activeFilters = new Set(); // empty = show all
+    let activeFilter = 'all';
     let activeSort = 'date';
     let activeDir = 'desc';
 
@@ -631,15 +630,11 @@
       let visible = 0;
       cards.forEach(card => {
         const tags = card.dataset.tags ? card.dataset.tags.split(',') : [];
-        const show = activeFilters.size === 0 || [...activeFilters].some(f => tags.includes(f));
+        const show = activeFilter === 'all' || tags.includes(activeFilter);
         card.classList.toggle('hidden', !show);
         if (show) visible++;
       });
       emptyState.style.display = visible === 0 ? 'block' : 'none';
-    }
-
-    function syncAllBtn() {
-      allBtn.classList.toggle('active', activeFilters.size === 0);
     }
 
     function applySort() {
@@ -665,27 +660,11 @@
       applyFilter();
     }
 
-    // "All" clears all active filters
-    allBtn.addEventListener('click', () => {
-      activeFilters.clear();
-      filterBtns.forEach(b => b.classList.remove('active'));
-      syncAllBtn();
-      update();
-    });
-
-    // Tag filters toggle independently; selecting any deactivates "All"
     filterBtns.forEach(btn => {
-      if (btn.dataset.filter === 'all') return;
       btn.addEventListener('click', () => {
-        const f = btn.dataset.filter;
-        if (activeFilters.has(f)) {
-          activeFilters.delete(f);
-          btn.classList.remove('active');
-        } else {
-          activeFilters.add(f);
-          btn.classList.add('active');
-        }
-        syncAllBtn();
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
         update();
       });
     });
