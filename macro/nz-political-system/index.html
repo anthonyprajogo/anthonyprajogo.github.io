@@ -93,9 +93,53 @@ body {
   margin-left: 8px;
 }
 .site-nav-links a.site-nav-cta:hover { background: var(--green); }
+
+.site-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: 4px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+.site-nav-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 1px;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.site-nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.site-nav-toggle.open span:nth-child(2) { opacity: 0; }
+.site-nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.site-nav-mobile-menu {
+  display: none;
+  flex-direction: column;
+  padding: 4px 56px 16px;
+}
+.site-nav-mobile-menu a {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--ink-mid);
+  text-decoration: none;
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--rule);
+}
+.site-nav-mobile-menu a:last-child { border-bottom: none; }
+.site-nav-mobile-menu a.active { color: var(--ink); font-weight: 500; }
+.site-nav-mobile-menu.open { display: flex; }
+
 @media (max-width: 860px) {
   .site-nav { padding: 20px 24px 0; }
   .site-nav-links a:not(.site-nav-cta) { display: none; }
+  .site-nav-toggle { display: flex; }
+  .site-nav-mobile-menu { padding: 4px 24px 16px; }
+  .site-nav-logo { font-size: 1rem; }
   .macro-back { padding: 24px 24px 0; }
   .macro-divider { margin: 0 24px; }
 }
@@ -794,7 +838,16 @@ footer::before {
     <li><a href="/about/">About</a></li>
     <li><a href="/contact/" class="site-nav-cta">Contact</a></li>
   </ul>
+  <button class="site-nav-toggle" onclick="this.classList.toggle('open'); document.querySelector('.site-nav-mobile-menu').classList.toggle('open');" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="site-nav-mobile-menu">
+  <a href="/considered/">Considered</a>
+  <a href="/macro/" class="active">Macro</a>
+  <a href="/about/">About</a>
+  <a href="/contact/">Contact</a>
+</div>
 
 <div class="macro-back">
   <a href="/macro/">← Macro</a>
