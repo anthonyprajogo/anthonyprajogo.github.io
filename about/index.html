@@ -66,6 +66,8 @@
       justify-content: space-between;
       height: 56px;
       margin-top: 20px;
+      position: relative;
+      z-index: 999;
     }
 
     .nav-logo {
@@ -118,45 +120,70 @@
     }
     .nav-links a.nav-cta:hover { background: var(--green); }
 
+    .nav-toggle-checkbox {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .nav-toggle {
       display: none;
-      background: none;
-      border: none;
+      position: relative;
+      width: 40px;
+      height: 40px;
+      background: var(--green);
+      border-radius: 10px;
       cursor: pointer;
-      padding: 8px;
-      margin-left: 4px;
-      flex-direction: column;
-      justify-content: center;
-      gap: 4px;
+      margin-left: 8px;
+      flex-shrink: 0;
+      transition: background 0.15s;
     }
+    .nav-toggle:hover { background: var(--ink); }
     .nav-toggle span {
-      display: block;
-      width: 20px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 18px;
       height: 2px;
-      background: var(--ink);
+      background: #fff;
       border-radius: 1px;
-      transition: transform 0.15s, opacity 0.15s;
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
-    .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-    .nav-toggle.open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-toggle span:nth-child(1) { transform: translate(-50%, calc(-50% - 6px)); }
+    .nav-toggle span:nth-child(2) { transform: translate(-50%, -50%); }
+    .nav-toggle span:nth-child(3) { transform: translate(-50%, calc(-50% + 6px)); }
+
+    .nav-toggle-checkbox:checked ~ nav .nav-toggle span:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
+    .nav-toggle-checkbox:checked ~ nav .nav-toggle span:nth-child(2) { opacity: 0; }
+    .nav-toggle-checkbox:checked ~ nav .nav-toggle span:nth-child(3) { transform: translate(-50%, -50%) rotate(-45deg); }
 
     .nav-mobile-menu {
       display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--panel-bg);
+      z-index: 998;
       flex-direction: column;
-      padding: 4px 24px 16px;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
+    .nav-toggle-checkbox:checked ~ .nav-mobile-menu { display: flex; }
+
     .nav-mobile-menu a {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
-      color: var(--ink-mid);
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.7rem;
+      color: var(--ink);
       text-decoration: none;
-      padding: 12px 4px;
-      border-bottom: 1px solid var(--rule);
+      padding: 14px 8px;
+      transition: color 0.15s;
     }
-    .nav-mobile-menu a:last-child { border-bottom: none; }
-    .nav-mobile-menu a.active { color: var(--ink); font-weight: 500; }
-    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu a:hover { color: var(--green); }
+    .nav-mobile-menu a.active { color: var(--green); }
+
+    body:has(.nav-toggle-checkbox:checked) { overflow: hidden; }
 
     /* ── Main content ──────────────────────────────────────── */
     main {
@@ -407,6 +434,7 @@
   <div class="panel">
 
     <!-- ── Nav ── -->
+    <input type="checkbox" id="nav-toggle-checkbox" class="nav-toggle-checkbox">
     <nav>
       <a href="/" class="nav-logo">Anthony Prajogo</a>
       <ul class="nav-links">
@@ -415,9 +443,9 @@
         <li><a href="/about/" class="active">About</a></li>
         <li><a href="/contact/" class="nav-cta">Contact</a></li>
       </ul>
-      <button class="nav-toggle" onclick="this.classList.toggle('open'); document.querySelector('.nav-mobile-menu').classList.toggle('open');" aria-label="Toggle menu">
+      <label for="nav-toggle-checkbox" class="nav-toggle" aria-label="Toggle menu">
         <span></span><span></span><span></span>
-      </button>
+      </label>
     </nav>
     <div class="nav-mobile-menu">
       <a href="/considered/">Considered</a>

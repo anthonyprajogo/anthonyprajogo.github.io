@@ -50,7 +50,7 @@
   }
 
   /* SITE NAV */
-  .site-nav { background: var(--bg); padding: 20px 56px 0; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .site-nav { background: var(--bg); padding: 20px 56px 0; display: flex; align-items: center; justify-content: space-between; height: 56px; position: relative; z-index: 999; }
   .site-nav-logo { font-family: 'Libre Baskerville', serif; font-size: 1.15rem; font-weight: 700; color: var(--ink); text-decoration: none; }
   .site-nav-logo:hover { color: var(--green); }
   .site-nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
@@ -60,45 +60,70 @@
   .site-nav-links a.site-nav-cta { background: var(--ink); color: var(--bg); padding: 7px 18px; font-weight: 500; border-radius: 6px; margin-left: 8px; }
   .site-nav-links a.site-nav-cta:hover { background: var(--green); }
 
+  .site-nav-toggle-checkbox {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
   .site-nav-toggle {
     display: none;
-    background: none;
-    border: none;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: var(--green);
+    border-radius: 10px;
     cursor: pointer;
-    padding: 8px;
-    margin-left: 4px;
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
+    margin-left: 8px;
+    flex-shrink: 0;
+    transition: background 0.15s;
   }
+  .site-nav-toggle:hover { background: var(--ink); }
   .site-nav-toggle span {
-    display: block;
-    width: 20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18px;
     height: 2px;
-    background: var(--ink);
+    background: #fff;
     border-radius: 1px;
-    transition: transform 0.15s, opacity 0.15s;
+    transition: transform 0.2s ease, opacity 0.2s ease;
   }
-  .site-nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-  .site-nav-toggle.open span:nth-child(2) { opacity: 0; }
-  .site-nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  .site-nav-toggle span:nth-child(1) { transform: translate(-50%, calc(-50% - 6px)); }
+  .site-nav-toggle span:nth-child(2) { transform: translate(-50%, -50%); }
+  .site-nav-toggle span:nth-child(3) { transform: translate(-50%, calc(-50% + 6px)); }
+
+  .site-nav-toggle-checkbox:checked ~ .site-nav .site-nav-toggle span:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
+  .site-nav-toggle-checkbox:checked ~ .site-nav .site-nav-toggle span:nth-child(2) { opacity: 0; }
+  .site-nav-toggle-checkbox:checked ~ .site-nav .site-nav-toggle span:nth-child(3) { transform: translate(-50%, -50%) rotate(-45deg); }
 
   .site-nav-mobile-menu {
     display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 998;
     flex-direction: column;
-    padding: 4px 56px 16px;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
+  .site-nav-toggle-checkbox:checked ~ .site-nav-mobile-menu { display: flex; }
+
   .site-nav-mobile-menu a {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    color: var(--ink-mid);
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.7rem;
+    color: var(--ink);
     text-decoration: none;
-    padding: 12px 4px;
-    border-bottom: 1px solid var(--rule);
+    padding: 14px 8px;
+    transition: color 0.15s;
   }
-  .site-nav-mobile-menu a:last-child { border-bottom: none; }
-  .site-nav-mobile-menu a.active { color: var(--ink); font-weight: 500; }
-  .site-nav-mobile-menu.open { display: flex; }
+  .site-nav-mobile-menu a:hover { color: var(--green); }
+  .site-nav-mobile-menu a.active { color: var(--green); }
+
+  body:has(.site-nav-toggle-checkbox:checked) { overflow: hidden; }
 
   /* BACKLINK */
   .macro-back { padding: 24px 56px 0; }
@@ -465,6 +490,7 @@
 
 <div class="panel">
 
+<input type="checkbox" id="site-nav-toggle-checkbox" class="site-nav-toggle-checkbox">
 <nav class="site-nav">
   <a href="/" class="site-nav-logo">Anthony Prajogo</a>
   <ul class="site-nav-links">
@@ -473,9 +499,9 @@
     <li><a href="/about/">About</a></li>
     <li><a href="/contact/" class="site-nav-cta">Contact</a></li>
   </ul>
-  <button class="site-nav-toggle" onclick="this.classList.toggle('open'); document.querySelector('.site-nav-mobile-menu').classList.toggle('open');" aria-label="Toggle menu">
+  <label for="site-nav-toggle-checkbox" class="site-nav-toggle" aria-label="Toggle menu">
     <span></span><span></span><span></span>
-  </button>
+  </label>
 </nav>
 <div class="site-nav-mobile-menu">
   <a href="/considered/">Considered</a>
