@@ -842,7 +842,7 @@ footer::before {
 @media (max-width: 800px) {
   header, .tab-bar, .tab-panel { padding-left: 24px; padding-right: 24px; }
   h1 { font-size: 1.9rem; }
-  .votes-grid, .electorates-grid, .responsibilities, .mechanics-grid { grid-template-columns: 1fr; }
+  .electorates-grid, .mechanics-grid { grid-template-columns: repeat(2, 1fr); }
   .power-flow { grid-template-columns: 1fr 1fr; }
   .ballot-body { grid-template-columns: 1fr; }
   .ballot-col:first-child { border-right: none; border-bottom: 1px solid var(--rule); }
@@ -851,6 +851,10 @@ footer::before {
   footer { padding: 18px 24px; flex-direction: column; gap: 6px; text-align: center; }
   .site-nav { padding: 20px 24px 0; }
   .site-nav-links a:not(.site-nav-cta) { display: none; }
+}
+
+@media (max-width: 640px) {
+  .votes-grid, .electorates-grid, .responsibilities, .mechanics-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>

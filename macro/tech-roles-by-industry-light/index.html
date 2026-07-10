@@ -332,7 +332,7 @@
 
   @media (max-width: 900px) {
     header, .content, footer { padding-left: 24px; padding-right: 24px; }
-    .roles-grid { grid-template-columns: 1fr; margin-left: 1rem; margin-right: 1rem; }
+    .roles-grid { grid-template-columns: repeat(2, 1fr); margin-left: 1rem; margin-right: 1rem; }
     .industry-summary-wrap { padding-left: 1rem; }
     .industry-divider { margin-left: 1rem; margin-right: 1rem; }
     .site-nav { padding: 20px 24px 0; }
@@ -342,6 +342,10 @@
     .site-nav-logo { font-size: 1rem; }
     .macro-back { padding: 24px 24px 0; }
     .macro-divider { margin: 0 24px; }
+  }
+
+  @media (max-width: 640px) {
+    .roles-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>

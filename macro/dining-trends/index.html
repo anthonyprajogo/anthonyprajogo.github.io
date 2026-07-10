@@ -471,7 +471,7 @@
     footer { padding-left: 24px; padding-right: 24px; }
     h1 { font-size: 1.9rem; }
     .stats-row { grid-template-columns: repeat(2, 1fr); }
-    .grid { grid-template-columns: 1fr; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
     .site-nav { padding: 20px 24px 0; }
     .site-nav-links a:not(.site-nav-cta) { display: none; }
     .site-nav-toggle { display: flex; }
@@ -479,6 +479,9 @@
     .site-nav-logo { font-size: 1rem; }
     .macro-back { padding: 24px 24px 0; }
     .macro-divider { margin: 0 24px; }
+  }
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 500px) {
     .stats-row { grid-template-columns: 1fr 1fr; }

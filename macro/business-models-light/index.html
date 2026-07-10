@@ -202,7 +202,6 @@
 
   @media (max-width: 800px) {
     .dimensions-grid { grid-template-columns: 1fr 1fr; }
-    .biz-detail-inner { grid-template-columns: 1fr; }
     .site-nav { padding: 20px 24px 0; }
     .site-nav-links a:not(.site-nav-cta) { display: none; }
     .site-nav-toggle { display: flex; }
@@ -210,6 +209,9 @@
     .site-nav-logo { font-size: 1rem; }
     .macro-back { padding: 24px 24px 0; }
     .macro-divider { margin: 0 24px; }
+  }
+  @media (max-width: 640px) {
+    .biz-detail-inner { grid-template-columns: 1fr; }
   }
   @media (max-width: 500px) {
     .dimensions-grid { grid-template-columns: 1fr; }
