@@ -64,6 +64,15 @@ Every page lives at `[slug]/index.html` so GitHub Pages serves it without a `.ht
 - The `disclaimer` paragraph in financial articles uses `.article-disclaimer` class
 - Every page carries `meta name="description"` + Open Graph tags (`og:type`, `og:title`, `og:description`, `og:image`, `og:url`) + `twitter:card` in `<head>`, so links shared on LinkedIn/Slack/etc. render a proper preview. `og:image` defaults to `/anthony-prajogo-profile-picture.jpg` for pages without a dedicated hero/thumbnail image. New pages should follow this pattern from the start.
 
+## Testing a new or changed page
+
+Always check mobile and tablet, not just desktop, before calling a page done — this site has no build step to catch layout bugs, and a couple of them are invisible unless you specifically go looking:
+
+- **Check real breakpoints, not just "does it look fine on desktop."** At minimum test ~375px, ~428px, ~768px, and ~1024px widths (a quick Playwright script driving headless Chromium works — `/opt/pw-browsers/chromium-*/chrome-linux/chrome` is preinstalled in Claude Code's sandboxed environments). Block `fonts.googleapis.com` requests in the test (`page.route(...).abort()`) — the sandbox has no real internet access, and waiting on that request can make `page.goto` hang or time out.
+- **`document.documentElement.scrollWidth > innerWidth` is not sufficient on its own.** `.panel` uses `overflow: hidden`, which silently *clips* overflowing descendant content instead of producing a document-level horizontal scrollbar — so this check can report "no overflow" while text is genuinely being cut off inside the panel. Also check individual elements likely to be wide (anything with `white-space: nowrap`, grids/flex rows with several items) via `element.scrollWidth` vs. its own `clientWidth`, or by comparing `getBoundingClientRect().right` against `.panel`'s right edge.
+- **Take an actual screenshot at each breakpoint and look at it.** Automated geometry checks miss things a human glance catches instantly (e.g. clipped mid-word text still technically "fits" in scrollWidth terms if a sibling with `overflow:hidden` cropped it first).
+- **Watch for the flex-item-shrink-to-fit trap when nesting old content into `.panel`.** `.panel` is `display:flex; flex-direction:column`. Any direct (or wrapped) child that still carries its own `max-width: Npx; margin: 0 auto;` (a pattern meant for centering inside a plain `<body>`) will size itself via shrink-to-fit instead of stretching to the panel's width once it's a flex item — and if any descendant has unbreakable content (`white-space: nowrap` labels, wide grid tracks), the whole subtree can balloon past the viewport width with no visible page-level scrollbar (silently clipped, per the point above). Fix by dropping the redundant `margin: 0 auto` (and usually the `max-width` too) from content once it lives inside `.panel` — the panel already centers and caps the width.
+
 ## Custom domain
 
 Domain: anthonyprajogo.com → configure via GitHub Pages settings + DNS CNAME record pointing to `anthonyprajogo.github.io`

@@ -191,8 +191,6 @@
   .macro-back a:hover { color: var(--green); }
 
   .page {
-    max-width: 1400px;
-    margin: 0 auto;
     padding: 32px 5vw 0;
   }
 
@@ -777,6 +775,9 @@
     .stats { grid-template-columns: repeat(2, 1fr); }
     .detail .body { grid-template-columns: 1fr; }
     .row .body { grid-template-columns: 1fr; }
+    /* second eyebrow label (the hint text) is decorative - drop it rather
+       than let it clip silently against .panel's overflow:hidden */
+    .section-rule .eb:nth-of-type(2) { display: none; }
   }
 </style>
 </head>
