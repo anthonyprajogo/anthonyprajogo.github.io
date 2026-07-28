@@ -30,7 +30,8 @@ Every page lives at `[slug]/index.html` so GitHub Pages serves it without a `.ht
 │   ├── tech-roles-by-industry-light/index.html
 │   ├── nz-job-market-light/index.html
 │   ├── business-models-light/index.html
-│   └── dining-trends/index.html
+│   ├── dining-trends/index.html
+│   └── electricity-industry/index.html
 ├── about/index.html
 └── contact/index.html
 ```
@@ -48,9 +49,11 @@ Every page lives at `[slug]/index.html` so GitHub Pages serves it without a `.ht
 
 ## Adding a new Macro resource
 
-1. Create the resource at `macro/[slug]/index.html`
+1. Create the resource at `macro/[slug]/index.html`, using an existing resource (e.g. `macro/nz-political-system/index.html`) as the template for the site-standard nav/header/footer — not the bespoke chrome of whichever source file you're starting from
 2. Add a `.macro-card` entry in `macro/index.html` — follow the data-tags/data-date/data-name pattern
-3. Tags: `tag-tech`, `tag-finance`, `tag-governance`, `tag-trade`, `tag-society`
+3. Tags: `tag-tech`, `tag-finance`, `tag-governance`, `tag-trade`, `tag-society`. Each card takes **1-3 tags** (comma-separated in `data-tags`, one `.macro-tag` span per tag) — only tag a piece with a theme it substantively covers, don't stuff tags to widen reach. The filter matches on ANY tag present (OR, not AND).
+4. Add `meta name="description"` + Open Graph (`og:title`, `og:description`, `og:image`, `og:url`) + `twitter:card` tags to the page `<head>` — every page on the site carries these now. `og:image` should be the resource's own card thumbnail (from `macro/images/`); fall back to `/anthony-prajogo-profile-picture.jpg` only if there's no dedicated image.
+5. If you add a thumbnail image for the card, name it descriptively (e.g. `electricity-transmission-towers-sunset.jpg`, not `IMG_1234.jpg`) and keep it in the same size/weight range as the existing images in `macro/images/` (~1000px wide, well under 100KB).
 
 ## Conventions
 
@@ -59,6 +62,7 @@ Every page lives at `[slug]/index.html` so GitHub Pages serves it without a `.ht
 - No JavaScript frameworks; vanilla JS only where needed (filter/sort on index pages)
 - Images: profile photo lives at root; article images are external URLs or TBD
 - The `disclaimer` paragraph in financial articles uses `.article-disclaimer` class
+- Every page carries `meta name="description"` + Open Graph tags (`og:type`, `og:title`, `og:description`, `og:image`, `og:url`) + `twitter:card` in `<head>`, so links shared on LinkedIn/Slack/etc. render a proper preview. `og:image` defaults to `/anthony-prajogo-profile-picture.jpg` for pages without a dedicated hero/thumbnail image. New pages should follow this pattern from the start.
 
 ## Custom domain
 

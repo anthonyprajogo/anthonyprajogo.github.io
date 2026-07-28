@@ -1,0 +1,2467 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Electricity Industry - How Power Actually Moves</title>
+<meta name="description" content="A field guide to the electricity value chain - generation, transmission, distribution, retail - explaining who profits, who pays, and what gets built next.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Electricity Industry: How Power Actually Moves">
+<meta property="og:description" content="A field guide to the electricity value chain - generation, transmission, distribution, retail - explaining who profits, who pays, and what gets built next.">
+<meta property="og:image" content="https://anthonyprajogo.com/macro/images/electricity-transmission-towers-sunset.jpg">
+<meta property="og:url" content="https://anthonyprajogo.com/macro/electricity-industry/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Electricity Industry: How Power Actually Moves">
+<meta name="twitter:description" content="A field guide to the electricity value chain - generation, transmission, distribution, retail - explaining who profits, who pays, and what gets built next.">
+<meta name="twitter:image" content="https://anthonyprajogo.com/macro/images/electricity-transmission-towers-sunset.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     ELECTRICITY INDUSTRY - page-level styles
+     Macro design system, light mode. Self-contained.
+     ============================================================ */
+
+  :root {
+    --bg: #F4F1EA;
+    --surface: #FAF8F2;
+    --surface-2: #FFFFFF;
+    --ink: #1E1C14;
+    --ink-mid: #6E6A58;
+    --ink-light: #A09A88;
+    --rule: #DDD8CC;
+    --green: #5C9E48;
+    --green-pale: #EBF5E6;
+    --teal: #3A5C6A;
+    --font-serif: 'Libre Baskerville', serif;
+    --font-sans: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    background: #ffffff;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 16px 0;
+  }
+
+  .panel {
+    background: var(--bg);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 1320px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    box-shadow: 0 2px 24px rgba(30,28,20,0.06);
+    margin-bottom: 16px;
+  }
+
+  /* ── SITE NAV ─────────────────────────────────────── */
+  .site-nav-toggle-checkbox { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+  .site-nav {
+    background: var(--bg);
+    padding: 20px 56px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: relative;
+    z-index: 999;
+  }
+  .site-nav-logo {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .site-nav-logo:hover { color: var(--green); }
+  .site-nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+  .site-nav-links a {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .site-nav-links a:hover { color: var(--ink); background: var(--green-pale); }
+  .site-nav-links a.active {
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--ink-light);
+  }
+  .site-nav-links a.site-nav-cta {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 7px 18px;
+    font-weight: 500;
+    border-radius: 6px;
+    margin-left: 8px;
+  }
+  .site-nav-links a.site-nav-cta:hover { background: var(--green); }
+
+  .site-nav-toggle {
+    display: none;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: var(--green);
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 8px;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .site-nav-toggle:hover { background: var(--ink); }
+  .site-nav-toggle span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18px;
+    height: 2px;
+    background: #fff;
+    border-radius: 1px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .site-nav-toggle span:nth-child(1) { transform: translate(-50%, calc(-50% - 6px)); }
+  .site-nav-toggle span:nth-child(2) { transform: translate(-50%, -50%); }
+  .site-nav-toggle span:nth-child(3) { transform: translate(-50%, calc(-50% + 6px)); }
+
+  .site-nav-toggle-checkbox:checked ~ .site-nav .site-nav-toggle span:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
+  .site-nav-toggle-checkbox:checked ~ .site-nav .site-nav-toggle span:nth-child(2) { opacity: 0; }
+  .site-nav-toggle-checkbox:checked ~ .site-nav .site-nav-toggle span:nth-child(3) { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  .site-nav-mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 998;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .site-nav-toggle-checkbox:checked ~ .site-nav-mobile-menu { display: flex; }
+  .site-nav-mobile-menu a {
+    font-family: var(--font-serif);
+    font-size: 1.7rem;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 14px 8px;
+    transition: color 0.15s;
+  }
+  .site-nav-mobile-menu a:hover { color: var(--green); }
+  .site-nav-mobile-menu a.active { color: var(--green); }
+  body:has(.site-nav-toggle-checkbox:checked) { overflow: hidden; }
+
+  @media (max-width: 860px) {
+    .site-nav { padding: 20px 24px 0; }
+    .site-nav-links a:not(.site-nav-cta) { display: none; }
+    .site-nav-toggle { display: flex; }
+    .site-nav-mobile-menu { padding: 4px 24px 16px; }
+    .site-nav-logo { font-size: 1rem; }
+    .macro-back { padding: 24px 24px 0; }
+  }
+
+  /* ── BACKLINK ─────────────────────────────────────── */
+  .macro-back { padding: 24px 56px 0; }
+  .macro-back a {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .macro-back a:hover { color: var(--green); }
+
+  .page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 5vw 0;
+  }
+
+  /* ── HEADER ───────────────────────────────────────── */
+  header {
+    padding: 20px 56px 32px;
+  }
+  header h1 {
+    font-family: var(--font-serif);
+    font-size: 2.6rem;
+    font-weight: 400;
+    line-height: 1.1;
+    max-width: 760px;
+    margin-bottom: 10px;
+  }
+  header h1 em {
+    font-style: italic;
+    color: var(--green);
+  }
+  header .subtitle {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    max-width: 580px;
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+  .header-date {
+    font-family: var(--font-mono); font-size: 0.75rem;
+    letter-spacing: 0.06em; color: var(--ink-light);
+  }
+  .macro-divider { border: none; border-top: 1px solid var(--rule); margin: 0 56px; }
+
+  @media (max-width: 800px) {
+    .site-nav { padding: 20px 24px 0; }
+    header { padding: 20px 24px 32px; }
+    .macro-divider { margin: 0 24px; }
+    header h1 { font-size: 1.9rem; }
+  }
+
+  /* ── INTRO ────────────────────────────────────────── */
+  .intro {
+    padding: 36px 0 8px;
+    max-width: 720px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--ink-mid);
+    line-height: 1.75;
+  }
+  .intro strong { color: var(--ink); font-weight: 500; }
+
+  /* ── SECTION HEADER ──────────────────────────────── */
+  .section-rule {
+    display: flex; align-items: center; gap: 18px;
+    margin: 56px 0 22px;
+  }
+  .section-rule .eb {
+    font-family: var(--font-mono); font-size: 0.66rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-light); white-space: nowrap;
+  }
+  .section-rule .line { flex: 1; height: 1px; background: var(--rule); }
+
+  .section-head {
+    margin-bottom: 22px;
+    display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: 18px;
+  }
+  .section-head h2 {
+    font-family: var(--font-serif); font-size: 1.6rem;
+    font-weight: 400; line-height: 1.2;
+  }
+  .section-head h2 em { font-style: italic; color: var(--green); }
+  .section-head .lede {
+    font-family: var(--font-sans); font-size: 0.86rem;
+    color: var(--ink-mid); max-width: 520px; line-height: 1.65;
+  }
+
+  /* ── STATS BAR ────────────────────────────────────── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 32px;
+  }
+  .stat {
+    background: var(--surface);
+    padding: 22px 22px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat::after {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--green);
+    transform: scaleY(0); transform-origin: bottom;
+    transition: transform 0.2s ease;
+  }
+  .stat:hover { background: var(--surface-2); }
+  .stat:hover::after { transform: scaleY(1); }
+  .stat .label {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-light); margin-bottom: 12px;
+  }
+  .stat .value {
+    font-family: var(--font-serif); font-size: 1.55rem;
+    font-weight: 400; line-height: 1.05; color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .stat .value .unit {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    color: var(--ink-mid); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-left: 4px;
+  }
+  .stat .note {
+    font-family: var(--font-sans); font-size: 0.74rem;
+    color: var(--ink-mid); line-height: 1.5;
+  }
+
+  /* ── CENTREPIECE: SVG SCENE ───────────────────────── */
+  .scene-wrap {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    margin-top: 12px;
+  }
+  .stage-rail {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .stage-rail .stage-cell {
+    padding: 18px 22px 16px;
+    display: flex; flex-direction: column; gap: 6px;
+    min-width: 0;
+    background: var(--surface);
+    position: relative;
+  }
+  .stage-rail .stage-num {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.2em; color: var(--green);
+    text-transform: uppercase;
+  }
+  .stage-rail .stage-label {
+    font-family: var(--font-serif); font-size: 1.15rem;
+    font-weight: 700; color: var(--ink); line-height: 1.1;
+  }
+  .stage-rail .stage-tag {
+    font-family: var(--font-sans); font-size: 0.74rem;
+    font-style: italic; color: var(--ink-mid);
+    line-height: 1.4;
+  }
+  .scene-hint {
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 10px; padding: 10px 18px;
+    border-bottom: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    background: var(--surface);
+  }
+  .scene-hint .htext {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    letter-spacing: 0.14em; color: var(--green);
+    text-transform: uppercase; font-weight: 500;
+  }
+  .scene-hint .arrow {
+    color: var(--green); font-size: 0.95rem;
+    animation: nudge 1.4s ease-in-out infinite;
+  }
+  @keyframes nudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(3px); }
+  }
+  @media (max-width: 760px) {
+    .stage-rail { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .scene {
+    width: 100%;
+    display: block;
+    background: linear-gradient(180deg, #F4EFE3 0%, #F4F1EA 70%, #EFEBDD 100%);
+  }
+
+  /* SVG element states */
+  .scene .clickable {
+    cursor: pointer;
+    transition: opacity 0.25s ease, filter 0.25s ease;
+  }
+  .scene.has-active .clickable:not(.active) {
+    opacity: 0.42;
+  }
+  .scene .clickable.active .stroke,
+  .scene .clickable.active .accent-stroke { stroke: var(--green); }
+  .scene .clickable.active .glow {
+    opacity: 1;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  .scene .glow { opacity: 0; transition: opacity 0.25s ease; }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+
+  /* Flowing electrons on transmission lines */
+  .flow-line {
+    fill: none;
+    stroke: var(--green);
+    stroke-width: 1.4;
+    stroke-dasharray: 2 9;
+    stroke-linecap: round;
+    opacity: 0.65;
+    animation: flow-dash 4s linear infinite;
+  }
+  @keyframes flow-dash {
+    to { stroke-dashoffset: -110; }
+  }
+
+  /* (Old SVG stage-label/stage-num classes removed - were colliding with .stage-rail) */
+
+  /* ── DETAIL PANEL ────────────────────────────────── */
+  .detail {
+    border-top: 1px solid var(--rule);
+    padding: 28px 28px 30px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 36px;
+    min-height: 260px;
+    transition: opacity 0.25s ease;
+  }
+  .detail.transitioning { opacity: 0; }
+  .detail .meta {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .detail .meta .num {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.16em; color: var(--green);
+  }
+  .detail .meta h3 {
+    font-family: var(--font-serif); font-size: 1.5rem;
+    font-weight: 400; line-height: 1.15; color: var(--ink);
+  }
+  .detail .meta h3 em { font-style: italic; color: var(--green); }
+  .detail .meta .stage-tag {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 3px 8px; border: 1px solid var(--green);
+    color: var(--green); background: var(--green-pale); align-self: flex-start;
+  }
+
+  .detail .body {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 28px 36px;
+  }
+  .detail .body .field {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .detail .body .field .k {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-light);
+  }
+  .detail .body .field .v {
+    font-family: var(--font-sans); font-size: 0.86rem;
+    color: var(--ink-mid); line-height: 1.65;
+  }
+  .detail .body .field .v strong {
+    color: var(--ink); font-weight: 500;
+  }
+  .detail .summary {
+    grid-column: 1 / -1;
+    font-family: var(--font-sans); font-size: 0.92rem;
+    color: var(--ink); line-height: 1.7;
+  }
+  .detail .summary em { color: var(--green); font-style: italic; }
+
+  .detail-hint {
+    grid-column: 1 / -1;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-mid);
+    line-height: 1.6;
+    align-self: center;
+  }
+  .detail-hint .arrow { color: var(--green); margin-right: 8px; }
+
+  /* ── PLAYERS / ROWS ──────────────────────────────── */
+  .empty-state {
+    padding: 32px 24px;
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    font-style: italic;
+  }
+  .players-tabs {
+    display: flex; gap: 1px; flex-wrap: wrap;
+    margin-top: 4px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .ptab {
+    background: var(--surface);
+    padding: 10px 18px;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.15s ease, color 0.15s ease;
+    flex: 1;
+    text-align: center;
+    min-width: 130px;
+  }
+  .ptab:hover { background: var(--surface-2); color: var(--ink); }
+  .ptab.active {
+    background: var(--ink); color: var(--bg);
+  }
+  .ptab .count {
+    margin-left: 6px; color: var(--ink-light);
+    font-size: 0.6rem;
+  }
+  .ptab.active .count { color: rgba(244,241,234,0.5); }
+
+  .rowlist {
+    display: flex; flex-direction: column; gap: 1.5px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-top: none;
+  }
+  .row {
+    background: var(--surface);
+    padding: 18px 24px;
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 18px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s ease;
+  }
+  .row:hover { background: var(--surface-2); }
+  .row.open { background: white; }
+  .row::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--green);
+    transform: scaleY(0); transform-origin: bottom;
+    transition: transform 0.2s ease;
+  }
+  .row:hover::before, .row.open::before { transform: scaleY(1); }
+  .row .idx {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    letter-spacing: 0.12em; color: var(--green);
+  }
+  .row .name {
+    font-family: var(--font-serif); font-size: 1.05rem;
+    font-weight: 700; line-height: 1.2; color: var(--ink);
+  }
+  .row .nat {
+    font-family: var(--font-mono); font-size: 0.66rem;
+    letter-spacing: 0.12em; color: var(--ink-mid);
+    text-transform: uppercase;
+  }
+  .row .role {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 9px; border: 1px solid var(--rule);
+    color: var(--ink-light); white-space: nowrap;
+  }
+  .row .toggle {
+    font-family: var(--font-mono); font-size: 1.1rem;
+    color: var(--ink-light);
+    transition: color 0.15s ease, transform 0.25s ease;
+    width: 16px; text-align: center;
+  }
+  .row.open .toggle { color: var(--green); transform: rotate(45deg); }
+  .row .body {
+    grid-column: 2 / -1;
+    display: none;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    margin-top: 4px;
+  }
+  .row.open .body { display: grid; }
+  .row .body {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px 36px;
+  }
+  .row .body .field { display: flex; flex-direction: column; gap: 4px; }
+  .row .body .field .k {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-light);
+  }
+  .row .body .field .v {
+    font-family: var(--font-sans); font-size: 0.84rem;
+    color: var(--ink-mid); line-height: 1.65;
+  }
+  .row .body .field .v strong { color: var(--ink); font-weight: 500; }
+
+  /* ── TENSIONS ─────────────────────────────────────── */
+  .tensions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .tcard {
+    background: var(--surface);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .tcard::after {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--green);
+  }
+  .tcard .viz {
+    height: 200px;
+    background: #EFEAD8;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .tcard .viz svg { width: 100%; height: 100%; display: block; }
+  .tcard .vlabel {
+    position: absolute; top: 14px; left: 18px;
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-light);
+  }
+  .tcard .content {
+    padding: 24px 28px 28px;
+    display: flex; flex-direction: column;
+    flex: 1;
+  }
+  .tcard .tnum {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: var(--green); letter-spacing: 0.16em; margin-bottom: 12px;
+  }
+  .tcard .tname {
+    font-family: var(--font-serif); font-size: 1.25rem;
+    font-weight: 700; line-height: 1.2; margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .tcard .ttag {
+    font-family: var(--font-sans); font-size: 0.86rem;
+    color: var(--ink-mid); font-style: italic; line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .tcard .tbody {
+    font-family: var(--font-sans); font-size: 0.85rem;
+    color: var(--ink-mid); line-height: 1.7;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+  .tcard .tbody strong { color: var(--ink); font-weight: 500; }
+  .tcard .positions {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .tcard .pos {
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    position: relative;
+  }
+  .tcard .pos.a { border-left: 3px solid var(--green); }
+  .tcard .pos.b { border-left: 3px solid var(--teal); }
+  .tcard .pos .plabel {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .tcard .pos.a .plabel { color: var(--green); }
+  .tcard .pos.b .plabel { color: var(--teal); }
+  .tcard .pos .ptext {
+    font-family: var(--font-sans); font-size: 0.8rem;
+    color: var(--ink-mid); line-height: 1.6;
+  }
+  .tcard .pos .ptext strong { color: var(--ink); font-weight: 500; }
+  .tcard .where {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-sans); font-size: 0.82rem;
+    color: var(--ink-mid); line-height: 1.65; font-style: italic;
+  }
+  .tcard .where .wlabel {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-light); font-style: normal;
+    display: block; margin-bottom: 4px;
+  }
+  @media (max-width: 1100px) {
+    .tensions { grid-template-columns: 1fr; }
+    .tcard .positions { grid-template-columns: 1fr; }
+  }
+
+  /* ── TAKEAWAY ─────────────────────────────────────── */
+  .takeaway {
+    margin-top: 36px;
+    padding: 22px 26px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    display: flex; gap: 16px;
+  }
+  .takeaway .icon {
+    font-size: 16px; color: var(--teal); margin-top: 3px;
+  }
+  .takeaway .ttext {
+    font-family: var(--font-sans); font-size: 0.92rem;
+    line-height: 1.75; color: var(--ink-mid);
+  }
+  .takeaway .ttext strong { color: var(--ink); font-weight: 500; }
+
+  /* ── FOOTER ───────────────────────────────────────── */
+  footer {
+    background: var(--bg);
+    padding: 18px 56px;
+    margin-top: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 56px; right: 56px;
+    height: 1px;
+    background: var(--rule);
+  }
+  .footer-text {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-light);
+    text-decoration: none;
+  }
+  .footer-left { display: flex; align-items: center; gap: 12px; }
+  .footer-link { transition: color 0.15s; }
+  .footer-link:hover { color: var(--ink-mid); }
+  .footer-totop {
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-light);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .footer-totop:hover { color: var(--ink-mid); border-color: var(--ink-mid); }
+  @media (max-width: 800px) {
+    footer { padding: 18px 24px; flex-direction: column; gap: 6px; text-align: center; }
+    footer::before { left: 24px; right: 24px; }
+  }
+
+  /* ── RESPONSIVE ──────────────────────────────────── */
+  @media (max-width: 1100px) {
+    .stats { grid-template-columns: repeat(3, 1fr); }
+    .stat:nth-child(4), .stat:nth-child(5) { border-top: 1px solid var(--rule); }
+    .detail { grid-template-columns: 1fr; gap: 22px; }
+    .row { grid-template-columns: 28px minmax(0, 1fr) auto; }
+    .row .role { font-size: 0.55rem; padding: 3px 7px; }
+    .row .body { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .detail .body { grid-template-columns: 1fr; }
+    .row .body { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="panel">
+
+<input type="checkbox" id="site-nav-toggle-checkbox" class="site-nav-toggle-checkbox">
+<nav class="site-nav">
+  <a href="/" class="site-nav-logo">Anthony Prajogo</a>
+  <ul class="site-nav-links">
+    <li><a href="/considered/">Considered</a></li>
+    <li><a href="/macro/" class="active">Macro</a></li>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/contact/" class="site-nav-cta">Contact</a></li>
+  </ul>
+  <label for="site-nav-toggle-checkbox" class="site-nav-toggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </label>
+</nav>
+<div class="site-nav-mobile-menu">
+  <a href="/considered/">Considered</a>
+  <a href="/macro/" class="active">Macro</a>
+  <a href="/about/">About</a>
+  <a href="/contact/">Contact</a>
+</div>
+
+<div class="macro-back">
+  <a href="/macro/">← Macro</a>
+</div>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header>
+  <h1>The Electricity Industry: <em>How Power Actually Moves</em></h1>
+  <p class="subtitle">A field guide to the value chain - generation, transmission, distribution, retail - and the structural tensions that decide who profits, who pays, and what gets built next.</p>
+  <span class="header-date">April 2026</span>
+</header>
+
+<hr class="macro-divider" />
+
+<div class="page">
+
+
+  <!-- ============================================================
+       INTRO
+       ============================================================ -->
+  <p class="intro">
+    Electricity is the most consequential commodity in the modern economy - and most people don't stop to question the infrastructure that makes it all possible. It cannot be stored at scale, must be produced at the same instant it is consumed, and travels through a physical network that took a century to build and cannot be rerouted in a hurry. <strong>Every electron a household uses has passed through four distinct businesses on its way to the kettle.</strong> This page walks the chain.
+  </p>
+
+  <!-- ============================================================
+       STATS BAR
+       ============================================================ -->
+  <div class="section-rule">
+    <span class="eb">Grounding numbers</span>
+    <div class="line"></div>
+    <span class="eb">2025 estimates</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="label">Global generation</div>
+      <div class="value">30,800 <span class="unit">TWh / yr</span></div>
+      <div class="note">≈ 2× the 2000 figure. Each TWh runs ~95,000 average homes for a year.</div>
+    </div>
+    <div class="stat">
+      <div class="label">Fossil share</div>
+      <div class="value">~59 <span class="unit">% of supply</span></div>
+      <div class="note">Coal, gas, oil. Was 65% in 2010 - falling ~0.5pt/year.</div>
+    </div>
+    <div class="stat">
+      <div class="label">Renewables + nuclear</div>
+      <div class="value">~41 <span class="unit">% of supply</span></div>
+      <div class="note">Hydro 15%, nuclear 9%, wind+solar 14%, other 3%.</div>
+    </div>
+    <div class="stat">
+      <div class="label">Industry market size</div>
+      <div class="value">~$2.4 <span class="unit">trillion</span></div>
+      <div class="note">Roughly the GDP of France. Gen + T&amp;D + retail, ex-fuel.</div>
+    </div>
+    <div class="stat">
+      <div class="label">Data-centre demand</div>
+      <div class="value">~415 <span class="unit">TWh / yr</span></div>
+      <div class="note">≈ all of the UK's annual demand. Forecast to ~double by 2030.</div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       CENTREPIECE: SVG SCENE
+       ============================================================ -->
+  <div class="section-rule">
+    <span class="eb">The Physical Chain</span>
+    <div class="line"></div>
+    <span class="eb">Click any element</span>
+  </div>
+
+  <div class="section-head">
+    <h2>Where electrons <em>actually go</em></h2>
+  </div>
+
+  <div class="scene-wrap">
+
+    <div class="stage-rail">
+      <div class="stage-cell">
+        <span class="stage-num">Stage 01</span>
+        <span class="stage-label">Generation</span>
+      </div>
+      <div class="stage-cell">
+        <span class="stage-num">Stage 02</span>
+        <span class="stage-label">Transmission</span>
+      </div>
+      <div class="stage-cell">
+        <span class="stage-num">Stage 03</span>
+        <span class="stage-label">Distribution</span>
+      </div>
+      <div class="stage-cell">
+        <span class="stage-num">Stage 04</span>
+        <span class="stage-label">Consumption</span>
+      </div>
+    </div>
+    <div class="scene-hint">
+      <span class="arrow">→</span>
+      <span class="htext">Click any element in the landscape</span>
+    </div>
+
+    <svg class="scene" id="scene" viewBox="0 0 1600 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Electricity value chain landscape">
+
+      <!-- ===================== BACKGROUND LAYERS ===================== -->
+      <defs>
+        <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#F4EFE3"/>
+          <stop offset="60%" stop-color="#F4F1EA"/>
+          <stop offset="100%" stop-color="#EFEAD8"/>
+        </linearGradient>
+        <linearGradient id="ground" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#E5DFCD"/>
+          <stop offset="100%" stop-color="#D8D2BE"/>
+        </linearGradient>
+        <!-- soft green glow used when an element is active -->
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="6" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- sky -->
+      <rect x="0" y="0" width="1600" height="430" fill="url(#sky)"/>
+
+      <!-- distant hills -->
+      <path d="M0,360 C120,330 220,340 340,330 C460,320 540,345 660,335 C780,325 880,340 1000,330 C1120,320 1240,338 1380,330 C1500,322 1600,335 1600,335 L1600,430 L0,430 Z"
+            fill="#E2DCC9" opacity="0.85"/>
+      <path d="M0,395 C140,375 280,390 420,382 C560,374 700,392 840,386 C980,380 1140,395 1300,388 C1440,382 1600,395 1600,395 L1600,430 L0,430 Z"
+            fill="#D8D2BC"/>
+
+      <!-- subtle teal water strip in mid-distance -->
+      <rect x="0" y="406" width="1600" height="6" fill="#3A5C6A" opacity="0.13"/>
+
+      <!-- ground -->
+      <rect x="0" y="430" width="1600" height="130" fill="url(#ground)"/>
+
+      <!-- section bands removed -->
+      <!-- section dividers removed -->
+      <!-- stage badges removed - replaced by .stage-rail above the SVG -->
+
+
+      <!-- ===================== GENERATION (left) ===================== -->
+      <g class="stage" transform="translate(10, 0) scale(0.85, 1)">
+
+      <!-- ── NUCLEAR (back-left) ── -->
+      <g class="clickable" data-id="nuclear" transform="translate(0, 60)">
+        <rect class="hit" x="30" y="70" width="205" height="295" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="130" cy="368" rx="110" ry="12" fill="#5C9E48" filter="url(#glow)"/>
+        <!-- cooling tower hyperboloid: built from path -->
+        <path class="stroke"
+              d="M65,210
+                 C70,250 60,310 50,360
+                 L160,360
+                 C150,310 140,250 145,210
+                 C140,200 120,195 105,195
+                 C90,195 70,200 65,210 Z"
+              fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.6"/>
+        <!-- top rim -->
+        <ellipse cx="105" cy="208" rx="40" ry="6" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.4"/>
+        <!-- rim shadow -->
+        <ellipse cx="105" cy="210" rx="40" ry="3" fill="#1E1C14" opacity="0.18"/>
+        <!-- vertical ribs -->
+        <path d="M82,208 C76,260 70,320 64,358" fill="none" stroke="#1E1C14" stroke-width="0.6" opacity="0.35"/>
+        <path d="M105,208 C103,260 102,320 100,358" fill="none" stroke="#1E1C14" stroke-width="0.6" opacity="0.35"/>
+        <path d="M128,208 C133,260 138,320 144,358" fill="none" stroke="#1E1C14" stroke-width="0.6" opacity="0.35"/>
+        <!-- horizontal mid band -->
+        <path d="M58,300 C75,295 135,295 152,300" fill="none" stroke="#1E1C14" stroke-width="0.6" opacity="0.3"/>
+        <!-- steam plume (subtle teal-tinted) -->
+        <path d="M75,200 C80,180 60,170 70,150 C82,135 70,120 88,108 C100,98 90,82 110,80
+                 C128,82 122,98 132,108 C148,120 138,135 148,150 C158,170 138,180 142,200 Z"
+              fill="#3A5C6A" opacity="0.10"/>
+        <path d="M85,200 C92,182 78,170 92,158 C108,145 100,128 116,118 C124,112 128,100 132,108
+                 C142,120 134,138 140,154 C146,170 130,182 134,200 Z"
+              fill="#3A5C6A" opacity="0.06"/>
+        <!-- containment dome adjacent (small) -->
+        <path d="M170,360 L170,330 C170,316 184,308 196,308 C208,308 222,316 222,330 L222,360 Z"
+              fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+        <ellipse cx="196" cy="308" rx="26" ry="14" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+        <line x1="196" y1="305" x2="196" y2="295" stroke="#1E1C14" stroke-width="1"/>
+      </g>
+
+      <!-- ── COAL / GAS PLANT ── -->
+      <g class="clickable" data-id="fossil" transform="translate(0, 25)">
+        <rect class="hit" x="245" y="160" width="210" height="240" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="350" cy="402" rx="125" ry="13" fill="#5C9E48" filter="url(#glow)"/>
+        <!-- main boiler block -->
+        <rect class="stroke" x="270" y="318" width="170" height="80" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.6"/>
+        <!-- boiler interior detail (rectangles like windows / bays) -->
+        <rect x="282" y="332" width="32" height="16" fill="#1E1C14" opacity="0.65"/>
+        <rect x="322" y="332" width="32" height="16" fill="#1E1C14" opacity="0.45"/>
+        <rect x="362" y="332" width="32" height="16" fill="#1E1C14" opacity="0.65"/>
+        <rect x="402" y="332" width="32" height="16" fill="#1E1C14" opacity="0.45"/>
+        <rect x="282" y="358" width="148" height="6" fill="#1E1C14" opacity="0.2"/>
+        <rect x="282" y="372" width="78" height="20" fill="#1E1C14" opacity="0.5"/>
+        <rect x="370" y="372" width="62" height="20" fill="#1E1C14" opacity="0.35"/>
+
+        <!-- two stacks -->
+        <rect class="stroke" x="296" y="232" width="22" height="86" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.4"/>
+        <rect x="296" y="246" width="22" height="3" fill="#1E1C14" opacity="0.4"/>
+        <rect x="296" y="270" width="22" height="3" fill="#1E1C14" opacity="0.4"/>
+        <rect x="296" y="294" width="22" height="3" fill="#1E1C14" opacity="0.4"/>
+        <rect x="294" y="228" width="26" height="6" fill="#1E1C14"/>
+
+        <rect class="stroke" x="392" y="218" width="22" height="100" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.4"/>
+        <rect x="392" y="232" width="22" height="3" fill="#1E1C14" opacity="0.4"/>
+        <rect x="392" y="258" width="22" height="3" fill="#1E1C14" opacity="0.4"/>
+        <rect x="392" y="284" width="22" height="3" fill="#1E1C14" opacity="0.4"/>
+        <rect x="390" y="214" width="26" height="6" fill="#1E1C14"/>
+
+        <!-- smoke -->
+        <ellipse cx="307" cy="218" rx="18" ry="9" fill="#1E1C14" opacity="0.10"/>
+        <ellipse cx="320" cy="200" rx="22" ry="11" fill="#1E1C14" opacity="0.08"/>
+        <ellipse cx="403" cy="204" rx="20" ry="10" fill="#1E1C14" opacity="0.10"/>
+        <ellipse cx="418" cy="186" rx="24" ry="12" fill="#1E1C14" opacity="0.07"/>
+        <ellipse cx="438" cy="170" rx="28" ry="13" fill="#1E1C14" opacity="0.05"/>
+
+        <!-- coal pile foreground -->
+        <path d="M250,398 L250,388 C260,380 280,380 300,388 L300,398 Z" fill="#1E1C14" opacity="0.7"/>
+      </g>
+
+      <!-- ── WIND TURBINES ── (shifted right within generation, smaller) -->
+      <g class="clickable" data-id="wind" transform="translate(0, 38)">
+        <rect class="hit" x="425" y="234" width="135" height="148" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="492" cy="385" rx="90" ry="13" fill="#5C9E48" filter="url(#glow)"/>
+
+        <!-- back turbine (small) -->
+        <g transform="translate(455,300)">
+          <line class="stroke" x1="0" y1="0" x2="0" y2="80" stroke="#1E1C14" stroke-width="1.6"/>
+          <circle cx="0" cy="0" r="2.8" fill="#1E1C14"/>
+          <g class="blades-back" style="transform-origin: 0 0;">
+            <path class="accent-stroke" d="M0,0 C-2,-10 -2,-22 0,-32" stroke="#1E1C14" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path class="accent-stroke" d="M0,0 C9,-5 18,-5 26,0" stroke="#1E1C14" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path class="accent-stroke" d="M0,0 C-9,5 -18,11 -26,19" stroke="#1E1C14" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- mid turbine (taller) -->
+        <g transform="translate(492,280)">
+          <line class="stroke" x1="0" y1="0" x2="0" y2="100" stroke="#1E1C14" stroke-width="2"/>
+          <circle cx="0" cy="0" r="3.4" fill="#1E1C14"/>
+          <g class="blades-mid" style="transform-origin: 0 0;">
+            <path class="accent-stroke" d="M0,0 C-2,-13 -2,-28 0,-42" stroke="#1E1C14" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <path class="accent-stroke" d="M0,0 C12,-7 24,-6 34,0" stroke="#1E1C14" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <path class="accent-stroke" d="M0,0 C-12,7 -24,15 -34,24" stroke="#1E1C14" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- right-back turbine (smallest) -->
+        <g transform="translate(522,308)">
+          <line class="stroke" x1="0" y1="0" x2="0" y2="72" stroke="#1E1C14" stroke-width="1.4"/>
+          <circle cx="0" cy="0" r="2.4" fill="#1E1C14"/>
+          <g class="blades-right" style="transform-origin: 0 0;">
+            <path class="accent-stroke" d="M0,0 C-2,-9 -2,-19 0,-28" stroke="#1E1C14" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+            <path class="accent-stroke" d="M0,0 C8,-4 15,-4 22,0" stroke="#1E1C14" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+            <path class="accent-stroke" d="M0,0 C-8,4 -15,10 -22,17" stroke="#1E1C14" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+          </g>
+        </g>
+      </g>
+
+      <!-- ── HYDRO DAM ── (between nuclear and coal, back-row) -->
+      <g class="clickable" data-id="hydro" transform="translate(0, 25)">
+        <rect class="hit" x="160" y="285" width="110" height="115" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="215" cy="402" rx="75" ry="12" fill="#5C9E48" filter="url(#glow)"/>
+        <!-- reservoir water (behind dam wall) -->
+        <path d="M170,300 C185,294 205,294 220,298 C235,302 250,300 262,298 L262,330 L170,330 Z"
+              fill="#3A5C6A" opacity="0.55" stroke="#1E1C14" stroke-width="0.8"/>
+        <!-- water surface ripples -->
+        <line x1="178" y1="306" x2="194" y2="306" stroke="#FAF8F2" stroke-width="0.5" opacity="0.7"/>
+        <line x1="208" y1="310" x2="226" y2="310" stroke="#FAF8F2" stroke-width="0.5" opacity="0.5"/>
+        <line x1="240" y1="304" x2="256" y2="304" stroke="#FAF8F2" stroke-width="0.5" opacity="0.6"/>
+        <!-- dam wall (curved arch) -->
+        <path class="stroke" d="M170,330 L170,396 C188,402 240,402 262,396 L262,330 Z"
+              fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.4"/>
+        <!-- dam crest detail -->
+        <line x1="170" y1="334" x2="262" y2="334" stroke="#1E1C14" stroke-width="0.6" opacity="0.6"/>
+        <!-- vertical ribs -->
+        <line x1="186" y1="334" x2="190" y2="396" stroke="#1E1C14" stroke-width="0.5" opacity="0.45"/>
+        <line x1="210" y1="334" x2="212" y2="398" stroke="#1E1C14" stroke-width="0.5" opacity="0.45"/>
+        <line x1="234" y1="334" x2="234" y2="398" stroke="#1E1C14" stroke-width="0.5" opacity="0.45"/>
+        <!-- spillway -->
+        <rect x="216" y="334" width="14" height="44" fill="#3A5C6A" opacity="0.35"/>
+        <path d="M218,378 C220,386 224,392 228,398 L218,398 Z" fill="#3A5C6A" opacity="0.5"/>
+        <!-- powerhouse at base -->
+        <rect class="stroke" x="222" y="386" width="32" height="14" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1"/>
+        <line x1="228" y1="390" x2="228" y2="398" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+        <line x1="238" y1="390" x2="238" y2="398" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+        <line x1="248" y1="390" x2="248" y2="398" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+      </g>
+
+      <!-- ── SOLAR FIELD ── (foreground left) -->
+      <g class="clickable" data-id="solar">
+        <rect class="hit" x="130" y="430" width="350" height="75" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="285" cy="510" rx="205" ry="20" fill="#5C9E48" filter="url(#glow)"/>
+        <!-- Five rows of panels at angle, foreground darker -->
+        <g class="solar-rows">
+          <!-- row 1 (back) -->
+          <g transform="translate(160,452)">
+            <polygon class="stroke" points="0,0 60,0 70,-18 10,-18" fill="#3A5C6A" opacity="0.85" stroke="#1E1C14" stroke-width="1"/>
+            <line x1="20" y1="-18" x2="14" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <line x1="35" y1="-18" x2="29" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <line x1="50" y1="-18" x2="44" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <rect x="32" y="0" width="2" height="6" fill="#1E1C14"/>
+          </g>
+          <g transform="translate(232,452)">
+            <polygon class="stroke" points="0,0 60,0 70,-18 10,-18" fill="#3A5C6A" opacity="0.85" stroke="#1E1C14" stroke-width="1"/>
+            <line x1="20" y1="-18" x2="14" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <line x1="35" y1="-18" x2="29" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <line x1="50" y1="-18" x2="44" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <rect x="32" y="0" width="2" height="6" fill="#1E1C14"/>
+          </g>
+          <g transform="translate(304,452)">
+            <polygon class="stroke" points="0,0 60,0 70,-18 10,-18" fill="#3A5C6A" opacity="0.85" stroke="#1E1C14" stroke-width="1"/>
+            <line x1="20" y1="-18" x2="14" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <line x1="35" y1="-18" x2="29" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <line x1="50" y1="-18" x2="44" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <rect x="32" y="0" width="2" height="6" fill="#1E1C14"/>
+          </g>
+          <g transform="translate(376,452)">
+            <polygon class="stroke" points="0,0 60,0 70,-18 10,-18" fill="#3A5C6A" opacity="0.85" stroke="#1E1C14" stroke-width="1"/>
+            <line x1="20" y1="-18" x2="14" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <line x1="35" y1="-18" x2="29" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <line x1="50" y1="-18" x2="44" y2="0" stroke="#FAF8F2" stroke-width="0.6" opacity="0.5"/>
+            <rect x="32" y="0" width="2" height="6" fill="#1E1C14"/>
+          </g>
+
+          <!-- row 2 (front, slightly larger) -->
+          <g transform="translate(140,490)">
+            <polygon class="stroke" points="0,0 70,0 82,-22 12,-22" fill="#3A5C6A" opacity="0.92" stroke="#1E1C14" stroke-width="1"/>
+            <line x1="22" y1="-22" x2="16" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <line x1="40" y1="-22" x2="34" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <line x1="58" y1="-22" x2="52" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <rect x="38" y="0" width="2" height="8" fill="#1E1C14"/>
+          </g>
+          <g transform="translate(224,490)">
+            <polygon class="stroke" points="0,0 70,0 82,-22 12,-22" fill="#3A5C6A" opacity="0.92" stroke="#1E1C14" stroke-width="1"/>
+            <line x1="22" y1="-22" x2="16" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <line x1="40" y1="-22" x2="34" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <line x1="58" y1="-22" x2="52" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <rect x="38" y="0" width="2" height="8" fill="#1E1C14"/>
+          </g>
+          <g transform="translate(308,490)">
+            <polygon class="stroke" points="0,0 70,0 82,-22 12,-22" fill="#3A5C6A" opacity="0.92" stroke="#1E1C14" stroke-width="1"/>
+            <line x1="22" y1="-22" x2="16" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <line x1="40" y1="-22" x2="34" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <line x1="58" y1="-22" x2="52" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <rect x="38" y="0" width="2" height="8" fill="#1E1C14"/>
+          </g>
+          <g transform="translate(392,490)">
+            <polygon class="stroke" points="0,0 70,0 82,-22 12,-22" fill="#3A5C6A" opacity="0.92" stroke="#1E1C14" stroke-width="1"/>
+            <line x1="22" y1="-22" x2="16" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <line x1="40" y1="-22" x2="34" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <line x1="58" y1="-22" x2="52" y2="0" stroke="#FAF8F2" stroke-width="0.7" opacity="0.55"/>
+            <rect x="38" y="0" width="2" height="8" fill="#1E1C14"/>
+          </g>
+        </g>
+        <!-- subtle green grass strip behind -->
+        <rect x="120" y="430" width="320" height="3" fill="#5C9E48" opacity="0.35"/>
+      </g>
+
+      <!-- ── GEOTHERMAL ── (foreground far-left) -->
+      <g class="clickable" data-id="geothermal">
+        <rect class="hit" x="0" y="410" width="130" height="100" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="65" cy="503" rx="75" ry="15" fill="#5C9E48" filter="url(#glow)"/>
+        <!-- small earth mound -->
+        <path class="stroke" d="M10,500 C28,478 50,468 70,470 C92,472 108,484 122,500 Z"
+              fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+        <!-- internal hatching to suggest rock layers -->
+        <line x1="22" y1="494" x2="36" y2="490" stroke="#1E1C14" stroke-width="0.5" opacity="0.45"/>
+        <line x1="44" y1="488" x2="64" y2="484" stroke="#1E1C14" stroke-width="0.5" opacity="0.45"/>
+        <line x1="78" y1="484" x2="98" y2="488" stroke="#1E1C14" stroke-width="0.5" opacity="0.45"/>
+        <!-- vent shaft (small dark hole) -->
+        <ellipse cx="64" cy="470" rx="5" ry="2" fill="#1E1C14" opacity="0.85"/>
+        <!-- steam plumes rising -->
+        <ellipse cx="64" cy="458" rx="8" ry="5" fill="#1E1C14" opacity="0.10"/>
+        <ellipse cx="68" cy="446" rx="10" ry="6" fill="#1E1C14" opacity="0.08"/>
+        <ellipse cx="62" cy="432" rx="12" ry="7" fill="#1E1C14" opacity="0.06"/>
+        <ellipse cx="70" cy="418" rx="14" ry="8" fill="#1E1C14" opacity="0.04"/>
+        <!-- small wellhead pipe -->
+        <rect class="stroke" x="92" y="478" width="12" height="20" fill="#FAF8F2" stroke="#1E1C14" stroke-width="0.9"/>
+        <rect x="90" y="476" width="16" height="3" fill="#1E1C14"/>
+        <!-- pipe to wellhead (curved) -->
+        <path d="M70,470 C82,472 90,476 98,478" fill="none" stroke="#1E1C14" stroke-width="1" opacity="0.7"/>
+        <!-- small steam from wellhead -->
+        <ellipse cx="98" cy="468" rx="5" ry="3" fill="#1E1C14" opacity="0.10"/>
+        <ellipse cx="100" cy="458" rx="6" ry="3.5" fill="#1E1C14" opacity="0.07"/>
+      </g>
+
+      <!-- transition: between generation and transmission, small ground-level pickup -->
+      <line x1="540" y1="430" x2="540" y2="430" stroke="none"/>
+
+
+      </g><!-- /stage-generation -->
+
+      <!-- ===================== TRANSMISSION (middle) ===================== -->
+      <g class="stage" transform="translate(28, 0) scale(0.95, 1)">
+      <g class="clickable" data-id="transmission">
+        <rect class="hit" x="545" y="180" width="535" height="260" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="800" cy="432" rx="275" ry="16" fill="#5C9E48" filter="url(#glow)"/>
+
+        <!-- TOWER 1 -->
+        <g transform="translate(580,240)">
+          <!-- legs -->
+          <line class="stroke" x1="-22" y1="190" x2="-6" y2="0" stroke="#1E1C14" stroke-width="1.8"/>
+          <line class="stroke" x1="22" y1="190" x2="6" y2="0" stroke="#1E1C14" stroke-width="1.8"/>
+          <line class="stroke" x1="-15" y1="190" x2="-4" y2="0" stroke="#1E1C14" stroke-width="0.9" opacity="0.6"/>
+          <line class="stroke" x1="15" y1="190" x2="4" y2="0" stroke="#1E1C14" stroke-width="0.9" opacity="0.6"/>
+          <!-- lattice cross-bracing -->
+          <line x1="-22" y1="190" x2="22" y2="190" stroke="#1E1C14" stroke-width="1"/>
+          <line x1="-19" y1="160" x2="19" y2="160" stroke="#1E1C14" stroke-width="0.9"/>
+          <line x1="-17" y1="130" x2="17" y2="130" stroke="#1E1C14" stroke-width="0.9"/>
+          <line x1="-14" y1="100" x2="14" y2="100" stroke="#1E1C14" stroke-width="0.9"/>
+          <line x1="-12" y1="70" x2="12" y2="70" stroke="#1E1C14" stroke-width="0.9"/>
+          <line x1="-10" y1="40" x2="10" y2="40" stroke="#1E1C14" stroke-width="0.9"/>
+          <!-- diagonals -->
+          <line x1="-22" y1="190" x2="19" y2="160" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="22" y1="190" x2="-19" y2="160" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="-19" y1="160" x2="17" y2="130" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="19" y1="160" x2="-17" y2="130" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="-17" y1="130" x2="14" y2="100" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="17" y1="130" x2="-14" y2="100" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="-14" y1="100" x2="12" y2="70" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="14" y1="100" x2="-12" y2="70" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="-12" y1="70" x2="10" y2="40" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="12" y1="70" x2="-10" y2="40" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <!-- crossarms -->
+          <line class="stroke" x1="-50" y1="50" x2="50" y2="50" stroke="#1E1C14" stroke-width="1.6"/>
+          <line class="stroke" x1="-40" y1="20" x2="40" y2="20" stroke="#1E1C14" stroke-width="1.6"/>
+          <line class="stroke" x1="-30" y1="-5" x2="30" y2="-5" stroke="#1E1C14" stroke-width="1.6"/>
+          <!-- insulators (small triangles) -->
+          <circle cx="-50" cy="54" r="2" fill="#1E1C14"/>
+          <circle cx="50" cy="54" r="2" fill="#1E1C14"/>
+          <circle cx="0" cy="54" r="2" fill="#1E1C14"/>
+          <circle cx="-40" cy="24" r="2" fill="#1E1C14"/>
+          <circle cx="40" cy="24" r="2" fill="#1E1C14"/>
+          <circle cx="-30" cy="-1" r="2" fill="#1E1C14"/>
+          <circle cx="30" cy="-1" r="2" fill="#1E1C14"/>
+          <!-- top peak -->
+          <line x1="0" y1="-5" x2="0" y2="-15" stroke="#1E1C14" stroke-width="1"/>
+        </g>
+
+        <!-- TOWER 2 (taller, mid) -->
+        <g transform="translate(800,210)">
+          <!-- legs -->
+          <line class="stroke" x1="-26" y1="220" x2="-7" y2="0" stroke="#1E1C14" stroke-width="2"/>
+          <line class="stroke" x1="26" y1="220" x2="7" y2="0" stroke="#1E1C14" stroke-width="2"/>
+          <line class="stroke" x1="-17" y1="220" x2="-4" y2="0" stroke="#1E1C14" stroke-width="1" opacity="0.6"/>
+          <line class="stroke" x1="17" y1="220" x2="4" y2="0" stroke="#1E1C14" stroke-width="1" opacity="0.6"/>
+          <!-- lattice -->
+          <line x1="-26" y1="220" x2="26" y2="220" stroke="#1E1C14" stroke-width="1.1"/>
+          <line x1="-22" y1="185" x2="22" y2="185" stroke="#1E1C14" stroke-width="1"/>
+          <line x1="-19" y1="150" x2="19" y2="150" stroke="#1E1C14" stroke-width="1"/>
+          <line x1="-16" y1="115" x2="16" y2="115" stroke="#1E1C14" stroke-width="1"/>
+          <line x1="-13" y1="80" x2="13" y2="80" stroke="#1E1C14" stroke-width="1"/>
+          <line x1="-10" y1="45" x2="10" y2="45" stroke="#1E1C14" stroke-width="1"/>
+          <!-- diagonals -->
+          <line x1="-26" y1="220" x2="22" y2="185" stroke="#1E1C14" stroke-width="0.6" opacity="0.7"/>
+          <line x1="26" y1="220" x2="-22" y2="185" stroke="#1E1C14" stroke-width="0.6" opacity="0.7"/>
+          <line x1="-22" y1="185" x2="19" y2="150" stroke="#1E1C14" stroke-width="0.6" opacity="0.7"/>
+          <line x1="22" y1="185" x2="-19" y2="150" stroke="#1E1C14" stroke-width="0.6" opacity="0.7"/>
+          <line x1="-19" y1="150" x2="16" y2="115" stroke="#1E1C14" stroke-width="0.6" opacity="0.7"/>
+          <line x1="19" y1="150" x2="-16" y2="115" stroke="#1E1C14" stroke-width="0.6" opacity="0.7"/>
+          <line x1="-16" y1="115" x2="13" y2="80" stroke="#1E1C14" stroke-width="0.6" opacity="0.7"/>
+          <line x1="16" y1="115" x2="-13" y2="80" stroke="#1E1C14" stroke-width="0.6" opacity="0.7"/>
+          <line x1="-13" y1="80" x2="10" y2="45" stroke="#1E1C14" stroke-width="0.6" opacity="0.7"/>
+          <line x1="13" y1="80" x2="-10" y2="45" stroke="#1E1C14" stroke-width="0.6" opacity="0.7"/>
+          <!-- crossarms -->
+          <line class="stroke" x1="-58" y1="55" x2="58" y2="55" stroke="#1E1C14" stroke-width="1.8"/>
+          <line class="stroke" x1="-46" y1="22" x2="46" y2="22" stroke="#1E1C14" stroke-width="1.8"/>
+          <line class="stroke" x1="-34" y1="-5" x2="34" y2="-5" stroke="#1E1C14" stroke-width="1.8"/>
+          <circle cx="-58" cy="60" r="2.4" fill="#1E1C14"/>
+          <circle cx="58" cy="60" r="2.4" fill="#1E1C14"/>
+          <circle cx="0" cy="60" r="2.4" fill="#1E1C14"/>
+          <circle cx="-46" cy="27" r="2.4" fill="#1E1C14"/>
+          <circle cx="46" cy="27" r="2.4" fill="#1E1C14"/>
+          <circle cx="-34" cy="0" r="2.4" fill="#1E1C14"/>
+          <circle cx="34" cy="0" r="2.4" fill="#1E1C14"/>
+          <line x1="0" y1="-5" x2="0" y2="-18" stroke="#1E1C14" stroke-width="1.2"/>
+        </g>
+
+        <!-- TOWER 3 -->
+        <g transform="translate(1020,250)">
+          <line class="stroke" x1="-22" y1="180" x2="-6" y2="0" stroke="#1E1C14" stroke-width="1.8"/>
+          <line class="stroke" x1="22" y1="180" x2="6" y2="0" stroke="#1E1C14" stroke-width="1.8"/>
+          <line class="stroke" x1="-15" y1="180" x2="-4" y2="0" stroke="#1E1C14" stroke-width="0.9" opacity="0.6"/>
+          <line class="stroke" x1="15" y1="180" x2="4" y2="0" stroke="#1E1C14" stroke-width="0.9" opacity="0.6"/>
+          <line x1="-22" y1="180" x2="22" y2="180" stroke="#1E1C14" stroke-width="1"/>
+          <line x1="-19" y1="150" x2="19" y2="150" stroke="#1E1C14" stroke-width="0.9"/>
+          <line x1="-17" y1="120" x2="17" y2="120" stroke="#1E1C14" stroke-width="0.9"/>
+          <line x1="-14" y1="90" x2="14" y2="90" stroke="#1E1C14" stroke-width="0.9"/>
+          <line x1="-12" y1="60" x2="12" y2="60" stroke="#1E1C14" stroke-width="0.9"/>
+          <line x1="-10" y1="30" x2="10" y2="30" stroke="#1E1C14" stroke-width="0.9"/>
+          <line x1="-22" y1="180" x2="19" y2="150" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="22" y1="180" x2="-19" y2="150" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="-19" y1="150" x2="17" y2="120" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="19" y1="150" x2="-17" y2="120" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="-17" y1="120" x2="14" y2="90" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="17" y1="120" x2="-14" y2="90" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="-14" y1="90" x2="12" y2="60" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="14" y1="90" x2="-12" y2="60" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="-12" y1="60" x2="10" y2="30" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line x1="12" y1="60" x2="-10" y2="30" stroke="#1E1C14" stroke-width="0.55" opacity="0.7"/>
+          <line class="stroke" x1="-50" y1="40" x2="50" y2="40" stroke="#1E1C14" stroke-width="1.6"/>
+          <line class="stroke" x1="-40" y1="15" x2="40" y2="15" stroke="#1E1C14" stroke-width="1.6"/>
+          <line class="stroke" x1="-30" y1="-8" x2="30" y2="-8" stroke="#1E1C14" stroke-width="1.6"/>
+          <circle cx="-50" cy="44" r="2" fill="#1E1C14"/>
+          <circle cx="50" cy="44" r="2" fill="#1E1C14"/>
+          <circle cx="0" cy="44" r="2" fill="#1E1C14"/>
+          <circle cx="-40" cy="19" r="2" fill="#1E1C14"/>
+          <circle cx="40" cy="19" r="2" fill="#1E1C14"/>
+          <circle cx="-30" cy="-4" r="2" fill="#1E1C14"/>
+          <circle cx="30" cy="-4" r="2" fill="#1E1C14"/>
+          <line x1="0" y1="-8" x2="0" y2="-18" stroke="#1E1C14" stroke-width="1"/>
+        </g>
+
+        <!-- TRANSMISSION CABLES (catenary curves between towers) -->
+        <!-- Tower 1 (580, top crossarm at y=240-5=235, +/-30) -> Tower 2 (800, y=210-5=205, +/-34) -->
+        <!-- 3 lines per crossarm position -->
+        <g class="cables">
+          <!-- top arm wires -->
+          <path class="stroke" d="M550,235 Q665,275 766,205" fill="none" stroke="#1E1C14" stroke-width="1.4"/>
+          <path class="stroke" d="M580,235 Q690,278 800,205" fill="none" stroke="#1E1C14" stroke-width="1.4"/>
+          <path class="stroke" d="M610,235 Q715,280 834,205" fill="none" stroke="#1E1C14" stroke-width="1.4"/>
+          <!-- mid arm -->
+          <path class="stroke" d="M540,260 Q665,310 754,232" fill="none" stroke="#1E1C14" stroke-width="1.3"/>
+          <path class="stroke" d="M620,260 Q720,310 846,232" fill="none" stroke="#1E1C14" stroke-width="1.3"/>
+          <!-- bottom arm -->
+          <path class="stroke" d="M530,290 Q665,344 742,265" fill="none" stroke="#1E1C14" stroke-width="1.3"/>
+          <path class="stroke" d="M630,290 Q730,338 858,265" fill="none" stroke="#1E1C14" stroke-width="1.3"/>
+
+          <!-- Tower 2 -> Tower 3 -->
+          <path class="stroke" d="M742,205 Q885,255 970,290" fill="none" stroke="#1E1C14" stroke-width="1.4"/>
+          <path class="stroke" d="M800,205 Q900,260 1020,290" fill="none" stroke="#1E1C14" stroke-width="1.4"/>
+          <path class="stroke" d="M858,205 Q920,265 1070,290" fill="none" stroke="#1E1C14" stroke-width="1.4"/>
+          <path class="stroke" d="M754,232 Q890,290 980,290" fill="none" stroke="#1E1C14" stroke-width="1.3"/>
+          <path class="stroke" d="M846,232 Q920,295 1060,290" fill="none" stroke="#1E1C14" stroke-width="1.3"/>
+          <path class="stroke" d="M742,265 Q885,322 990,290" fill="none" stroke="#1E1C14" stroke-width="1.3"/>
+          <path class="stroke" d="M858,265 Q920,322 1050,290" fill="none" stroke="#1E1C14" stroke-width="1.3"/>
+        </g>
+
+        <!-- Animated electron flow path -->
+        <path class="flow-line" d="M580,235 Q690,278 800,205 Q900,260 1020,290"/>
+        <path class="flow-line" d="M610,235 Q715,280 834,205 Q920,265 1070,290" style="animation-delay: -1.4s;"/>
+        <path class="flow-line" d="M540,260 Q665,310 754,232 Q890,290 980,290" style="animation-delay: -2.6s;"/>
+      </g>
+
+
+      </g><!-- /stage-transmission -->
+
+      <!-- ===================== SUBSTATION ===================== -->
+      <g class="stage" transform="translate(346, 0) scale(0.7, 1)">
+      <g class="clickable" data-id="substation">
+        <rect class="hit" x="1065" y="360" width="140" height="85" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="1130" cy="442" rx="85" ry="12" fill="#5C9E48" filter="url(#glow)"/>
+        <!-- enclosure baseline -->
+        <line x1="1070" y1="430" x2="1200" y2="430" stroke="#1E1C14" stroke-width="0.6" opacity="0.4"/>
+        <!-- low fence -->
+        <g stroke="#1E1C14" stroke-width="0.7" opacity="0.55">
+          <line x1="1070" y1="430" x2="1070" y2="438"/>
+          <line x1="1080" y1="430" x2="1080" y2="438"/>
+          <line x1="1090" y1="430" x2="1090" y2="438"/>
+          <line x1="1100" y1="430" x2="1100" y2="438"/>
+          <line x1="1110" y1="430" x2="1110" y2="438"/>
+          <line x1="1120" y1="430" x2="1120" y2="438"/>
+          <line x1="1130" y1="430" x2="1130" y2="438"/>
+          <line x1="1140" y1="430" x2="1140" y2="438"/>
+          <line x1="1150" y1="430" x2="1150" y2="438"/>
+          <line x1="1160" y1="430" x2="1160" y2="438"/>
+          <line x1="1170" y1="430" x2="1170" y2="438"/>
+          <line x1="1180" y1="430" x2="1180" y2="438"/>
+          <line x1="1190" y1="430" x2="1190" y2="438"/>
+        </g>
+        <!-- transformer 1 -->
+        <rect class="stroke" x="1085" y="395" width="22" height="35" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+        <line x1="1090" y1="395" x2="1090" y2="385" stroke="#1E1C14" stroke-width="1"/>
+        <line x1="1102" y1="395" x2="1102" y2="385" stroke="#1E1C14" stroke-width="1"/>
+        <circle cx="1090" cy="383" r="1.6" fill="#1E1C14"/>
+        <circle cx="1102" cy="383" r="1.6" fill="#1E1C14"/>
+        <rect x="1088" y="402" width="16" height="3" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1088" y="410" width="16" height="3" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1088" y="418" width="16" height="3" fill="#1E1C14" opacity="0.5"/>
+
+        <!-- transformer 2 (larger, central) -->
+        <rect class="stroke" x="1115" y="385" width="32" height="45" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.4"/>
+        <line x1="1120" y1="385" x2="1120" y2="372" stroke="#1E1C14" stroke-width="1.1"/>
+        <line x1="1131" y1="385" x2="1131" y2="372" stroke="#1E1C14" stroke-width="1.1"/>
+        <line x1="1142" y1="385" x2="1142" y2="372" stroke="#1E1C14" stroke-width="1.1"/>
+        <circle cx="1120" cy="370" r="1.8" fill="#1E1C14"/>
+        <circle cx="1131" cy="370" r="1.8" fill="#1E1C14"/>
+        <circle cx="1142" cy="370" r="1.8" fill="#1E1C14"/>
+        <rect x="1118" y="395" width="26" height="3" fill="#1E1C14" opacity="0.55"/>
+        <rect x="1118" y="403" width="26" height="3" fill="#1E1C14" opacity="0.55"/>
+        <rect x="1118" y="411" width="26" height="3" fill="#1E1C14" opacity="0.55"/>
+        <rect x="1118" y="419" width="26" height="3" fill="#1E1C14" opacity="0.55"/>
+
+        <!-- transformer 3 -->
+        <rect class="stroke" x="1155" y="395" width="22" height="35" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+        <line x1="1160" y1="395" x2="1160" y2="385" stroke="#1E1C14" stroke-width="1"/>
+        <line x1="1172" y1="395" x2="1172" y2="385" stroke="#1E1C14" stroke-width="1"/>
+        <circle cx="1160" cy="383" r="1.6" fill="#1E1C14"/>
+        <circle cx="1172" cy="383" r="1.6" fill="#1E1C14"/>
+        <rect x="1158" y="402" width="16" height="3" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1158" y="410" width="16" height="3" fill="#1E1C14" opacity="0.5"/>
+
+        <!-- gantry / overhead bus -->
+        <line class="stroke" x1="1075" y1="370" x2="1185" y2="370" stroke="#1E1C14" stroke-width="0.9" opacity="0.7"/>
+        <line class="stroke" x1="1075" y1="362" x2="1185" y2="362" stroke="#1E1C14" stroke-width="0.9" opacity="0.7"/>
+        <line x1="1080" y1="362" x2="1080" y2="370" stroke="#1E1C14" stroke-width="0.7"/>
+        <line x1="1185" y1="362" x2="1185" y2="370" stroke="#1E1C14" stroke-width="0.7"/>
+
+        <!-- incoming wire (from tower 3) -->
+        <path class="stroke" d="M1020,290 Q1050,330 1080,362" fill="none" stroke="#1E1C14" stroke-width="1"/>
+        <path class="stroke" d="M1020,290 Q1080,335 1130,362" fill="none" stroke="#1E1C14" stroke-width="1"/>
+
+      </g>
+
+
+      <!-- ===================== DISTRIBUTION POLES ===================== -->
+      <g class="clickable" data-id="distribution">
+        <rect class="hit" x="1208" y="355" width="160" height="85" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="1280" cy="438" rx="110" ry="13" fill="#5C9E48" filter="url(#glow)"/>
+        <!-- pole 1 -->
+        <g transform="translate(1230,360)">
+          <line class="stroke" x1="0" y1="0" x2="0" y2="70" stroke="#1E1C14" stroke-width="1.6"/>
+          <line class="stroke" x1="-14" y1="8" x2="14" y2="8" stroke="#1E1C14" stroke-width="1.4"/>
+          <line class="stroke" x1="-10" y1="20" x2="10" y2="20" stroke="#1E1C14" stroke-width="1.2"/>
+          <circle cx="-14" cy="10" r="1.2" fill="#1E1C14"/>
+          <circle cx="0" cy="10" r="1.2" fill="#1E1C14"/>
+          <circle cx="14" cy="10" r="1.2" fill="#1E1C14"/>
+          <!-- transformer can -->
+          <rect x="-3" y="28" width="6" height="10" fill="#1E1C14"/>
+        </g>
+        <!-- pole 2 -->
+        <g transform="translate(1290,365)">
+          <line class="stroke" x1="0" y1="0" x2="0" y2="65" stroke="#1E1C14" stroke-width="1.6"/>
+          <line class="stroke" x1="-14" y1="8" x2="14" y2="8" stroke="#1E1C14" stroke-width="1.4"/>
+          <line class="stroke" x1="-10" y1="20" x2="10" y2="20" stroke="#1E1C14" stroke-width="1.2"/>
+          <circle cx="-14" cy="10" r="1.2" fill="#1E1C14"/>
+          <circle cx="0" cy="10" r="1.2" fill="#1E1C14"/>
+          <circle cx="14" cy="10" r="1.2" fill="#1E1C14"/>
+        </g>
+        <!-- pole 3 -->
+        <g transform="translate(1350,360)">
+          <line class="stroke" x1="0" y1="0" x2="0" y2="70" stroke="#1E1C14" stroke-width="1.6"/>
+          <line class="stroke" x1="-14" y1="8" x2="14" y2="8" stroke="#1E1C14" stroke-width="1.4"/>
+          <line class="stroke" x1="-10" y1="20" x2="10" y2="20" stroke="#1E1C14" stroke-width="1.2"/>
+          <circle cx="-14" cy="10" r="1.2" fill="#1E1C14"/>
+          <circle cx="0" cy="10" r="1.2" fill="#1E1C14"/>
+          <circle cx="14" cy="10" r="1.2" fill="#1E1C14"/>
+          <rect x="-3" y="28" width="6" height="10" fill="#1E1C14"/>
+        </g>
+        <!-- distribution wires -->
+        <path class="stroke" d="M1200,360 Q1220,372 1230,368" fill="none" stroke="#1E1C14" stroke-width="0.9"/>
+        <path class="stroke" d="M1216,368 Q1260,378 1290,373" fill="none" stroke="#1E1C14" stroke-width="0.9"/>
+        <path class="stroke" d="M1276,373 Q1320,382 1350,368" fill="none" stroke="#1E1C14" stroke-width="0.9"/>
+        <path class="stroke" d="M1336,368 Q1380,378 1430,375" fill="none" stroke="#1E1C14" stroke-width="0.9"/>
+        <path class="stroke" d="M1216,380 Q1260,388 1290,385" fill="none" stroke="#1E1C14" stroke-width="0.9"/>
+        <path class="stroke" d="M1276,385 Q1320,392 1350,380" fill="none" stroke="#1E1C14" stroke-width="0.9"/>
+      </g>
+
+
+      </g><!-- /stage-distribution -->
+
+      <!-- ===================== CITY (back-right) ===================== -->
+      <g class="stage" transform="translate(571, 0) scale(0.65, 1)">
+      <g class="clickable" data-id="city">
+        <rect class="hit" x="1335" y="258" width="230" height="175" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="1450" cy="435" rx="175" ry="14" fill="#5C9E48" filter="url(#glow)"/>
+
+        <!-- skyline buildings, back to front -->
+        <!-- back row tall -->
+        <rect class="stroke" x="1370" y="278" width="34" height="152" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+        <rect x="1374" y="286" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1384" y="286" width="6" height="6" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1394" y="286" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1374" y="298" width="6" height="6" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1384" y="298" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1394" y="298" width="6" height="6" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1374" y="310" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1384" y="310" width="6" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1394" y="310" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1374" y="322" width="6" height="6" fill="#1E1C14" opacity="0.55"/>
+        <rect x="1384" y="322" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1394" y="322" width="6" height="6" fill="#1E1C14" opacity="0.55"/>
+        <rect x="1374" y="334" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1384" y="334" width="6" height="6" fill="#1E1C14" opacity="0.55"/>
+        <rect x="1394" y="334" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1374" y="346" width="6" height="6" fill="#1E1C14" opacity="0.55"/>
+        <rect x="1384" y="346" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1394" y="346" width="6" height="6" fill="#1E1C14" opacity="0.55"/>
+        <rect x="1374" y="358" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1384" y="358" width="6" height="6" fill="#1E1C14" opacity="0.55"/>
+        <rect x="1394" y="358" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1374" y="370" width="6" height="6" fill="#1E1C14" opacity="0.55"/>
+        <rect x="1384" y="370" width="6" height="6" fill="#1E1C14" opacity="0.7"/>
+        <rect x="1394" y="370" width="6" height="6" fill="#1E1C14" opacity="0.55"/>
+        <!-- antenna -->
+        <line x1="1387" y1="278" x2="1387" y2="265" stroke="#1E1C14" stroke-width="1"/>
+
+        <!-- mid building -->
+        <rect class="stroke" x="1410" y="306" width="42" height="124" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+        <!-- horizontal floor lines -->
+        <line x1="1410" y1="318" x2="1452" y2="318" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+        <line x1="1410" y1="332" x2="1452" y2="332" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+        <line x1="1410" y1="346" x2="1452" y2="346" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+        <line x1="1410" y1="360" x2="1452" y2="360" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+        <line x1="1410" y1="374" x2="1452" y2="374" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+        <line x1="1410" y1="388" x2="1452" y2="388" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+        <line x1="1410" y1="402" x2="1452" y2="402" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+        <line x1="1410" y1="416" x2="1452" y2="416" stroke="#1E1C14" stroke-width="0.5" opacity="0.5"/>
+        <!-- some lit windows -->
+        <rect x="1416" y="320" width="5" height="8" fill="#5C9E48" opacity="0.7"/>
+        <rect x="1430" y="335" width="5" height="8" fill="#5C9E48" opacity="0.7"/>
+        <rect x="1442" y="362" width="5" height="8" fill="#5C9E48" opacity="0.7"/>
+        <rect x="1422" y="390" width="5" height="8" fill="#5C9E48" opacity="0.5"/>
+        <rect x="1436" y="406" width="5" height="8" fill="#5C9E48" opacity="0.6"/>
+
+        <!-- shorter building right -->
+        <rect class="stroke" x="1458" y="332" width="32" height="98" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+        <rect x="1462" y="338" width="5" height="5" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1471" y="338" width="5" height="5" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1480" y="338" width="5" height="5" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1462" y="349" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1471" y="349" width="5" height="5" fill="#5C9E48" opacity="0.7"/>
+        <rect x="1480" y="349" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1462" y="360" width="5" height="5" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1471" y="360" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1480" y="360" width="5" height="5" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1462" y="371" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1471" y="371" width="5" height="5" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1480" y="371" width="5" height="5" fill="#5C9E48" opacity="0.65"/>
+        <rect x="1462" y="382" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1471" y="382" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1480" y="382" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1462" y="393" width="5" height="5" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1471" y="393" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1480" y="393" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1462" y="404" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1471" y="404" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+        <rect x="1480" y="404" width="5" height="5" fill="#1E1C14" opacity="0.5"/>
+
+        <!-- skinny tall building -->
+        <rect class="stroke" x="1496" y="294" width="20" height="136" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+        <line x1="1506" y1="294" x2="1506" y2="430" stroke="#1E1C14" stroke-width="0.5" opacity="0.4"/>
+        <rect x="1499" y="305" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1509" y="305" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1499" y="318" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1509" y="318" width="4" height="6" fill="#5C9E48" opacity="0.6"/>
+        <rect x="1499" y="331" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1509" y="331" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1499" y="344" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1509" y="344" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1499" y="357" width="4" height="6" fill="#5C9E48" opacity="0.55"/>
+        <rect x="1509" y="357" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1499" y="370" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1509" y="370" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1499" y="383" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1509" y="383" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1499" y="396" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1509" y="396" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1499" y="409" width="4" height="6" fill="#1E1C14" opacity="0.6"/>
+        <rect x="1509" y="409" width="4" height="6" fill="#5C9E48" opacity="0.55"/>
+
+        <!-- back skyline silhouette behind -->
+        <path d="M1340,430 L1340,360 L1352,360 L1352,348 L1366,348 L1366,330 L1370,330 L1370,430 Z" fill="#1E1C14" opacity="0.18"/>
+        <path d="M1518,430 L1518,332 L1532,332 L1532,318 L1546,318 L1546,344 L1556,344 L1556,430 Z" fill="#1E1C14" opacity="0.18"/>
+      </g>
+
+
+      <!-- ===================== HOUSES (right foreground) ===================== -->
+      <g class="clickable" data-id="houses">
+        <rect class="hit" x="1195" y="430" width="220" height="60" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="1300" cy="492" rx="130" ry="15" fill="#5C9E48" filter="url(#glow)"/>
+
+        <!-- house 1 -->
+        <g transform="translate(1200,455)">
+          <polygon class="stroke" points="0,0 22,-22 44,0" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.3"/>
+          <rect class="stroke" x="0" y="0" width="44" height="30" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.3"/>
+          <rect x="6" y="6" width="8" height="8" fill="#5C9E48" opacity="0.75"/>
+          <rect x="30" y="6" width="8" height="8" fill="#1E1C14" opacity="0.55"/>
+          <rect x="18" y="14" width="8" height="16" fill="#1E1C14" opacity="0.7"/>
+          <!-- chimney -->
+          <rect x="10" y="-22" width="5" height="10" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1"/>
+        </g>
+
+        <!-- house 2 -->
+        <g transform="translate(1255,460)">
+          <polygon class="stroke" points="0,0 18,-18 36,0" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+          <rect class="stroke" x="0" y="0" width="36" height="25" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.2"/>
+          <rect x="5" y="5" width="7" height="7" fill="#1E1C14" opacity="0.6"/>
+          <rect x="24" y="5" width="7" height="7" fill="#5C9E48" opacity="0.7"/>
+          <rect x="14" y="12" width="8" height="13" fill="#1E1C14" opacity="0.7"/>
+        </g>
+
+        <!-- house 3 (with solar panel) -->
+        <g transform="translate(1305,452)">
+          <polygon class="stroke" points="0,0 24,-22 48,0" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.3"/>
+          <rect class="stroke" x="0" y="0" width="48" height="32" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.3"/>
+          <!-- rooftop solar -->
+          <polygon points="6,-2 22,-18 22,-12 6,4" fill="#3A5C6A" stroke="#1E1C14" stroke-width="0.8"/>
+          <line x1="11" y1="-13" x2="11" y2="-1" stroke="#FAF8F2" stroke-width="0.5" opacity="0.6"/>
+          <line x1="16" y1="-15" x2="16" y2="-3" stroke="#FAF8F2" stroke-width="0.5" opacity="0.6"/>
+          <rect x="6" y="6" width="8" height="8" fill="#5C9E48" opacity="0.7"/>
+          <rect x="34" y="6" width="8" height="8" fill="#1E1C14" opacity="0.55"/>
+          <rect x="20" y="14" width="8" height="18" fill="#1E1C14" opacity="0.7"/>
+        </g>
+
+        <!-- house 4 -->
+        <g transform="translate(1365,460)">
+          <polygon class="stroke" points="0,0 16,-16 32,0" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.1"/>
+          <rect class="stroke" x="0" y="0" width="32" height="22" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.1"/>
+          <rect x="4" y="4" width="6" height="6" fill="#1E1C14" opacity="0.55"/>
+          <rect x="22" y="4" width="6" height="6" fill="#5C9E48" opacity="0.6"/>
+          <rect x="12" y="10" width="8" height="12" fill="#1E1C14" opacity="0.7"/>
+        </g>
+      </g>
+
+
+      <!-- ===================== FACTORY (far right foreground) ===================== -->
+      <g class="clickable" data-id="factory">
+        <rect class="hit" x="1475" y="405" width="110" height="95" fill="transparent" pointer-events="all"/>
+        <ellipse class="glow" cx="1530" cy="495" rx="85" ry="13" fill="#5C9E48" filter="url(#glow)"/>
+        <!-- sawtooth roof + body -->
+        <g transform="translate(1480,440)">
+          <!-- body -->
+          <rect class="stroke" x="0" y="0" width="100" height="50" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.4"/>
+          <!-- sawtooth roof -->
+          <polyline class="stroke" points="0,0 10,-14 20,0 30,-14 40,0 50,-14 60,0 70,-14 80,0 90,-14 100,0"
+                    fill="#FAF8F2" stroke="#1E1C14" stroke-width="1.4" stroke-linejoin="miter"/>
+          <!-- glazed faces (teal tint) -->
+          <polygon points="10,-14 20,0 10,0" fill="#3A5C6A" opacity="0.25"/>
+          <polygon points="30,-14 40,0 30,0" fill="#3A5C6A" opacity="0.25"/>
+          <polygon points="50,-14 60,0 50,0" fill="#3A5C6A" opacity="0.25"/>
+          <polygon points="70,-14 80,0 70,0" fill="#3A5C6A" opacity="0.25"/>
+          <polygon points="90,-14 100,0 90,0" fill="#3A5C6A" opacity="0.25"/>
+          <!-- factory windows / doors -->
+          <rect x="6" y="14" width="10" height="10" fill="#1E1C14" opacity="0.6"/>
+          <rect x="22" y="14" width="10" height="10" fill="#1E1C14" opacity="0.6"/>
+          <rect x="38" y="14" width="10" height="10" fill="#5C9E48" opacity="0.65"/>
+          <rect x="54" y="14" width="10" height="10" fill="#1E1C14" opacity="0.6"/>
+          <rect x="70" y="14" width="10" height="10" fill="#1E1C14" opacity="0.6"/>
+          <rect x="86" y="14" width="10" height="10" fill="#1E1C14" opacity="0.6"/>
+          <!-- big door -->
+          <rect x="40" y="30" width="22" height="20" fill="#1E1C14" opacity="0.75"/>
+          <line x1="51" y1="30" x2="51" y2="50" stroke="#FAF8F2" stroke-width="0.5" opacity="0.6"/>
+          <!-- chimney -->
+          <rect x="80" y="-32" width="6" height="32" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1"/>
+          <rect x="79" y="-34" width="8" height="3" fill="#1E1C14"/>
+          <ellipse cx="83" cy="-38" rx="6" ry="3" fill="#1E1C14" opacity="0.18"/>
+        </g>
+      </g>
+
+      </g><!-- /stage-consumption -->
+
+      <!-- foreground grass strip -->
+      <rect x="0" y="430" width="1600" height="2" fill="#5C9E48" opacity="0.4"/>
+
+      <!-- ground texture marks -->
+      <g stroke="#1E1C14" stroke-width="0.4" opacity="0.18">
+        <line x1="60" y1="510" x2="90" y2="510"/>
+        <line x1="180" y1="525" x2="220" y2="525"/>
+        <line x1="500" y1="515" x2="540" y2="515"/>
+        <line x1="700" y1="528" x2="745" y2="528"/>
+        <line x1="900" y1="518" x2="935" y2="518"/>
+        <line x1="1080" y1="512" x2="1115" y2="512"/>
+        <line x1="1420" y1="525" x2="1455" y2="525"/>
+        <line x1="1560" y1="515" x2="1595" y2="515"/>
+      </g>
+
+    </svg>
+
+    <!-- ============================================================
+         DETAIL PANEL
+         ============================================================ -->
+    <div class="detail" id="detail">
+      <div class="detail-hint">
+        <span class="arrow">→</span> Click any element in the landscape to read about it. The chain is one continuous business - but every link operates differently.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================
+       PLAYERS / EXPAND-ROWS
+       ============================================================ -->
+  <div class="section-rule">
+    <span class="eb">Who actually owns the chain</span>
+    <div class="line"></div>
+    <span class="eb">Click a row to expand</span>
+  </div>
+
+  <div class="section-head">
+    <h2>The players, <em>by where they sit</em></h2>
+  </div>
+
+  <div class="players-tabs" id="ptabs">
+    <div class="ptab active" data-segment="all">All <span class="count" data-count="all">·23</span></div>
+    <div class="ptab" data-segment="generator">Generators <span class="count" data-count="generator">·7</span></div>
+    <div class="ptab" data-segment="transmission">Transmission <span class="count" data-count="transmission">·1</span></div>
+    <div class="ptab" data-segment="distribution">Distribution &amp; retail <span class="count" data-count="distribution">·12</span></div>
+    <div class="ptab" data-segment="enabler">Tech &amp; other <span class="count" data-count="enabler">·3</span></div>
+  </div>
+
+  <div class="rowlist" id="rowlist"></div>
+
+  <!-- ============================================================
+       TENSIONS
+       ============================================================ -->
+  <div class="section-rule">
+    <span class="eb">The fault lines</span>
+    <div class="line"></div>
+    <span class="eb">Live tensions, 2025–2030</span>
+  </div>
+
+  <div class="section-head">
+    <h2>Where the arguments are <em>live</em></h2>
+    <p class="lede">An industry that feels static is, structurally, in the middle of its biggest reorganisation since the post-war buildout. Four open dossiers - each is also a political fight.</p>
+  </div>
+
+  <div class="tensions" id="tensions"></div>
+
+  <!-- ============================================================
+       TAKEAWAY
+       ============================================================ -->
+  <div class="takeaway">
+    <span class="icon">✦</span>
+    <p class="ttext"><strong>The structural read:</strong> The electricity industry is not one business - it is four. Each segment has different capital intensity, different regulatory exposure, different competitive logic. Confusing them produces almost every bad take on energy policy.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-left">
+    <span class="footer-text">Anthony Prajogo</span>
+    <span class="footer-text">|</span>
+    <a href="https://www.linkedin.com/in/anthony-prajogo/" class="footer-text footer-link" target="_blank" rel="noopener">LinkedIn ↗</a>
+  </div>
+  <button class="footer-totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+</footer>
+
+</div>
+
+<!-- ============================================================
+     SCRIPT
+     ============================================================ -->
+<script>
+(function(){
+  /* ========== DATA ============================================== */
+
+  const ELEMENT_DATA = {
+    nuclear: {
+      num: '01.a',
+      stage: 'Generation',
+      title: 'Nuclear power',
+      summary: 'A controlled chain reaction boils water; the steam spins a turbine. Almost no carbon, almost no fuel cost - but very high upfront capital and very long permitting timelines.',
+      what: 'Baseload generation - designed to run flat-out 24/7. A large reactor produces 1–1.6 GW continuously, which is roughly the demand of a small country at night.',
+      how: 'Uranium fuel rods produce heat through fission; that heat boils water in a closed loop; the resulting steam drives a turbine; the spent steam condenses in cooling towers and goes back around. The visible plume is water vapour, not exhaust.',
+      owns: 'Mostly state-owned utilities (EDF in France, KEPCO in Korea, CGN in China) or large regulated incumbents in the US (Constellation, Vistra). New private builds are rare; restarts and life extensions are the live trade.',
+      economics: 'Build cost $7–15 bn per reactor; payback measured in decades. Marginal cost of running an existing plant is very low (~$25/MWh), which is why operators fight hard to keep them open.'
+    },
+    fossil: {
+      num: '01.b',
+      stage: 'Generation',
+      title: 'Coal & gas plants',
+      summary: 'The thing that actually keeps the lights on most nights. Despite a decade of headlines, fossil generation is still the majority of global supply - and gas is what backs up renewables when the wind drops.',
+      what: 'Dispatchable generation - operators can ramp output up and down to match demand. Coal is being phased out in most OECD markets; gas is growing as a transition fuel and the literal backstop for grids with high renewable penetration.',
+      how: 'Burn fuel, boil water, spin turbine. Gas plants come in two flavours: combined-cycle (efficient, slower to start) and peaker plants (inefficient, but can come online in minutes when prices spike).',
+      owns: 'A mix of vertically integrated utilities (Duke, Southern Company), independent power producers (Vistra, NRG), and state-owned giants (China Huaneng, NTPC India). In Europe, the big incumbents are RWE and Uniper.',
+      economics: 'Capacity factors are dropping as renewables eat the daytime market - coal plants increasingly survive on capacity payments, not energy sales. The economic question is "how long is the runway before retirement", not "how do we grow".'
+    },
+    wind: {
+      num: '01.c',
+      stage: 'Generation',
+      title: 'Wind generation',
+      summary: 'The cheapest new bulk power in most markets - when the wind is blowing. Offshore is the next frontier; the supply chain is currently the bottleneck.',
+      what: 'Variable renewable generation. Onshore wind is mature and cheap; offshore wind is bigger, more expensive, harder to permit, but produces more consistent power. Capacity factors range 30–55%.',
+      how: 'Blades convert kinetic energy of moving air into rotational torque; a gearbox steps that up to a generator that produces AC; a converter cleans it for the grid. Modern turbines are huge - single units exceed 15 MW and have blades longer than a soccer field.',
+      owns: 'Manufacturers: Vestas, Siemens Gamesa, GE Vernova, Goldwind. Operators / developers: Ørsted, Iberdrola, NextEra, RWE, Equinor. Most projects are now financed by infrastructure funds with utilities as offtakers.',
+      economics: 'LCOE around $30–50/MWh onshore, $70–110/MWh offshore. Heavily dependent on tax credits, capacity auctions, and corporate PPAs. Projects developed in 2022–2023 have been cancelled or repriced as costs rose.'
+    },
+    solar: {
+      num: '01.d',
+      stage: 'Generation',
+      title: 'Solar PV',
+      summary: 'The fastest-deploying generation source in human history. Module costs have fallen ~90% in 15 years. It is now cheaper to build new solar than to keep running paid-off coal in many markets.',
+      what: 'Variable renewable generation, biased to daylight midday. Utility-scale farms (50 MW – 1 GW+) sit alongside rooftop and commercial installations. Increasingly paired with batteries to shift output into the evening peak.',
+      how: 'Photons knock electrons loose in a silicon junction, producing DC current; an inverter converts it to grid-frequency AC. No moving parts. The fuel is free; the cost is almost entirely capital and land.',
+      owns: 'Manufacturing is heavily Chinese (LONGi, Trina, JinkoSolar, JA Solar - together >70% of modules). Project ownership is fragmented: utilities, IPPs, infrastructure funds, and increasingly hyperscalers signing direct PPAs.',
+      economics: 'Utility-scale LCOE $25–45/MWh. Negative midday prices are now routine in California, Spain, parts of Australia - a structural problem the storage market exists to solve.'
+    },
+    hydro: {
+      num: '01.e',
+      stage: 'Generation',
+      title: 'Hydroelectric',
+      summary: 'The original renewable. Dispatchable, long-lived, and politically heavy. Most of the easy sites in the OECD have already been built; pumped storage is where the new growth is.',
+      what: 'Generation by routing falling water through turbines. Comes in three flavours: large reservoir hydro (a dam holds back a river), run-of-river (no big reservoir, lower output but lower environmental impact), and pumped storage (water is pumped uphill when power is cheap and released when prices rise - effectively a giant battery).',
+      how: 'Water at altitude has potential energy; let it fall through a penstock into a turbine and you convert that energy into rotational torque, then into AC via a generator. Capacity factor varies from 30% (run-of-river) to 50%+ for well-managed reservoirs.',
+      owns: 'Often state-owned or state-influenced because of the public-resource nature of rivers: Hydro-Québec (Canada), China Three Gorges, EDF (France), Statkraft (Norway), Eletrobras (Brazil), Meridian and Genesis (NZ). In the US, federal agencies (TVA, Bonneville Power) operate large hydro.',
+      economics: 'LCOE for existing hydro is unbeatable - capex is sunk and water is free. New large hydro is increasingly impossible to permit; the action is in pumped storage projects (LCOS roughly $130–220/MWh). NZ hydro’s structural risk is the dry-year problem - a low-inflow year reshapes the entire wholesale market.'
+    },
+    geothermal: {
+      num: '01.f',
+      stage: 'Generation',
+      title: 'Geothermal',
+      summary: 'The renewable that runs at night. Limited to specific geology, but where it works it is the most reliable clean power on the system - ~85–95% capacity factor, immune to weather.',
+      what: 'Generation using heat from the Earth’s crust. Wells are drilled into hot reservoirs (volcanic regions like NZ’s Taupō Volcanic Zone, Iceland, parts of California, Indonesia, Kenya); steam or hot brine drives a turbine. Enhanced Geothermal Systems (EGS) attempt to extract heat where natural reservoirs are insufficient.',
+      how: 'Hot fluid rises up the production well, expands as it depressurises into a separator, drives a steam turbine, condenses, and is reinjected back into the reservoir to keep it productive. Plants run baseload - they don’t care whether it’s windy, sunny, or 3am.',
+      owns: 'Largest operators globally: Ormat (Israeli, but most assets in US/Indonesia/Kenya), Mercury and Contact Energy (NZ), Pertamina Geothermal (Indonesia), Calpine (Geysers, California). Iceland’s grid is ~30% geothermal.',
+      economics: 'High upfront drilling risk (a single well can cost tens of millions and may come back dry). Once flowing, marginal cost is very low. LCOE $50–100/MWh - not the cheapest, but the value of dispatchable, weather-independent renewable power is rising as grids decarbonise.'
+    },
+    transmission: {
+      num: '02',
+      stage: 'Transmission',
+      title: 'High-voltage transmission',
+      summary: 'The long-distance highway. Power gets stepped up to 110–765 kV so it can travel hundreds of kilometres without losing too much energy as heat. The most important - and most under-built - segment of the chain.',
+      what: 'Bulk transport of electricity from generation to load centres. Operated as a regulated monopoly almost everywhere, because building parallel networks is uneconomic and physically chaotic.',
+      how: 'Step up voltage at the generator (transformers), send it along high-voltage AC or DC lines, step it down at the destination. Higher voltage = lower current = less resistive loss. HVDC is increasingly used for very long links and undersea cables.',
+      owns: 'Independent system operators or transmission system operators (TSOs): National Grid (UK/US), TenneT (NL/DE), 50Hertz (DE), RTE (France), State Grid Corp (China - by far the largest), Hydro One (Ontario), American Electric Power (US).',
+      economics: 'Regulated returns (typically 6–10% on rate base). Revenue is essentially guaranteed - but so is scrutiny. Build times of 7–15 years per major line are the single biggest bottleneck on the energy transition.'
+    },
+    substation: {
+      num: '02.b',
+      stage: 'Transmission → distribution',
+      title: 'Substations',
+      summary: 'The interface. High-voltage power comes in, gets stepped down through transformers, and goes out at distribution voltage. Also where switching, monitoring, and protection live.',
+      what: 'Voltage transformation and grid switching. Step-down substations sit between transmission and distribution; switching substations route power between transmission lines without changing voltage.',
+      how: 'Large oil-cooled or air-cooled transformers shift voltage by ratio of coil turns. Circuit breakers isolate faults. Increasingly, digital relays and SCADA systems monitor everything in real time and report back to the control centre.',
+      owns: 'Owned by whichever entity owns the wires either side - typically the transmission utility for step-downs, distribution utility for distribution-level. Equipment vendors: ABB, Siemens Energy, Hitachi Energy, GE Vernova.',
+      economics: 'Capex-heavy, long-life assets (40+ years). Transformer lead times have blown out from 6 months to 2–3 years post-2022 - a quietly serious constraint on every grid expansion plan.'
+    },
+    distribution: {
+      num: '03',
+      stage: 'Distribution',
+      title: 'Local distribution',
+      summary: 'The last few kilometres. Lower-voltage poles and underground cables that bring power from the substation to your meter. Low glamour; almost everything that goes wrong on the grid goes wrong here.',
+      what: 'Local delivery at medium voltage (11–33 kV) stepped down to low voltage (110–415 V) at the kerbside. Network length and customer count are the cost drivers - distribution networks are huge.',
+      how: 'Overhead poles or underground cables, with pole-mounted or pad-mounted transformers doing the final step-down. Increasingly two-way: rooftop solar exports back into the same wires.',
+      owns: 'Distribution network operators (DNOs / DSOs) - usually regulated regional monopolies. UK: UK Power Networks, SSEN, Northern Powergrid. US: PG&E, Con Edison, Southern California Edison. Australia: Ausgrid, Powercor.',
+      economics: 'Regulated returns again, often higher than transmission (8–10%) reflecting more granular operational risk. Storms, falling trees, ageing assets and rising EV / heat pump load are the live cost pressures.'
+    },
+    city: {
+      num: '04.a',
+      stage: 'Consumption',
+      title: 'Cities & commercial demand',
+      summary: 'Where most electricity actually gets consumed - offices, retail, transit, public infrastructure, and increasingly data centres. Demand profiles look like an aggregate of millions of small decisions.',
+      what: 'Mixed commercial and industrial load with a defined daily curve - peak around 5–7pm in temperate climates, shifted earlier or later by air-conditioning load. Data-centre clusters are the new wildcard.',
+      how: 'Connected at distribution voltage, sometimes directly at sub-transmission for very large customers. Increasingly buying directly from generators via Power Purchase Agreements (PPAs) instead of through retailers.',
+      owns: 'Demand-side: literally everyone. The structurally important customers are now hyperscalers - Microsoft, Google, Amazon, Meta - whose AI build-out is reshaping where and when grid capacity is needed.',
+      economics: 'Commercial rates typically $80–180/MWh delivered, before demand charges. Large industrials negotiate directly. The new game is "do I sign a PPA, build my own gas plant, or wait for the queue"; all three are happening at once.'
+    },
+    houses: {
+      num: '04.b',
+      stage: 'Consumption',
+      title: 'Households',
+      summary: 'Low-volume, high-political-salience. Households consume a minority of total electricity but provide all the political weight - every retail tariff is news; every blackout ends careers.',
+      what: 'Residential load. Consumption per household varies 5x between countries (US ~10,500 kWh/yr, EU ~3,800, NZ ~7,000). EV adoption and electric heat are the variables that decide whether this number doubles or stays flat.',
+      how: 'Power arrives at the kerbside transformer, runs through the meter, into the breaker panel, out to circuits. The newer story: rooftop solar exports back, batteries time-shift, and smart meters allow time-of-use pricing.',
+      owns: 'Retailers buy wholesale and sell on. Some are arms of vertically integrated utilities (Duke, Southern); others are pure retailers (Octopus, Bulb [defunct], OVO). Behind the meter: solar installers, battery vendors, heat-pump fitters.',
+      economics: 'Retail margins are thin (3–6%), heavily regulated, and competitive in liberalised markets. The interesting business is no longer selling kWh - it is bundling generation, storage and flexibility into a managed home energy product.'
+    },
+    factory: {
+      num: '04.c',
+      stage: 'Consumption',
+      title: 'Industrial demand',
+      summary: 'A small number of customers consuming a very large share of total electricity. Aluminium smelters, data centres, steel mills, chemical plants - each is its own grid event.',
+      what: 'Continuous, very large industrial load. Some customers (smelters, pulp mills) take >100 MW continuously, which is more than a small city. Many connect directly at transmission voltage.',
+      how: 'Bypasses distribution entirely. Long-term contracts, often with embedded interruptibility - the customer agrees to drop load on request in exchange for cheaper rates, providing free demand-response to the grid.',
+      owns: 'Industrials negotiate directly with generators or utilities. Data centres are the structurally interesting case - they are now signing nuclear PPAs, restart deals, and behind-the-meter gas projects to lock in 24/7 carbon-free power.',
+      economics: 'Often the lowest delivered price on the grid ($40–80/MWh) reflecting load factor and direct connection. They subsidise everyone else by paying the fixed costs at scale; this is why losing one is a regulatory crisis.'
+    }
+  };
+
+  /* ========== PLAYERS DATA ===================================== */
+
+  const PLAYERS = [
+    // ─── GENERATORS / GENTAILERS ─────────────────────────────────
+    {
+      segment: 'generator',
+      name: 'Meridian Energy',
+      country: 'New Zealand',
+      role: 'Largest gentailer (hydro + wind)',
+      tags: ['hydro', 'wind', 'gentailer', 'listed'],
+      what: 'NZ\'s largest electricity generator. 100% renewable - South Island hydro (Manapōuri, the Waitaki chain) plus North Island wind (West Wind, Te Āpiti, White Hill). Crown 51%, listed since the 2013 Mixed Ownership Model partial sale.',
+      where: 'Generation + retail (Meridian brand). Powershop was sold to Octopus Energy in 2022.',
+      structural: 'Owns the largest single hydro asset in NZ (Manapōuri, ~5 TWh/yr) - historically dedicated to the Tiwai Point aluminium smelter. The Tiwai contract is the single most important variable in the NZ wholesale market: the day it ends, ~13% of national demand vanishes overnight.'
+    },
+    {
+      segment: 'generator',
+      name: 'Contact Energy',
+      country: 'New Zealand',
+      role: 'Geothermal / hydro / gas gentailer',
+      tags: ['geothermal', 'hydro', 'gas', 'listed'],
+      what: 'NZX-listed gentailer (since 1999). Generation mix spans geothermal (Wairākei, Te Mihi, Te Huka, Tauhara), Clutha hydro (Clyde, Roxburgh), and gas/peakers at Stratford (TCC, P40).',
+      where: 'Generation + retail (Contact, Simply Energy).',
+      structural: 'The deepest geothermal portfolio in the country. Tauhara (~150 MW, commissioned 2024) was the largest single geothermal addition in a decade. The structural shape - "renewable baseload + dispatchable peakers" - is increasingly the position every gentailer wants.'
+    },
+    {
+      segment: 'generator',
+      name: 'Mercury NZ',
+      country: 'New Zealand',
+      role: 'Geothermal / wind gentailer',
+      tags: ['geothermal', 'wind', 'retail', 'listed'],
+      what: 'NZX-listed gentailer (Crown 51%). Geothermal at Wairakei, Kawerau, Ngā Awa Pūrua, Mōkai (JV); wind at Turitea (NZ\'s largest wind farm). Acquired Trustpower\'s retail book in 2022.',
+      where: 'Generation + retail (Mercury, GLOBUG, plus the former Trustpower retail customers).',
+      structural: 'Geothermal-led portfolio is the underrated baseload story - ~85% capacity factor, weather-immune, dispatchable in a way wind and solar are not. A structural hedge against the dry-year hydro risk that defines Meridian and Genesis.'
+    },
+    {
+      segment: 'generator',
+      name: 'Genesis Energy',
+      country: 'New Zealand',
+      role: 'Thermal-backed gentailer (Huntly)',
+      tags: ['gas', 'hydro', 'coal', 'Huntly', 'listed'],
+      what: 'NZX-listed gentailer (Crown 51%). Operates Huntly Power Station - NZ\'s largest thermal plant, including the Rankine units that burn coal in dry years. Hydro on the Tongariro scheme; wind in development. Owns 46% of the Kupe gas/oil field.',
+      where: 'Generation + retail (Genesis and Frank Energy brands).',
+      structural: 'The "dry-year insurance" provider for the entire NZ market - Huntly\'s coal/gas Rankines are the system\'s buffer when hydro runs short. Decommissioning them without replacement firming capacity is the single most politically charged question in the transition.'
+    },
+    {
+      segment: 'generator',
+      name: 'Manawa Energy',
+      country: 'New Zealand',
+      role: 'Pure-play renewable generator',
+      tags: ['hydro', 'wind', 'pure-play', 'listed'],
+      what: 'Formerly TrustPower - the retail book was sold to Mercury in 2022, leaving a generation-only listed company. 26 hydro schemes plus wind in development.',
+      where: 'Generation only. Sells via wholesale and PPAs to other retailers and corporate offtakers.',
+      structural: 'The clean test of whether pure-play generation can compete with the integrated gentailers in NZ. Without a retail book to hedge against, Manawa\'s exposure to spot prices is direct - riskier in dry years, more upside in tight markets.'
+    },
+    {
+      segment: 'generator',
+      name: 'Lodestone Energy',
+      country: 'New Zealand',
+      role: 'Utility-scale solar developer',
+      tags: ['solar', 'utility-scale', 'newer'],
+      what: 'Privately held developer building NZ\'s first wave of utility-scale solar farms. First five sites at Kaitaia, Edgecumbe, Whitianga, Te Aroha, Waiotahe (~220 MW combined). Long-term PPAs with Contact and large corporates.',
+      where: 'Generation. No retail book; sells via PPAs.',
+      structural: 'The first serious test of whether utility-scale solar at NZ latitudes (high, with strong seasonal variation) is economic without subsidy. So far, yes - capital is queueing up for follow-on projects, including from offshore infrastructure funds.'
+    },
+    {
+      segment: 'generator',
+      name: 'Pioneer Energy',
+      country: 'New Zealand',
+      role: 'Renewable IPP & process heat',
+      tags: ['hydro', 'solar', 'process heat', 'community-owned'],
+      what: 'Privately held, owned by the Central Lakes Trust. Small hydro schemes, distributed solar, and process-heat decarbonisation projects (replacing coal boilers at industrial sites).',
+      where: 'Generation + behind-the-meter heat. Sells via PPAs and direct industrial supply.',
+      structural: 'The model for community-trust ownership of generation - surplus distributed back to South Island ratepayers via the Trust rather than dividend-out. A genuinely different ownership shape from the listed gentailers.'
+    },
+
+    // ─── TRANSMISSION ───────────────────────────────────────────
+    {
+      segment: 'transmission',
+      name: 'Transpower',
+      country: 'New Zealand',
+      role: 'National grid + system operator',
+      tags: ['TSO', 'state-owned', 'HVDC', 'monopoly'],
+      what: 'State-owned operator of the entire NZ high-voltage transmission network - ~12,000 km of lines, ~170 substations, including the HVDC inter-island link that ships South Island hydro to North Island load.',
+      where: 'Transmission only. Also runs the system operator function - keeping frequency, dispatching the wholesale market, planning the long-term build.',
+      structural: 'The cleanest example of unbundling-as-policy in the OECD. Generation and retail are competitive; the wires are a fully separated regulated monopoly with state ownership. NZ\'s small scale means Transpower can move faster on transmission upgrades than peer TSOs - the NZ Battery and HVDC Pole 4 decisions sit here.'
+    },
+
+    // ─── DISTRIBUTION - EDBs (lines companies) ──────────────────
+    {
+      segment: 'distribution',
+      name: 'Vector',
+      country: 'New Zealand',
+      role: 'Auckland EDB (largest)',
+      tags: ['EDB', 'listed', 'Auckland', 'metering'],
+      what: 'NZX-listed lines company serving 1.7m+ Aucklanders - the largest EDB in NZ by customers. Also owns metering (Bluecurrent), gas distribution, and a fibre network.',
+      where: 'Distribution. Doesn\'t generate or retail electricity.',
+      structural: 'The only NZ EDB that is publicly listed and majority privately held - Entrust (a consumer trust) owns ~75%. Auckland\'s growth and electrification trajectory means Vector\'s capex profile is unique among NZ networks.'
+    },
+    {
+      segment: 'distribution',
+      name: 'Powerco',
+      country: 'New Zealand',
+      role: 'Multi-region EDB (2nd largest)',
+      tags: ['EDB', 'foreign-owned', 'gas'],
+      what: 'Second-largest EDB by customers (~340,000 connections) across Taranaki, Whanganui, Manawatū, Wairarapa, Tauranga, Coromandel. Also owns gas distribution. Owned by AMP Capital and QIC.',
+      where: 'Distribution. Regulated monopoly; price-quality regulated by the Commerce Commission.',
+      structural: 'Foreign-pension-fund ownership of regulated NZ network assets - same pattern as Australian distribution. Long-duration capital matched against long-life assets.'
+    },
+    {
+      segment: 'distribution',
+      name: 'Orion',
+      country: 'New Zealand',
+      role: 'Christchurch EDB',
+      tags: ['EDB', 'council-owned', 'Canterbury'],
+      what: 'Lines company for Christchurch and Central Canterbury (~210,000 connections). Owned by Christchurch City Holdings (89%) and Selwyn District Council (11%).',
+      where: 'Distribution.',
+      structural: 'Council-trust ownership of a regional monopoly is the dominant NZ pattern - surpluses fund council operations or are returned as discounts. The 2010–11 earthquakes drove exceptional asset replacement; Orion is one of the most modern networks in the country.'
+    },
+    {
+      segment: 'distribution',
+      name: 'WEL Networks',
+      country: 'New Zealand',
+      role: 'Waikato EDB',
+      tags: ['EDB', 'trust-owned', 'Waikato'],
+      what: 'Lines company serving Hamilton and the Waikato (~107,000 connections). Owned by the WEL Energy Trust on behalf of consumers - surpluses are returned annually as bill rebates.',
+      where: 'Distribution.',
+      structural: 'Consumer-trust ownership at its most direct: the Trust\'s sole purpose is to hold WEL on behalf of Waikato consumers and rebate any surplus. A model that has survived 30+ years of liberalisation.'
+    },
+    {
+      segment: 'distribution',
+      name: 'Wellington Electricity',
+      country: 'New Zealand',
+      role: 'Wellington EDB',
+      tags: ['EDB', 'foreign-owned', 'Wellington'],
+      what: 'Lines company for Wellington, Porirua, Hutt Valley (~170,000 connections). Owned by Cheung Kong Infrastructure (Hong Kong) since 2008 - frequently mistakenly attributed to State Grid.',
+      where: 'Distribution.',
+      structural: 'One of the most politically scrutinised NZ network ownerships: a foreign infrastructure conglomerate holding a critical-infrastructure lines monopoly in the capital. Overseas Investment Office reviews of utility ownership remain a live policy question.'
+    },
+    {
+      segment: 'distribution',
+      name: 'Aurora Energy',
+      country: 'New Zealand',
+      role: 'Otago EDB',
+      tags: ['EDB', 'council-owned', 'Otago'],
+      what: 'Lines company for Dunedin, Central Otago, Queenstown Lakes (~90,000 connections). Owned by Dunedin City Council via DCHL.',
+      where: 'Distribution.',
+      structural: 'A live case of underinvestment-then-catch-up: years of soft capex (returning dividends to council) led to a Commerce Commission investigation and a multi-year accelerated investment programme. Customers are now funding the shortfall via higher distribution charges.'
+    },
+    {
+      segment: 'distribution',
+      name: 'Unison Networks',
+      country: 'New Zealand',
+      role: 'Hawke\'s Bay / Rotorua EDB',
+      tags: ['EDB', 'trust-owned', 'Hawke\'s Bay'],
+      what: 'Lines company for Hawke\'s Bay, Taupō, and Rotorua (~115,000 connections). Owned by the Hawke\'s Bay Power Consumers\' Trust.',
+      where: 'Distribution.',
+      structural: 'Cyclone Gabrielle (2023) was the largest single test of network resilience in modern NZ history - Unison rebuilt sections of the Hawke\'s Bay network from scratch. Climate-physical-risk capex is now a material variable in EDB price paths everywhere.'
+    },
+    {
+      segment: 'distribution',
+      name: 'Top Energy',
+      country: 'New Zealand',
+      role: 'Northland EDB + small generator',
+      tags: ['EDB', 'trust-owned', 'Northland', 'geothermal'],
+      what: 'Lines company for the Far North (~33,000 connections). Owned by the Top Energy Consumer Trust. Also operates the Ngāwhā geothermal station - one of the few NZ EDBs that still owns generation.',
+      where: 'Distribution + small-scale generation.',
+      structural: 'A reminder that the unbundling rule (lines companies cannot own generation) has carve-outs for small networks where vertical integration is the only viable model. Ngāwhā\'s expansion gives Top Energy unusual structural insulation from the wholesale market.'
+    },
+
+    // ─── DISTRIBUTION - INDEPENDENT RETAILERS ───────────────────
+    {
+      segment: 'distribution',
+      name: 'Electric Kiwi',
+      country: 'New Zealand',
+      role: 'Disruptor retailer',
+      tags: ['retailer', 'disruptor', 'time-of-use'],
+      what: 'Independent retailer launched in 2014. Pioneered the "hour of free power" off-peak pricing model in NZ. ~80,000 customers.',
+      where: 'Retail only. Buys wholesale and on the futures market.',
+      structural: 'The clearest example of pure-retail competing against vertically integrated gentailers. Long-running argument that the gentailers under-allocate hedge contracts to independents - resulted in regulatory action under the Level Playing Field measures (2022–2024).'
+    },
+    {
+      segment: 'distribution',
+      name: 'Flick Electric',
+      country: 'New Zealand',
+      role: 'Wholesale pass-through retailer',
+      tags: ['retailer', 'wholesale', 'pass-through'],
+      what: 'Retailer that passes the half-hourly wholesale price through to customers (less a fixed margin). Now owned by Z Energy / Ampol.',
+      where: 'Retail only.',
+      structural: 'A retail product that is honest about the wholesale market\'s real shape - but exposes households to spot price spikes. Structurally better suited to households with batteries, EVs, or shiftable load. Price spikes in 2021 and 2023 tested customer appetite hard.'
+    },
+    {
+      segment: 'distribution',
+      name: 'Octopus Energy NZ',
+      country: 'New Zealand',
+      role: 'Software-driven retailer',
+      tags: ['retailer', 'software', 'UK-parent'],
+      what: 'UK-based Octopus Energy entered NZ via the 2022 acquisition of Powershop from Meridian. Operates the Powershop and Octopus Energy NZ brands; runs on the Kraken billing platform.',
+      where: 'Retail only.',
+      structural: 'The first serious foreign retail entry in NZ in over a decade. Brings the Kraken platform - which globally serves 50m+ accounts - into a market that has been technologically slow on the retail side.'
+    },
+    {
+      segment: 'distribution',
+      name: 'Nova Energy',
+      country: 'New Zealand',
+      role: 'Industrial-led retailer',
+      tags: ['retailer', 'gas', 'industrial'],
+      what: 'Retailer owned by Todd Corporation. Strong in industrial and commercial gas + electricity supply. Also runs gas peakers (McKee Peaker, Junction Road).',
+      where: 'Retail + small-scale gas peakers.',
+      structural: 'The major non-gentailer retailer with a serious industrial book. Demonstrates that the integrated gentailers don\'t monopolise large-customer supply - Todd\'s gas portfolio gives Nova a vertical hedge most independents lack.'
+    },
+
+    // ─── ENABLERS & OTHER ───────────────────────────────────────
+    {
+      segment: 'enabler',
+      name: 'NZAS / Tiwai Point',
+      country: 'New Zealand',
+      role: 'Largest single load (Rio Tinto)',
+      tags: ['industrial', 'aluminium', 'Tiwai', 'demand-side'],
+      what: 'Aluminium smelter at Tiwai Point, Bluff. Operated by NZ Aluminium Smelters (majority Rio Tinto). Consumes ~13% of NZ\'s total electricity through a long-term contract with Meridian. The single largest electricity customer in the country.',
+      where: 'Demand-side. The single largest load on the system.',
+      structural: 'Tiwai is the swing variable in the NZ electricity market. Its closure would free ~5 TWh/year of clean hydro for the rest of the country - collapsing wholesale prices and reshaping every gentailer\'s economics. Its retention (most recently extended to 2044) sustains the current price equilibrium. Every transition scenario starts here.'
+    },
+    {
+      segment: 'enabler',
+      name: 'Electricity Authority',
+      country: 'New Zealand',
+      role: 'Independent market regulator',
+      tags: ['regulator', 'EA', 'rule-setter'],
+      what: 'Independent Crown entity that sets and enforces the rules of the NZ wholesale and retail electricity market. Operates separately from the Commerce Commission, which regulates network monopolies.',
+      where: 'Sits over the entire market - not a participant, but the arbiter of how participants compete.',
+      structural: 'NZ\'s split regulatory model - a market-rules regulator (EA), a network economic regulator (Commerce Commission), and a transmission planner (Transpower) - is unusually clean by international standards. Whether it can keep up with the structural pressures of decarbonisation is the live question of the next decade.'
+    },
+    {
+      segment: 'enabler',
+      name: 'SolarZero',
+      country: 'New Zealand',
+      role: 'Residential solar + storage',
+      tags: ['solar', 'batteries', 'residential', 'distributed'],
+      what: 'Distributed solar + battery installer that pioneered the no-upfront-cost subscription model in NZ - homeowners pay a monthly fee for the system. Owned by BlackRock Real Assets from 2022; entered receivership in late 2024.',
+      where: 'Behind-the-meter - at the household level.',
+      structural: 'A live cautionary tale on the financing side of distributed energy: the subscription model has compelling unit economics on paper but is brutal on capital costs and customer churn. The receivership is reshaping how the next wave of distributed-asset companies in NZ get financed.'
+    }
+  ];
+
+  /* ========== TENSIONS DATA ==================================== */
+
+  const TENSIONS = [
+    {
+      num: '01',
+      title: 'Renewables intermittency vs grid stability',
+      tag: 'When the wind drops at 6pm.',
+      vlabel: 'Daily supply vs demand',
+      svg: `<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <line x1="40" y1="40" x2="40" y2="170" stroke="#1E1C14" stroke-width="0.6" opacity="0.4"/>
+        <line x1="40" y1="170" x2="380" y2="170" stroke="#1E1C14" stroke-width="0.6" opacity="0.4"/>
+        <g stroke="#1E1C14" stroke-width="0.4" opacity="0.15">
+          <line x1="40" y1="60" x2="380" y2="60"/>
+          <line x1="40" y1="100" x2="380" y2="100"/>
+          <line x1="40" y1="140" x2="380" y2="140"/>
+        </g>
+        <text x="46" y="52" font-family="DM Mono" font-size="8" fill="#6E6A58" letter-spacing="0.5">GW</text>
+        <text x="50" y="184" font-family="DM Mono" font-size="8" fill="#6E6A58" letter-spacing="0.5">00:00</text>
+        <text x="180" y="184" font-family="DM Mono" font-size="8" fill="#6E6A58" letter-spacing="0.5">12:00</text>
+        <text x="340" y="184" font-family="DM Mono" font-size="8" fill="#6E6A58" letter-spacing="0.5">24:00</text>
+        <path d="M40,120 C70,118 90,116 110,114 C140,108 170,90 200,82 C230,80 260,86 290,98 C320,108 350,80 380,72" fill="none" stroke="#1E1C14" stroke-width="2" stroke-linecap="round"/>
+        <path d="M40,150 L55,148 L70,140 L80,150 L95,135 L110,148 L125,110 L140,90 L150,72 L165,55 L180,50 L195,58 L210,65 L225,52 L240,75 L255,68 L270,90 L280,72 L295,65 L310,90 L325,135 L340,118 L355,140 L370,150 L380,148" fill="none" stroke="#5C9E48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <g font-family="DM Mono" font-size="9" letter-spacing="0.5">
+          <circle cx="55" cy="78" r="2.5" fill="#1E1C14"/><text x="62" y="82" fill="#1E1C14">Demand</text>
+          <circle cx="55" cy="98" r="2.5" fill="#5C9E48"/><text x="62" y="102" fill="#5C9E48">Renewable supply</text>
+        </g>
+      </svg>`,
+      body: 'A grid built around dispatchable thermal generation does not behave well when half its supply depends on weather. Frequency stability, voltage support, inertia, and ramp rate were quietly provided by spinning fossil turbines for a century - they are not, by default, provided by inverter-connected wind and solar.',
+      a: 'Build storage and grid-forming inverters fast enough that intermittency stops mattering. Pair every renewable with batteries. Re-engineer market rules to pay for stability services.',
+      b: 'Keep enough thermal capacity (gas, nuclear) on the system to provide the inertia and dispatchable backup, even if it sits idle most days. Pay capacity payments instead of energy.',
+      where: 'Texas (ERCOT) is the live experiment in option A - already 40%+ renewables and stress-testing every assumption. Most European grids are quietly running option B, with capacity payments holding up gas plants that lose money on energy alone.'
+    },
+    {
+      num: '02',
+      title: 'Vertical integration vs unbundling',
+      tag: 'Who gets to own which link?',
+      vlabel: 'Two structures, same chain',
+      svg: `<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <text x="20" y="36" font-family="DM Mono" font-size="9" fill="#3A5C6A" letter-spacing="0.5">INTEGRATED</text>
+        <rect x="20" y="44" width="360" height="44" fill="none" stroke="#3A5C6A" stroke-width="1.2"/>
+        <g font-family="DM Mono" font-size="9" letter-spacing="0.6" text-anchor="middle">
+          <rect x="32" y="56" width="76" height="22" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1"/>
+          <text x="70" y="71" fill="#1E1C14">GEN</text>
+          <line x1="108" y1="67" x2="120" y2="67" stroke="#1E1C14" stroke-width="1.4"/>
+          <rect x="120" y="56" width="76" height="22" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1"/>
+          <text x="158" y="71" fill="#1E1C14">TRANS</text>
+          <line x1="196" y1="67" x2="208" y2="67" stroke="#1E1C14" stroke-width="1.4"/>
+          <rect x="208" y="56" width="76" height="22" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1"/>
+          <text x="246" y="71" fill="#1E1C14">DIST</text>
+          <line x1="284" y1="67" x2="296" y2="67" stroke="#1E1C14" stroke-width="1.4"/>
+          <rect x="296" y="56" width="72" height="22" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1"/>
+          <text x="332" y="71" fill="#1E1C14">RETAIL</text>
+        </g>
+        <text x="20" y="120" font-family="DM Mono" font-size="9" fill="#5C9E48" letter-spacing="0.5">UNBUNDLED</text>
+        <g font-family="DM Mono" font-size="9" letter-spacing="0.6" text-anchor="middle">
+          <rect x="32" y="132" width="76" height="22" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1"/>
+          <text x="70" y="147" fill="#1E1C14">GEN</text>
+          <text x="70" y="170" font-size="7" fill="#6E6A58">market</text>
+          <line x1="110" y1="143" x2="120" y2="143" stroke="#1E1C14" stroke-width="0.6" stroke-dasharray="2 2"/>
+          <rect x="120" y="132" width="76" height="22" fill="#EBF5E6" stroke="#5C9E48" stroke-width="1.2"/>
+          <text x="158" y="147" fill="#1E1C14">TRANS</text>
+          <text x="158" y="170" font-size="7" fill="#5C9E48">regulated</text>
+          <line x1="198" y1="143" x2="208" y2="143" stroke="#1E1C14" stroke-width="0.6" stroke-dasharray="2 2"/>
+          <rect x="208" y="132" width="76" height="22" fill="#EBF5E6" stroke="#5C9E48" stroke-width="1.2"/>
+          <text x="246" y="147" fill="#1E1C14">DIST</text>
+          <text x="246" y="170" font-size="7" fill="#5C9E48">regulated</text>
+          <line x1="286" y1="143" x2="296" y2="143" stroke="#1E1C14" stroke-width="0.6" stroke-dasharray="2 2"/>
+          <rect x="296" y="132" width="72" height="22" fill="#FAF8F2" stroke="#1E1C14" stroke-width="1"/>
+          <text x="332" y="147" fill="#1E1C14">RETAIL</text>
+          <text x="332" y="170" font-size="7" fill="#6E6A58">market</text>
+        </g>
+      </svg>`,
+      body: 'For decades the orthodoxy was that vertically integrated utilities (generation + transmission + distribution + retail under one roof) abused the monopoly link to subsidise the competitive ones. The fix was unbundling: split the chain, let competition emerge in generation and retail, regulate the wires-only businesses tightly.',
+      a: 'Stay unbundled. Markets in generation and retail; tightly regulated network monopolies. The EU model, the UK model, Australia\'s NEM, parts of the US.',
+      b: 'Re-integrate. Argue that the energy transition needs coordinated capex across the chain, that markets cannot finance the buildout fast enough, and that consumer prices can be regulated directly. The French model, the Chinese model, increasingly the Australian regulator\'s mood.',
+      where: 'The question is no longer ideological - it is practical. Are unbundled markets actually delivering the transmission build-out we need? Most evidence says they are not. Watch for partial re-integration via state-owned investment vehicles (UK\'s GBN, parts of the IRA in the US).'
+    },
+    {
+      num: '03',
+      title: 'The AI data-centre demand surge',
+      tag: 'Hyperscalers as utility customers.',
+      vlabel: 'OECD electricity demand growth',
+      svg: `<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <line x1="40" y1="40" x2="40" y2="170" stroke="#1E1C14" stroke-width="0.6" opacity="0.4"/>
+        <line x1="40" y1="170" x2="380" y2="170" stroke="#1E1C14" stroke-width="0.6" opacity="0.4"/>
+        <g stroke="#1E1C14" stroke-width="0.4" opacity="0.15">
+          <line x1="40" y1="60" x2="380" y2="60"/>
+          <line x1="40" y1="100" x2="380" y2="100"/>
+          <line x1="40" y1="140" x2="380" y2="140"/>
+        </g>
+        <text x="46" y="52" font-family="DM Mono" font-size="8" fill="#6E6A58" letter-spacing="0.5">TWh</text>
+        <text x="46" y="184" font-family="DM Mono" font-size="8" fill="#6E6A58" letter-spacing="0.5">2010</text>
+        <text x="190" y="184" font-family="DM Mono" font-size="8" fill="#6E6A58" letter-spacing="0.5">2022</text>
+        <text x="340" y="184" font-family="DM Mono" font-size="8" fill="#6E6A58" letter-spacing="0.5">2030</text>
+        <g fill="#1E1C14" opacity="0.55">
+          <rect x="48" y="155" width="10" height="15"/>
+          <rect x="62" y="154" width="10" height="16"/>
+          <rect x="76" y="153" width="10" height="17"/>
+          <rect x="90" y="152" width="10" height="18"/>
+          <rect x="104" y="151" width="10" height="19"/>
+          <rect x="118" y="150" width="10" height="20"/>
+          <rect x="132" y="148" width="10" height="22"/>
+          <rect x="146" y="146" width="10" height="24"/>
+          <rect x="160" y="144" width="10" height="26"/>
+          <rect x="174" y="142" width="10" height="28"/>
+          <rect x="188" y="139" width="10" height="31"/>
+          <rect x="202" y="135" width="10" height="35"/>
+        </g>
+        <g fill="#5C9E48">
+          <rect x="216" y="128" width="10" height="42"/>
+          <rect x="230" y="118" width="10" height="52"/>
+          <rect x="244" y="106" width="10" height="64"/>
+          <rect x="258" y="92" width="10" height="78"/>
+          <rect x="272" y="78" width="10" height="92"/>
+          <rect x="286" y="68" width="10" height="102"/>
+          <rect x="300" y="60" width="10" height="110"/>
+          <rect x="314" y="55" width="10" height="115"/>
+        </g>
+        <g fill="#5C9E48" opacity="0.45">
+          <rect x="328" y="50" width="10" height="120"/>
+          <rect x="342" y="46" width="10" height="124"/>
+        </g>
+        <line x1="208" y1="48" x2="208" y2="170" stroke="#5C9E48" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.6"/>
+        <text x="212" y="56" font-family="DM Mono" font-size="8" fill="#5C9E48" letter-spacing="0.4">AI ramp →</text>
+      </svg>`,
+      body: 'For 20 years, electricity demand growth in OECD countries was approximately zero - efficiency gains cancelled population and economic growth. AI training and inference workloads have ended that. Forecasts now show data-centre load doubling by 2030 in most major markets, with localised concentrations (Northern Virginia, Dublin, Frankfurt) where data centres already account for 20%+ of grid demand.',
+      a: 'Bring on dispatchable thermal and nuclear fast - restart Three Mile Island, sign nuclear PPAs, build behind-the-meter gas. The model the hyperscalers themselves are pursuing.',
+      b: 'Force hyperscalers to wait in the interconnection queue and bring renewables + storage with them. Treat them as one of many customers, not a special case. The position of most regulators in name; not in practice.',
+      where: 'Microsoft\'s Three Mile Island restart deal is the canonical event. Amazon\'s nuclear-adjacent data centre in Pennsylvania is the canonical fight (FERC blocked the direct connection in 2024). Watch how this resolves - it sets the rules for the next decade.'
+    },
+    {
+      num: '04',
+      title: 'Energy transition politics',
+      tag: 'Who pays, in which jurisdiction.',
+      vlabel: 'Cost burden vs benefit',
+      svg: `<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <text x="20" y="44" font-family="DM Mono" font-size="9" fill="#1E1C14" letter-spacing="0.5">WHO PAYS</text>
+        <g font-family="DM Mono" font-size="7" letter-spacing="0.4" text-anchor="middle">
+          <rect x="20" y="54" width="180" height="28" fill="#3A5C6A" opacity="0.85" stroke="#1E1C14" stroke-width="0.8"/>
+          <text x="110" y="71" fill="#FAF8F2">HOUSEHOLDS · 56%</text>
+          <rect x="200" y="54" width="80" height="28" fill="#3A5C6A" opacity="0.55" stroke="#1E1C14" stroke-width="0.8"/>
+          <text x="240" y="71" fill="#FAF8F2">SMB · 25%</text>
+          <rect x="280" y="54" width="60" height="28" fill="#3A5C6A" opacity="0.35" stroke="#1E1C14" stroke-width="0.8"/>
+          <text x="310" y="71" fill="#1E1C14">INDUSTRY · 19%</text>
+          <rect x="340" y="54" width="40" height="28" fill="#3A5C6A" opacity="0.18" stroke="#1E1C14" stroke-width="0.8"/>
+        </g>
+        <text x="20" y="116" font-family="DM Mono" font-size="9" fill="#5C9E48" letter-spacing="0.5">WHO BENEFITS</text>
+        <g font-family="DM Mono" font-size="7" letter-spacing="0.4" text-anchor="middle">
+          <rect x="20" y="126" width="60" height="28" fill="#5C9E48" opacity="0.35" stroke="#1E1C14" stroke-width="0.8"/>
+          <text x="50" y="143" fill="#1E1C14">HH · 18%</text>
+          <rect x="80" y="126" width="60" height="28" fill="#5C9E48" opacity="0.5" stroke="#1E1C14" stroke-width="0.8"/>
+          <text x="110" y="143" fill="#1E1C14">SMB · 18%</text>
+          <rect x="140" y="126" width="160" height="28" fill="#5C9E48" opacity="0.85" stroke="#1E1C14" stroke-width="0.8"/>
+          <text x="220" y="143" fill="#FAF8F2">INDUSTRY · 48%</text>
+          <rect x="300" y="126" width="80" height="28" fill="#5C9E48" opacity="0.65" stroke="#1E1C14" stroke-width="0.8"/>
+          <text x="340" y="143" fill="#FAF8F2">DEVS · 16%</text>
+        </g>
+        <line x1="200" y1="46" x2="200" y2="160" stroke="#1E1C14" stroke-width="0.4" stroke-dasharray="2 3" opacity="0.5"/>
+        <text x="20" y="180" font-family="DM Mono" font-size="7" fill="#6E6A58" letter-spacing="0.4">Illustrative split - typical OECD network-charge model</text>
+      </svg>`,
+      body: 'The transition is mostly cheap in averaged-out cost-per-kWh terms. It is brutal in distributional terms. Coal regions lose jobs in known places. Network upgrades to support renewables and EVs land disproportionately on the bills of people without rooftop solar or EVs. Industrial customers shop jurisdictions for cheaper electrons. The political coalition that supports the transition is not the same as the coalition that pays for it.',
+      a: 'Centralise the cost at federal/national level: carbon prices, transition funds, federal transmission planning. Let the system pay for itself out of long-run savings.',
+      b: 'Push it to consumer bills via network-charge increases and feed-in tariff phase-outs. Easy politically (one bill at a time) but creates the "unfair burden" backlash that has now reversed several net-zero policies in Europe.',
+      where: 'Germany\'s industrial-electricity-price debate, the UK\'s 2023 net-zero rollback, the EU\'s ETS expansion, the IRA\'s domestic-content rules. Every market is solving this differently and most are getting it partially wrong.'
+    }
+  ];
+
+  /* ========== RENDER: SCENE / DETAIL PANEL ===================== */
+
+  const scene = document.getElementById('scene');
+  const detail = document.getElementById('detail');
+  let activeId = null;
+
+  function renderDetail(id){
+    if(!id){
+      detail.innerHTML = `
+        <div class="detail-hint">
+          <span class="arrow">→</span> Click any element in the landscape to read about it. The chain is one continuous business - but every link operates differently.
+        </div>`;
+      return;
+    }
+    const d = ELEMENT_DATA[id];
+    if(!d) return;
+    detail.innerHTML = `
+      <div class="meta">
+        <h3>${d.title}</h3>
+        <span class="stage-tag">${d.stage}</span>
+      </div>
+      <div class="body">
+        <div class="summary">${d.summary}</div>
+        <div class="field"><span class="k">What it is</span><span class="v">${d.what}</span></div>
+        <div class="field"><span class="k">How it works</span><span class="v">${d.how}</span></div>
+        <div class="field"><span class="k">Who owns it</span><span class="v">${d.owns}</span></div>
+        <div class="field"><span class="k">Economics</span><span class="v">${d.economics}</span></div>
+      </div>
+    `;
+  }
+
+  function setActive(id){
+    if(activeId === id){
+      // toggle off
+      activeId = null;
+      scene.classList.remove('has-active');
+      scene.querySelectorAll('.clickable.active').forEach(n => n.classList.remove('active'));
+      detail.classList.add('transitioning');
+      setTimeout(() => {
+        renderDetail(null);
+        detail.classList.remove('transitioning');
+      }, 180);
+      return;
+    }
+
+    activeId = id;
+    scene.classList.add('has-active');
+    scene.querySelectorAll('.clickable.active').forEach(n => n.classList.remove('active'));
+    const target = scene.querySelector(`.clickable[data-id="${id}"]`);
+    if(target) target.classList.add('active');
+
+    detail.classList.add('transitioning');
+    setTimeout(() => {
+      renderDetail(id);
+      detail.classList.remove('transitioning');
+      // smooth scroll to detail in viewport if needed
+      const rect = detail.getBoundingClientRect();
+      if(rect.top < 60 || rect.bottom > window.innerHeight){
+        // gentle nudge
+        window.scrollBy({
+          top: rect.top - 80,
+          behavior: 'smooth'
+        });
+      }
+    }, 180);
+  }
+
+  scene.querySelectorAll('.clickable').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = el.getAttribute('data-id');
+      setActive(id);
+    });
+  });
+
+  /* Wind blade rotation (SVG animation via JS - smoother than CSS in some browsers) */
+  function spinBlades(){
+    const t = performance.now();
+    const speed1 = 0.06, speed2 = 0.05, speed3 = 0.07;
+    const b1 = scene.querySelector('.blades-back');
+    const b2 = scene.querySelector('.blades-mid');
+    const b3 = scene.querySelector('.blades-right');
+    if(b1) b1.setAttribute('transform', `rotate(${(t * speed1) % 360})`);
+    if(b2) b2.setAttribute('transform', `rotate(${(t * speed2) % 360})`);
+    if(b3) b3.setAttribute('transform', `rotate(${(t * speed3) % 360})`);
+    requestAnimationFrame(spinBlades);
+  }
+  requestAnimationFrame(spinBlades);
+
+  /* ========== RENDER: PLAYERS / ROWS =========================== */
+
+  const rowlist = document.getElementById('rowlist');
+  const tabs = document.getElementById('ptabs');
+  let currentSegment = 'all';
+
+  function getFiltered(){
+    return currentSegment === 'all'
+      ? PLAYERS
+      : PLAYERS.filter(p => p.segment === currentSegment);
+  }
+
+  function updateCounts(){
+    const counts = { all: PLAYERS.length, generator: 0, transmission: 0, distribution: 0, enabler: 0 };
+    PLAYERS.forEach(p => { counts[p.segment]++; });
+    Object.keys(counts).forEach(k => {
+      const el = tabs.querySelector(`.count[data-count="${k}"]`);
+      if (el) el.textContent = '·' + counts[k];
+    });
+  }
+
+  function renderRows(){
+    const filtered = getFiltered();
+
+    if (!filtered.length) {
+      rowlist.innerHTML = '<div class="empty-state">No players in this segment.</div>';
+      return;
+    }
+
+    rowlist.innerHTML = filtered.map((p, i) => {
+      const idx = String(i + 1).padStart(2, '0');
+      return `
+        <div class="row" data-i="${i}">
+          <div class="idx">${idx}</div>
+          <div class="name">${p.name}</div>
+          <div class="role">${p.role}</div>
+          <div class="toggle">+</div>
+          <div class="body">
+            <div class="field"><span class="k">What they do</span><span class="v">${p.what}</span></div>
+            <div class="field"><span class="k">Where they sit</span><span class="v">${p.where}</span></div>
+            <div class="field"><span class="k">Why structurally interesting</span><span class="v">${p.structural}</span></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    rowlist.querySelectorAll('.row').forEach(r => {
+      r.addEventListener('click', () => r.classList.toggle('open'));
+    });
+  }
+
+  updateCounts();
+  renderRows();
+
+  tabs.querySelectorAll('.ptab').forEach(t => {
+    t.addEventListener('click', () => {
+      tabs.querySelectorAll('.ptab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      currentSegment = t.getAttribute('data-segment');
+      renderRows();
+    });
+  });
+
+  /* ========== RENDER: TENSIONS ================================= */
+
+  const tensions = document.getElementById('tensions');
+  tensions.innerHTML = TENSIONS.map(t => `
+    <div class="tcard">
+      <div class="viz">
+        <span class="vlabel">${t.vlabel}</span>
+        ${t.svg}
+      </div>
+      <div class="content">
+        <div class="tnum">${t.num}</div>
+        <div class="tname">${t.title}</div>
+        <div class="ttag">${t.tag}</div>
+        <div class="tbody">${t.body}</div>
+        <div class="positions">
+          <div class="pos a"><div class="plabel">Position A</div><div class="ptext">${t.a}</div></div>
+          <div class="pos b"><div class="plabel">Position B</div><div class="ptext">${t.b}</div></div>
+        </div>
+        <div class="where"><span class="wlabel">Where it's playing out</span>${t.where}</div>
+      </div>
+    </div>
+  `).join('');
+
+})();
+</script>
+
+</body>
+</html>
